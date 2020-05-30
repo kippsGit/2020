@@ -1,0 +1,853 @@
+
+<html>
+<head>
+	<link rel="icon" href="char.png">
+	<title>Jemp 2</title>
+	<style type="text/css">
+		body{
+			padding: 0px;
+			margin: 0px;
+		}
+		#canvas{
+			background-color: black;
+			margin: 0px;
+		}
+		#scoreBoard{
+			position: absolute;
+			
+			width: auto;
+			height: 20px;
+			left: 49%;
+
+			display: none;
+		}
+		#score{
+			color: red;
+			font-size: 50px;
+		}
+		#mainMenu{
+			position: absolute;
+			/*border: 1px solid red;*/
+			/*background-color: black;*/
+			background: url("terrain.png") no-repeat;
+			
+		}
+		#menuList{
+			list-style-type: none;
+			text-align: center;
+			
+			margin-top: 10%;
+
+			font-size: 50px;
+			font-family: 'tahoma'
+
+
+		}
+		 ul#menuList{
+			padding: 0px;
+			margin: 0px;
+			margin-top: 10%;
+		}
+		
+		#title{
+			margin-bottom: 5%;
+			font-size: 80px;
+			color: black;
+			
+			
+		}
+		#start, #about{
+			color: white;
+
+		}
+		#start:active, #about:active{
+			color: red !important;
+		}
+		#start:hover, #about:hover{
+			color: gray;
+			cursor: pointer;
+		}
+		#deathScreen{
+			position: absolute;
+			color: black;
+			display: none;
+		}
+		#deathScreen ul li{
+			list-style-type: none;
+			
+			font-size: 80px;
+			font-family: 'tahoma';
+			display: inline-block;
+			margin-right: 30px;
+		}
+		#deathScreen ul li:hover{
+			color: red;
+			cursor: pointer;
+		}
+		#pause{
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background: url("pause.png");
+			background-size: 50px 50px;
+			z-index: 0;
+		}
+		#pause:hover{
+			cursor: pointer;
+
+		}
+		#pause:active{
+			
+		}
+		#home{
+			position: absolute;
+			width: 40px;
+			height: 40px;
+			background: url("exit.png");
+			background-size: 40px 40px;
+		}
+		#home:active{
+			background: url("exit_clicked.png");
+			background-size: 40px 40px;
+		}
+		#home:hover{
+			cursor: pointer;
+		}
+
+		#aboutScreen{
+			position: absolute;
+			/*border: 1px solid red;*/
+			
+			z-index: 1000;
+
+			color: white;
+			font-family: 'tahoma';
+			font-size: 25px;
+
+			background-color: black;
+
+			display: none;
+			overflow: auto;
+		}
+		#aboutScreen:hover{
+			cursor: pointer;
+		}
+		#aboutScreenDetails{
+			/*border: 1px solid red;*/
+
+		}
+		#illusionWord{
+			color: pink;
+		}
+		#jemp2{
+			font-size: 50px;
+			color: red;
+		}
+
+		#loadingScreen{
+			/*border: 1px solid red;*/
+			position: absolute;
+			z-index: 1000;
+			background-color: black;
+			color: white;
+			font-size: 100px;
+			text-align: center;
+			overflow: hidden;
+			padding-top: 70%;
+		}
+	</style>
+
+</head>
+<body>	
+		<div id="loadingScreen">Loading...</div>
+		<div id="aboutScreen" onclick="showAbout()">
+			<pre id="aboutScreenDetails">
+					<b id="jemp2">"Jemp 2"</b>
+			       		HOW TO PLAY? 
+			       	on phone: touch the screen to jump.
+			       	on pc: press spacebar.
+			       		GOAL?
+			       	Dodge incoming objects, 
+			       	1 of the objects is an <b id="illusionWord">illusion</b>.
+
+			       	----------------------------------------
+
+			       	A sequel of the first game called "Jemp".
+
+			       	----------------------------------------
+
+			       	Author: King Peter G. Panes
+			       	site's date/time of 
+			       	completion: May 20, 2020 | Wednesday | 8 pm
+
+			       	----------------------------------------
+
+					       	____________
+					       /___     ___/
+					       	  /    /
+					       	 /    /
+					       	/    /
+					       /____/
+					       ___      ___
+					      /   \    /  /
+					     /     \  /  /
+					    /   /\  \/  /
+					   /   /  \    /
+					  /___/    \__/
+
+					  ___      ___
+					  \  \    /  /
+					   \  \  /  /
+					    \  \/  /
+					    /      \
+					   /   /\   \
+					  /   /  \   \
+					 /___/    \___\  for playing. 
+			       	
+			</pre>
+		</div>
+
+		<div id="home" onclick="location.reload()"></div>
+		<div id="pause" onclick="pus()"></div>
+		<div id="deathScreen">
+				<ul>
+					<li onclick="retry()">retry</li>
+					<li onclick="location.reload()">exit</li>
+				</ul>
+		</div>
+		<div id="mainMenu">
+			<ul id="menuList">
+				<li id="title">Jemp 2</li>
+				<li id="start" onclick="start()">start</li>
+				<li id="about" onclick="showAbout()">about</li>
+			</ul>
+		</div>
+		<div id="scoreBoard">
+			<div id="score">0</div>
+		</div>
+	
+	<canvas id="canvas">
+		
+	</canvas>
+
+<script type="text/javascript">
+	let illusionWord = document.querySelector("#illusionWord"); //tinker this soon
+	let aboutScreen = document.querySelector("#aboutScreen"),
+		aboutScreenDetails = document.querySelector("#aboutScreenDetails"),
+		char = new Image(),
+		terrain1 = new Image(),
+		terrain2 = new Image(),
+		ground1 = new Image(),
+		ground2 = new Image(),
+		startGameSound = new Audio(),
+		aboutGameSound = new Audio(),
+		explodeGameSound = new Audio(),
+		gameOverSound = new Audio(),
+		jumpGameSound = new Audio();
+
+		startGameSound.src = "play.wav";
+		aboutGameSound.src = "about.wav";
+		explodeGameSound.src = "explode.wav";
+		gameOverSound.src = "gameOver.mp3";
+		jumpGameSound.src = "jump.wav";
+
+		char.src = "char.png";
+
+		ground1.src = "ground.png";
+		ground2.src = "ground.png";
+		terrain1.src = "terrain.png";
+		terrain2.src = "terrain.png";
+
+		aboutScreen.style.width = window.innerWidth;
+		aboutScreen.style.height = window.innerHeight;
+
+		let aboutShown = true;
+		function showAbout(){
+			if(aboutShown){
+				aboutScreen.style.display = "block";
+				aboutShown = false;
+				aboutGameSound.play();
+			}else{
+				aboutScreen.style.display = "none";
+				aboutShown = true;
+			}
+			
+		}
+
+	let home = document.querySelector("#home");
+
+	let pause = document.querySelector("#pause");
+		pause.style.left = window.innerWidth - 60;
+
+	let deathScreen = document.querySelector("#deathScreen");
+		deathScreen.style.top = window.innerHeight / 2 + 10;
+		deathScreen.style.left = window.innerWidth / 2 - 220;
+	/////////////////////////////////////////////////////////////////////////
+	// loading screen (black fukcing square)
+	let loadingScreen = document.querySelector("#loadingScreen");
+	loadingScreen.style.width = window.innerWidth;
+	loadingScreen.style.height = window.innerHeight;
+	///////////////////////////////////////////////////////////////////////
+	let mainMenu = document.querySelector("#mainMenu"),
+		menuList = document.querySelector("#menuList"),
+		title = document.querySelector("#title"),
+		scoreBoard = document.querySelector("#scoreBoard"),
+		score = document.querySelector("#score");
+
+		mainMenu.style.width = window.innerWidth;
+		mainMenu.style.height = window.innerHeight;
+
+		//reponsive screen ?? :)
+		if(window.outerWidth < 1080){
+			aboutScreen.style.transform = "translateX(-150px)";
+			aboutScreenDetails.style.transform = "translateX(-150px)";
+		}
+		if(window.outerWidth < 800){
+			menuList.style.marginTop = "15%";
+			menuList.style.fontSize = "80px";
+			title.style.fontSize = "150px";
+			score.style.fontSize = "100px";
+		}
+		if(window.outerWidth < 500){
+			menuList.style.marginTop = "30%";
+			menuList.style.fontSize = "80px";
+			title.style.fontSize = "150px";
+			mainMenu.style.backgroundSize = "2000px 2000px";
+		}
+		if(window.outerWidth < 400){
+			menuList.style.marginTop = "30%";
+			menuList.style.fontSize = "100px";
+			title.style.fontSize = "200px";
+			score.style.fontSize = "100px";
+			
+			
+		}
+		//start button (start game, hide main menu)
+		function start(){
+			gameStart = true;
+			scoreBoard.style.display = "block";
+			mainMenu.style.display = "none";
+			startGameSound.play();
+		}
+//////////////////////////////////////////////////////////////////////////////////
+	let canvas = document.querySelector("#canvas"),
+		c = canvas.getContext("2d");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+	let scoreCount = 0;
+
+	let colors = ['red', 'orange', 'yellow', 'green', 'skyblue'],
+		colndx = Math.floor(Math.random()*colors.length);
+
+		//score board object
+		let scoreBlock = function(){
+			this.x = canvas.width / 2 - 250;
+			this.y = -200; // hidden at the top of the screen
+
+			this.vy = 10;
+
+			this.gravity = 1;
+
+			this.numberX = canvas.width / 2 - 40;
+			this.numberY = -150;
+
+			this.update = ()=>{
+
+				this.vy += this.gravity;
+
+				this.y += this.vy;
+				this.numberY += this.vy;
+
+				//your score position ground collision
+				if(this.y >= canvas.height / 2 - 100){
+					this.y = canvas.height / 2 - 100;
+					this.vy = -this.vy;
+					this.gravity+=2;
+					if(dead){
+						deathScreen.style.display = "block";
+					}
+				}
+				// score count ground collision
+				if(this.numberY >= canvas.height / 2 - 110){
+					this.numberY = canvas.height / 2 - 110;
+				
+				}
+
+				
+			}
+			this.draw = ()=>{
+
+				c.font = '100px tahoma';
+				c.fillStyle = 'white';
+				c.fillText('Your score: ', this.x, this.y);
+
+				c.fillStyle = 'red';
+				c.fillText(scoreCount, this.numberX, this.numberY + 100);
+
+				this.update();
+			}
+		}
+
+		//explosion particles
+		let explode = false;
+		let indx = 0;
+		let particles = function(x, y, col){
+			this.siz = 25;
+			this.x = x;
+			this.y = y;
+			this.vx = Math.floor(Math.random()*10 - 5);
+			this.vy = Math.floor(Math.random()* 10 - 5);
+			this.gravity = .5;
+			this.idd = indx++;
+			this.life = 0;
+			this.maxLife = 20;
+			this.col = col;
+
+			this.update = ()=>{
+
+				this.vy += this.gravity;
+
+				this.x += this.vx;
+				this.y += this.vy;
+
+				//shrink particles
+				if(this.siz <= 2){
+					this.siz = 2;
+				}else{
+					this.siz--;
+				}
+
+				this.life++;
+				if(this.life >= this.maxLife){
+					for(let x = 0; x <= particles_con.length; x++){// delete every particles_con particle
+						delete particles_con[x];
+					}
+					/*delete con[this.idd]*/
+					
+				}
+
+				//ground collision
+				if(this.y > canvas.height / 2 - this.siz){
+					this.y = canvas.height / 2 - this.siz;
+				
+					this.vx = 0;
+					this.vy = 0;
+				}
+
+				//left side screen collision
+				if(this.x <= 0){
+					this.x = 0;
+				}
+			}
+			this.draw = ()=>{
+				//particle
+				c.fillStyle = this.col;
+				c.fillRect(this.x, this.y, this.siz, this.siz)
+
+				this.update();
+			}
+		}
+
+		// obstacle
+		let obstacle = function(vx){
+			this.siz = Math.floor(Math.random()*50 + 50);
+			this.x = canvas.width - this.siz;
+			this.y = canvas.height / 2 - this.siz;
+			this.vx = vx;
+			this.vy = 0;
+			this.gravity = 2;
+
+			this.update = ()=>{
+
+				this.vy += this.gravity;
+
+				this.x += this.vx;
+				this.y += this.vy;
+
+				//left side screen collision
+				if(this.x <= -this.siz){
+
+					explodeGameSound.play();
+
+					//particles explosion left side of screen
+					createParticles(0, canvas.height / 2 - this.siz, colors[colndx]);
+					explode = true;
+
+					//reset to starting point
+					this.vy = Math.floor(Math.random()*-30);
+					this.x = canvas.width;
+					this.siz = Math.floor(Math.random()*50 + 50);
+
+					//increase score and display to score board if not dead yet
+					if(!dead){
+						scoreCount++;
+						score.innerHTML = scoreCount;
+					}
+					
+
+					//change obstacle color
+					colndx = Math.floor(Math.random()*colors.length);
+					
+				}
+
+				//ground collision
+				if(this.y > canvas.height / 2 - this.siz){
+					this.y = canvas.height / 2 - this.siz;
+				
+
+				}
+
+				//increase obstacle speed if reached x score
+				// default speed of 1st = -20, 2nd = -10
+				if(!dead){
+					if(scoreCount == 10){
+						obstacles.vx = -30;
+						obstacles2.vx = -20;
+					}else if(scoreCount == 20){
+						obstacles.vx = -40;
+						obstacles2.vx = -30;
+					}else if(scoreCount == 30){
+						obstacles.vx = -50;
+						obstacles2.vx = -40;
+					}else if(scoreCount == 40){
+						obstacles.vx = -60;
+						obstacles2.vx = -50;
+					}else if(scoreCount == 50){
+						obstacles.vx = -70;
+						obstacles2.vx = -60;
+					}else if(scoreCount == 60){
+						obstacles.vx = -80;
+						obstacles2.vx = -70;
+					}
+				}
+				
+
+			}
+
+			this.draw = ()=>{
+				
+
+				//obstacle
+				c.fillStyle = colors[colndx];
+				c.fillRect(this.x, this.y, this.siz, this.siz)
+
+				this.update();
+			}
+		}
+		
+
+		// user
+		let player = function(){
+			this.siz = 50;
+			this.x = canvas.width / 4 - this.siz / 2;
+			this.y = canvas.height / 2 - this.siz;
+			this.vx = 0;
+			this.vy = 0;
+			this.gravity = 0;
+			this.friction = 0;
+
+			this.terrain1X = 0;
+			this.terrain1Y = canvas.height / 2 - 900;
+
+			this.terrain2X = canvas.width + 1000;
+			this.terrain2Y = canvas.height / 2 - 900;
+
+			this.ground1X = 0;
+			this.ground1Y = canvas.height / 2;
+
+			this.ground2X = canvas.width;
+			this.ground2Y = canvas.height / 2;
+
+			this.update = ()=>{
+				//terrain side scroll
+				this.terrain1X += -2;
+				this.terrain2X += -2;
+
+				//ground
+				this.ground1X += -5;
+				this.ground2X += -5;
+
+				//apply friction when going left or right
+				this.vx *= this.friction;
+
+				//apply gravity
+				this.vy += this.gravity;
+
+				this.x += this.vx;
+				this.y += this.vy;
+
+				//ground collision
+				if(this.y > canvas.height / 2 - this.siz){
+					this.y = canvas.height / 2 - this.siz;
+					this.vy = 0;
+					this.gravity = 0;
+
+					onAir = true;
+				}
+				//left side screen collision
+				if(this.x <= 0){
+					this.x = 0;
+				}
+				//right side screen collision
+				if(this.x >= canvas.width - this.siz){
+					this.x = canvas.width - this.siz;
+				}
+
+				//if terrains is off screen
+				if(this.terrain1X <= -2000){
+					this.terrain1X = canvas.width + 1000;
+				}
+
+				if(this.terrain2X <= -2000){
+					this.terrain2X = canvas.width + 1000;
+				}
+
+				//if ground is off screen
+				if(this.ground1X <= -2000){
+					this.ground1X = canvas.width;
+				}
+
+				if(this.ground2X <= -2000){
+					this.ground2X = canvas.width;
+				}
+
+
+			
+				//getting the distance between the obstacle and the player
+				function getDist(userX, userY, obsX, obsY){
+					let xDist = obsX - userX;
+					let yDist = obsY - userY;
+
+					return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
+				}
+				//user and obstacle collision
+				if(getDist(this.x, this.y, obstacles.x, obstacles.y) <= obstacles.siz /2 ){
+					explodeGameSound.play();
+					gameOverSound.play();
+					/*console.log(getDist(this.x, this.y, obstacles.x, obstacles.y));*/
+
+					//particles explosion of user and obstacle simultaneously
+					createParticles(this.x, this.y, "white");
+					createParticles(obstacles.x, obstacles.y, colors[colndx]);
+					explode = true;
+
+					//hide score board after death
+					scoreBoard.style.display = "none";
+
+					//pause button hide after death
+					pause.style.display = "none";
+
+					//hide home button
+					home.style.display = "none";
+
+					// if collided hide the user and the obstacle to the top screen
+					this.y = 0 - this.siz;
+					this.vy = 0;
+					this.gravity = 0;
+
+					//first object
+					obstacles.y = 0 - 100;
+					obstacles.vx = 0;
+					obstacles.vy = 0;
+					obstacles.gravity = 0;
+
+					//second object
+					obstacles2.y = 0 - 200;
+					obstacles2.vx = 0;
+					obstacles2.vy = 0;
+					obstacles2.gravity = 0;
+
+					dead = true;
+					
+				}
+				
+			}
+			this.draw = ()=>{
+				//bg
+				/*c.fillStyle = "rgba(0,0,0,0.4)";
+				c.fillRect(0, 0, canvas.width, canvas.height)*/
+				c.drawImage(terrain1, this.terrain1X, this.terrain1Y);
+				c.drawImage(terrain2, this.terrain2X, this.terrain2Y);
+
+				//ground
+				/*c.fillStyle = "lightgray";
+				c.fillRect(0, canvas.height / 2, canvas.width, canvas.height)*/
+				c.drawImage(ground1, this.ground1X, this.ground1Y);
+				c.drawImage(ground2, this.ground2X, this.ground2Y);
+				//player
+				/*c.fillStyle = "white";
+				c.fillRect(this.x, this.y, this.siz, this.siz);
+				c.fillStyle = "black";
+				c.fillRect(this.x + 5, this.y + 5, 40, 40);*/
+				c.drawImage(char, this.x, this.y);
+
+				this.update();
+			}
+		}
+		
+
+		//player, obstacle, particles creation
+		let user = new player(),
+			obstacles = new obstacle(-20),
+			obstacles2 = new obstacle(-10),
+			scoreBlock1 = new scoreBlock();
+		/////obstacles////////////////////////////////////////////////////////////////
+
+		// i forgot about this heheh shit!!
+
+		//////////////////////////////////////////////////////////////////////////////
+
+		//particles///////////////////////////////////////////////////////////////////
+		let particles_con = [];
+
+		function explodeParticles(){
+			for(let i in particles_con){
+					particles_con[i].draw();
+				}
+		}
+		function createParticles(x, y, col){
+			for(let i = 1; i <= 20; ++i){
+				particles_con.push(new particles(x, y, col));
+			}
+		
+		}
+		//////////////////////////////////////////////////////////////////////////
+		
+		//game loop/////////////////////////////////////////////////
+		let gameStart = false,
+			pauseState = false;
+
+
+
+	setInterval(()=>{
+				if(gameStart && !pauseState){
+					user.draw();
+					obstacles.draw();
+					obstacles2.draw();
+					
+					
+					//particles explode
+					if(explode){
+						explodeParticles();
+					}
+
+					if(dead){
+						scoreBlock1.draw();
+					}
+				}	
+			}, 30);
+
+	
+
+
+		/////////////////////////////////////////////////////////////
+		// pause the fukcing game function
+		function pus(){
+			if(!pauseState){
+				pause.style.background = "url('play.png')";
+				pause.style.backgroundSize = "50px 50px";
+				pauseState = true;
+			}else{
+				pause.style.background = "url('pause.png')";
+				pause.style.backgroundSize = "50px 50px";
+				pauseState = false;
+			}
+		}
+		
+		function retry(){ //fucking hard to review all this shit all over again just to retry
+
+			//return everyting to its default values
+			deathScreen.style.display = "none";
+			scoreBoard.style.display = "block";
+			scoreCount = 0;
+			score.innerHTML = 0;
+
+			//pause button show when retry
+			pause.style.display = "block";
+
+			//home buttn show when retry
+			home.style.display = "block";
+
+			user.y = canvas.height / 2 - user.siz;
+			user.x = canvas.width / 4 - user.siz / 2;
+
+			obstacles.x = canvas.width - obstacles.siz;
+			obstacles.y = canvas.height / 2 - obstacles.siz;
+			obstacles.gravity = 2;
+			obstacles.vx = -20;
+
+			obstacles2.x = canvas.width - obstacles.siz;
+			obstacles2.y = canvas.height / 2 - obstacles.siz;
+			obstacles2.gravity = 2;
+			obstacles2.vx = -10;
+
+			scoreBlock1.x = canvas.width / 2 - 250;
+			scoreBlock1.y = -200; // hidden at the top of the screen
+			scoreBlock1.vy = 10;
+			scoreBlock1.gravity = 1;
+
+			scoreBlock1.numberX = canvas.width / 2 - 40;
+			scoreBlock1.numberY = -150;
+
+			dead = false;
+			onAir = true;
+		}
+
+		//keyboard controls / screen controls
+		let onAir = true,
+			dead = false;
+		document.addEventListener('keydown', (e)=>{
+			if(e.repeat){return}
+			// 65 left 68 right
+			// jump
+			if(onAir && !dead){
+				if(e.keyCode == 32){
+					user.vy = -40;
+					user.gravity = 5;
+					onAir = false;
+					jumpGameSound.play();
+				}
+			}
+			/*
+				if(e.keyCode == 65){//go left
+					user.vx = -5;
+					user.friction = .999;
+					movingLeft = false;
+					movingRight = true;
+				
+			}
+			
+				if(e.keyCode == 68){//go right
+					user.vx = 5;
+					user.friction = .999;
+					movingRight = false;
+					movingLeft = true;
+				
+			}*/
+					
+		})
+
+		canvas.addEventListener('touchstart', ()=>{
+			if(onAir && !dead){
+				
+					user.vy = -40;
+					user.gravity = 5;
+					onAir = false;
+					jumpGameSound.play();
+				
+			}
+		}, {passive:true}) // this passive:true shit is useful, research soon
+
+		// refresh on window size change
+		window.addEventListener("resize", ()=>{
+			location.reload();
+		})
+		
+		//show everything only when the assets are all loaded
+		window.onload = ()=>{
+			loadingScreen.style.display = "none";
+		}
+</script>
+</body>
+</html>
