@@ -1,0 +1,472 @@
+
+<html>
+<head>
+	<title>Jemp</title>
+	
+	<style type="text/css">
+		*{
+			margin: 0px;
+			padding: 0px;
+
+		}
+		body{
+			background-color: pink;
+			overflow: hidden;
+
+		}
+		
+		#canvas{
+			background-color: black;
+			display: none;
+
+		}
+
+		#jumpButt{
+			border: 1px solid red;
+			width: 400px;
+			height: 400px;
+			margin-top: 200px;
+			border-radius: 500px;
+			display: none;
+			background-color: red;
+		}
+		#title{
+			color: red;
+			font-size: 200px;
+			font-family: 'tahoma';
+			margin-top: 20%;
+		}
+		#menu{
+			
+			border: 1px solid black;
+			background-color: black;
+			width: auto;
+			
+			
+		}
+
+		#version{
+			font-size: 35px;
+			color: pink;
+			transform: translateY(-50px) translateX(43px);
+			width: 200px;
+			position: relative;
+			
+		}
+		ul{
+			margin-top: 10%;
+			color: white;
+			text-decoration: none;
+			font-size: 100px;
+			font-family: 'tahoma'
+		}
+		ul li:active{
+			color: red;
+		}
+		#settingsMenu{
+			position: absolute;
+			left: 88%;
+			display: inline-block;
+			
+			background: url("settings.png");
+			background-size: 100px 100px;
+			width: 100px;
+			height: 100px;
+			margin-top: 2%;
+			display: none;
+
+		
+
+		}
+		#settingsMenu:active{
+			background: url("settings_click.png");
+			background-size: 100px 100px;
+
+		}
+		#settingsMenu ul{
+			position: relative;
+			list-style: none;
+			transform: translateX(-300px);
+			margin-top: 110px;
+			
+		}
+		#settingsMenu ul li{
+			background-color: red;
+			width: 400px;
+			margin-bottom: 10px;
+			padding-bottom: 10px;
+		}
+		#settingsList{
+			
+			display: none;
+		}
+
+		#scoreBoard{
+			position: absolute;
+			
+			
+			font-size: 100px;
+			color: white;
+
+			left: 47%;
+
+			display: none;
+		}
+		#score{
+			display: inline-block;
+		}
+		#deathScreen{
+			transform: translateY(-200px);
+			position: absolute;
+			background-color: black;
+			display: none;
+		}
+		#deathScreenMenu{
+
+			font-size: 50px;
+			margin-top: 50%;
+		}
+		#finalScore{
+			color: red;
+			font-size: 150px !important;
+		}
+		#exitButt{
+			margin-top: 80px;
+		}
+		#exitButt:active{
+			color: red;
+		}
+		#aboutshit{
+			border: 1px solid black;
+			position: absolute;
+			margin: 0px;
+			
+			padding: 0px;
+
+			background-color: black;
+			z-index: 1000;
+			display: none;
+		}
+		#aboutshit p{
+			margin-top: 45%;
+			font-family: 'tahoma';
+			font-size: 50px;
+			color: white;
+			background-color: red;
+			padding: 20px;
+
+
+		}
+	</style>
+</head>
+<body>
+<center>
+<div id="aboutshit" onclick="about()">
+	<p>
+		How to play:<br>
+		Cellphone: press the red button.<br>
+		PC: press the space bar.
+	</p>
+</div>
+<div id="deathScreen">
+	<div id="deathScreenMenu">
+		<ul>
+			<li>Your score:</li>
+			<li id="finalScore">0</li>
+			<li id="exitButt" onclick="location.reload()">exit</li>
+		</ul>
+	</div>
+</div>
+<div id="scoreBoard">
+	<div id="score">0</div>
+</div>
+<div id="settingsMenu" onclick="showSettingsList()">
+	<ul id="settingsList">
+		<li onclick="location.reload();">exit</li>
+		<li id="pauseButt" onclick="pose();">pause</li>
+	</ul>
+</div>
+<div id="menu">
+	<div id="title">Jemp<p id="version">May 2020</p></div>
+	<ul>
+		<li onclick="startGame()">Play</li>
+		<li id="about" onclick="about()">About</li>
+	</ul>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div id="jumpButt" onclick="jump()"></div>
+
+<script type="text/javascript">
+	//about
+	let aboutshit = document.querySelector("#aboutshit")
+	aboutshit.style.width = window.innerWidth + "px";
+	aboutshit.style.height = window.innerHeight + "px";
+	let showAbout = true;
+	function about(){
+		if(showAbout){
+			aboutshit.style.display = "block";
+			showAbout = false;
+		}else{
+			aboutshit.style.display = "none";
+			showAbout = true;
+		}
+		
+	}
+	//death screen
+	let deathScreen = document.querySelector("#deathScreen")
+	deathScreen.style.width = window.innerWidth + "px"
+	deathScreen.style.height = window.innerHeight + "px"
+
+	let finalScore = document.querySelector("#finalScore")
+	//score board
+	let scoreBoard = document.querySelector("#scoreBoard");
+
+	//showing settings in game
+	let settingsList = document.querySelector("#settingsList"),
+		settingsListShown = true;
+	function showSettingsList(){
+		if(settingsListShown){
+			settingsList.style.display = "block";
+			settingsListShown = false;
+		}else{
+			settingsList.style.display = "none";
+			settingsListShown = true;
+		}
+		
+	}
+	///////////////////////////////////////////////////
+	// fucking menu ///////////////////////////////////
+
+	let menu = document.querySelector("#menu");
+		menu.style.height = window.innerHeight + "px";
+
+	///////////////////////////////////////////////////
+
+	let score = document.querySelector("#score"),
+		scoreCount = 0;
+
+	/////////////////////////////////////////////////
+	let jumpButt = document.querySelector("#jumpButt");
+	let settingsMenu = document.querySelector("#settingsMenu");
+	let canvas = document.querySelector("#canvas"),
+		c = canvas.getContext("2d");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight / 2;
+
+
+		//ground
+		c.fillStyle = "white";
+		c.fillRect(0,canvas.height - canvas.height / 4, canvas.width, 10);
+
+		let gameLoop;
+
+		let botSiz = Math.floor(Math.random()*50 + 50);
+
+		let player = function(userX, userY, userCol, botX, botY, botCol){
+			this.userCol = userCol;
+			this.botCol = botCol;
+			this.siz = 50;
+			this.botSize = botSiz;
+			this.botX = botX;
+			this.botY = botY;
+			this.botVX = 20;
+			this.botVY = 0;
+
+			this.userX = userX;
+			this.userY = userY;
+			this.vx = 0;
+			this.vy = 0;
+			this.gravity = 0;
+
+
+			
+			this.update = ()=>{
+
+				//move bot to left side of the screen
+				this.botX -= this.botVX;
+
+
+				//////////////////////////////////////////////////////
+				//user movement and gravity
+				this.vy += this.gravity;
+				this.x += this.vx;
+				this.userY += this.vy;
+
+				//change speed of the bot
+				if(scoreCount == 10){
+					this.botVX = 30;
+				}else if(scoreCount == 20){
+					this.botVX = 40;
+				}else if(scoreCount == 30){
+					this.botVX = 50;
+				}else if(scoreCount == 40){
+					this.botVX = 60;
+				}else if(scoreCount == 50){
+					this.botVX = 100;
+				}
+				
+				//ground collision
+				if(this.userY > canvas.height - (canvas.height / 4)-this.siz){
+					onAir = false;
+					this.userY = canvas.height - (canvas.height / 4)-this.siz;
+					this.vy = 0;
+					this.gravity = 0;
+
+				}
+
+				
+				//////////////////////////////////////////////////////
+				// review this :)
+				function getDist(userX, userY, botX, botY){
+					let xDist = botX - userX;
+					let yDist = botY - userY;
+
+					return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
+				}
+				//user and bot collision (player hit) collision
+				if(getDist(this.userX, this.userY, this.botX, this.botY) <= this.siz / 2 + this.botSize - this.siz){
+						
+						//reposition bot to canvas.width
+						this.botX = canvas.width;
+
+						//assigning new value and reassigning
+						botSiz = Math.floor(Math.random()*50 + 50);
+						this.botSize = botSiz;
+
+						//adjust bot position from the ground
+						this.botY = canvas.height - canvas.height / 4 - this.botSize
+
+						
+						//game over if player hit
+						clearInterval(gameLoop)
+						finalScore.innerHTML = scoreCount;
+						canvas.style.display = "none"
+						scoreBoard.style.display = "none"
+						settingsMenu.style.display = "none"
+						deathScreen.style.display = "block"
+						
+				}
+				//left side of screen collision
+				if(this.botX <= -50){
+					//reset bot position
+					this.botX = canvas.width;
+
+					//assigning new value and reassigning
+					botSiz = Math.floor(Math.random()*50 + 50);
+					this.botSize = botSiz;
+
+					//adjust bot position from the ground
+					this.botY = canvas.height - canvas.height / 4 - this.botSize
+					//increase score if player dodges
+					scoreCount++;
+					scoreBoard.innerHTML = scoreCount;
+
+				}
+				//////////////////////////////////////////////////////
+			//reminder: put the conditions at the end of every configurations
+			}
+			this.draw = ()=>{
+				//background
+				c.fillStyle = "rgba(0,0,0,.42)";
+				c.fillRect(0,0, canvas.width, canvas.height);
+
+				//ground
+				c.fillStyle = "white";
+				c.fillRect(0,canvas.height - canvas.height / 4, canvas.width, 10);
+
+				//player
+				c.fillStyle = this.userCol;
+				c.fillRect(this.userX, this.userY, this.siz, this.siz)
+
+				//bot
+				c.fillStyle = this.botCol;
+				c.fillRect(this.botX, this.botY, this.botSize, this.botSize)
+
+				this.update();
+			}
+			
+		}
+
+		//create player and bot objects
+		let user = new player(canvas.width / 4 - 50, (canvas.height - canvas.height / 4) - 50, "white", canvas.width, (canvas.height - canvas.height / 4) - botSiz, "red");
+		
+
+let gameStart = false,
+	gamePause = false;
+
+		function startGame(){
+			gameStart = true;
+			menu.style.display = "none";
+			canvas.style.display = "block";
+			jumpButt.style.display = "block";
+			settingsMenu.style.display = "block";
+			scoreBoard.style.display = "block";
+		}
+		
+		gameLoop = setInterval(()=>{
+			if(gameStart && gamePause == false){
+				user.draw();
+			}
+		},30)
+
+		//pause func
+		let pauseButt = document.querySelector("#pauseButt")
+		function pose(){
+			if(pauseButt.innerHTML == "pause"){
+				gamePause = true;
+				pauseButt.innerHTML = "continue";
+			}else{
+				gamePause = false;
+				pauseButt.innerHTML = "pause";
+			}
+			
+		}
+		
+		
+
+		//keyboard and screen button controller
+		let onAir = false;
+		document.addEventListener("keydown", (e)=>{
+			if(e.repeat){return}
+
+			if(e.keyCode == 32 && onAir == false){
+				user.vy = -100;
+				user.gravity = 15;
+				onAir = true;
+			}
+		})
+		canvas.addEventListener("touchstart", ()=>{
+			if(onAir == false){
+				user.vy = -100;
+				user.gravity = 15;
+				onAir = true;
+			}
+		}, {passive: true})
+		document.addEventListener("touchstart", ()=>{
+			if(onAir == false){
+				user.vy = -100;
+				user.gravity = 15;
+				onAir = true;
+			}
+		}, {passive: true})
+
+		function jump(){
+
+			if(onAir == false){
+				user.vy = -100;
+				user.gravity = 15;
+				onAir = true;
+			}
+		}
+		
+			window.addEventListener("resize",()=>{
+				location.reload();
+			})
+		
+		
+
+</script>
+</body>
+</html>
