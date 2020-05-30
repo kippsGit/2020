@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stret-Stret</title>
+<style type="text/css">
+	table tr td{
+		border: 1px solid black;
+		width: 300px;
+		height: 300px;
+		text-align: center;
+		font-size: 80px;
+	}
+	.one{
+
+	}
+</style>
+</head>
+<body>
+<center>
+<table>
+	<tr>
+		<td class="one" onclick="response(1)"></td>
+		<td class="two" onclick="response(2)"></td>
+		<td class="three" onclick="response(3)"></td>
+	</tr>
+	<tr>
+		<td class="four" onclick="response(4)"></td>
+		<td class="five" onclick="response(5)"></td>
+		<td class="six" onclick="response(6)"></td>
+	</tr>
+	<tr>
+		<td class="seven" onclick="response(7)"></td>
+		<td class="eight" onclick="response(8)"></td>
+		<td class="nine" onclick="response(9)"></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+		
+		let cells = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+		let randx = Math.floor(Math.random()*cells.length);
+
+		let one, two, three, four, five, six, seven, eight, nine;
+
+		let holder; //cells.splice(cells.indexOf("one"), 1)
+	function targeter(n){
+			switch(n){
+				case 1:
+					return "one";
+				break;
+				case 2:
+					return "two";
+				break;
+				case 3:
+					return "three";
+				break;
+				case 4:
+					return "four";
+				break;
+				case 5:
+					return "five";
+				break;
+				case 6:
+					return "six";
+				break;
+				case 7:
+					return "seven";
+				break;
+				case 8:
+					return "eight";
+				break;
+				case 9:
+					return "nine";
+				break;
+			}
+		}
+
+
+	function response(x){
+		
+		
+
+		switch(x){
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+					react(x);
+					
+			break;
+			
+		}
+		
+	
+		}
+
+	function react(x){
+					//user
+					document.querySelector("." + targeter(x)).style.backgroundColor = "yellow";
+					document.querySelector("." + targeter(x)).removeAttribute("onclick");
+					cells.splice(cells.indexOf(targeter(x)), 1);
+
+					//bot
+					randx = Math.floor(Math.random()*cells.length);
+					holder = cells[randx];
+					document.querySelector("." + holder).style.backgroundColor = "red";
+					document.querySelector("." + holder).removeAttribute("onclick");
+					cells.splice(cells.indexOf(cells[randx]), 1);
+
+					console.log("user: " + targeter(x) + " bot: " + holder)
+					assigner(targeter(x), holder)
+	}
+	function assigner(user, bot){
+		switch(user){
+			case "one":
+				one = "user";
+			break;
+			case "two":
+				two = "user";
+			break;
+			case "three":
+				three = "user";
+			break;
+			case "four":
+				four = "user";
+			break;
+			case "five":
+				five = "user";
+			break;
+			case "six":
+				six = "user";
+			break;
+			case "seven":
+				seven = "user";
+			break;
+			case "eight":
+				eight = "user";
+			break;
+			case "nine":
+				nine = "user";
+			break;
+		}
+		switch(bot){
+			case "one":
+				one = "bot";
+			break;
+			case "two":
+				two = "bot";
+			break;
+			case "three":
+				three = "bot";
+			break;
+			case "four":
+				four = "bot";
+			break;
+			case "five":
+				five = "bot";
+			break;
+			case "six":
+				six = "bot";
+			break;
+			case "seven":
+				seven = "bot";
+			break;
+			case "eight":
+				eight = "bot";
+			break;
+			case "nine":
+				nine = "bot";
+			break;
+		}
+	}
+	function cellChecker(){
+		if(cells.length == 0){
+			
+			clearInterval(cellCheckerLoop);
+			
+			if(!alert("Game Over")){
+				//reset
+				location.reload();
+
+			}
+
+		}
+	}
+	function userMatch(){
+		if(one == "user" && two == "user" && three == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		/////////////////////////////////////////////////////////////////////////				
+		}
+		if(one == "user" && five == "user" && nine == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		if(one == "user" && four == "user" && seven == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(two == "user" && five == "user" && eight == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(three == "user" && five == "user" && seven == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		if(three == "user" && six == "user" && nine == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(four == "user" && five == "user" && six == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(seven == "user" && eight == "user" && nine == "user"){
+			alert("you win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		cellChecker()
+		///////////////////////////////////////////////////////////////////////////////////
+	}
+	function botMatch(){
+		if(one == "bot" && two == "bot" && three == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		/////////////////////////////////////////////////////////////////////////				
+		}
+		if(one == "bot" && five == "bot" && nine == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		if(one == "bot" && four == "bot" && seven == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(two == "bot" && five == "bot" && eight == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(three == "bot" && five == "bot" && seven == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		if(three == "bot" && six == "bot" && nine == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(four == "bot" && five == "bot" && six == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		///////////////////////////////////////////////////////////////////////////////////
+		if(seven == "bot" && eight == "bot" && nine == "bot"){
+			alert("bot win")
+			clearInterval(cellCheckerLoop);
+			location.reload();
+		}
+		cellChecker()
+		///////////////////////////////////////////////////////////////////////////////////
+	}
+	
+	let cellCheckerLoop = setInterval(()=>{
+		
+		userMatch();
+		botMatch();
+		
+		
+	}, 100)
+</script>
+	
+</body>
+</html>
