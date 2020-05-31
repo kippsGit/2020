@@ -3,6 +3,7 @@
 <head>
 	<link rel="icon" href="char.png">
 	<title>Jemp 2</title>
+	<meta name="viewport" content="user-scalable=no">
 	<style type="text/css">
 		body{
 			padding: 0px;
@@ -250,6 +251,7 @@
 		explodeGameSound.src = "explode.wav";
 		gameOverSound.src = "gameOver.mp3";
 		jumpGameSound.src = "jump.wav";
+		jumpGameSound.volume = .1;
 
 		char.src = "char.png";
 
@@ -260,6 +262,8 @@
 
 		aboutScreen.style.width = window.innerWidth;
 		aboutScreen.style.height = window.innerHeight;
+
+
 
 		let aboutShown = true;
 		function showAbout(){
@@ -297,31 +301,7 @@
 		mainMenu.style.width = window.innerWidth;
 		mainMenu.style.height = window.innerHeight;
 
-		//reponsive screen ?? :)
-		if(window.outerWidth < 1080){
-			aboutScreen.style.transform = "translateX(-150px)";
-			aboutScreenDetails.style.transform = "translateX(-150px)";
-		}
-		if(window.outerWidth < 800){
-			menuList.style.marginTop = "15%";
-			menuList.style.fontSize = "80px";
-			title.style.fontSize = "150px";
-			score.style.fontSize = "100px";
-		}
-		if(window.outerWidth < 500){
-			menuList.style.marginTop = "30%";
-			menuList.style.fontSize = "80px";
-			title.style.fontSize = "150px";
-			mainMenu.style.backgroundSize = "2000px 2000px";
-		}
-		if(window.outerWidth < 400){
-			menuList.style.marginTop = "30%";
-			menuList.style.fontSize = "100px";
-			title.style.fontSize = "200px";
-			score.style.fontSize = "100px";
-			
-			
-		}
+		
 		//start button (start game, hide main menu)
 		function start(){
 			gameStart = true;
@@ -337,7 +317,7 @@
 
 	let scoreCount = 0;
 
-	let colors = ['red', 'orange', 'yellow', 'green', 'skyblue'],
+	let colors = ['red', 'orange', 'yellow', 'lightgreen', 'skyblue'],
 		colndx = Math.floor(Math.random()*colors.length);
 
 		//score board object
@@ -550,7 +530,7 @@
 			this.terrain1X = 0;
 			this.terrain1Y = canvas.height / 2 - 900;
 
-			this.terrain2X = canvas.width + 1000;
+			this.terrain2X = canvas.width + 630;
 			this.terrain2Y = canvas.height / 2 - 900;
 
 			this.ground1X = 0;
@@ -594,13 +574,22 @@
 					this.x = canvas.width - this.siz;
 				}
 
-				//if terrains is off screen
+				//if terrains is off screen and the device width is less than 800 px
 				if(this.terrain1X <= -2000){
-					this.terrain1X = canvas.width + 1000;
+					if(window.outerWidth < 800){
+						this.terrain1X = canvas.width + 1000;
+					}else{
+						this.terrain1X = canvas.width + 630;
+					}
 				}
 
 				if(this.terrain2X <= -2000){
-					this.terrain2X = canvas.width + 1000;
+					if(window.outerWidth < 800){
+						this.terrain2X = canvas.width + 1000;
+					}else{
+						this.terrain2X = canvas.width + 630;
+
+					}
 				}
 
 				//if ground is off screen
@@ -685,13 +674,14 @@
 				this.update();
 			}
 		}
-		
-
 		//player, obstacle, particles creation
 		let user = new player(),
 			obstacles = new obstacle(-20),
 			obstacles2 = new obstacle(-10),
 			scoreBlock1 = new scoreBlock();
+		/////////////////////////////////////////
+
+		
 		/////obstacles////////////////////////////////////////////////////////////////
 
 		// i forgot about this heheh shit!!
@@ -792,6 +782,30 @@
 
 			dead = false;
 			onAir = true;
+		}
+		//reponsive screen ?? :)
+		if(window.outerWidth < 1080){
+			aboutScreen.style.transform = "translateX(-150px)";
+			aboutScreenDetails.style.transform = "translateX(-150px)";
+		}
+		if(window.outerWidth < 800){
+			menuList.style.marginTop = "15%";
+			menuList.style.fontSize = "80px";
+			title.style.fontSize = "150px";
+			score.style.fontSize = "100px";
+			user.terrain2X = canvas.width + 1000;
+		}
+		if(window.outerWidth < 500){
+			menuList.style.marginTop = "30%";
+			menuList.style.fontSize = "80px";
+			title.style.fontSize = "150px";
+			mainMenu.style.backgroundSize = "2000px 2000px";
+		}
+		if(window.outerWidth < 400){
+			menuList.style.marginTop = "30%";
+			menuList.style.fontSize = "100px";
+			title.style.fontSize = "200px";
+			score.style.fontSize = "100px";
 		}
 
 		//keyboard controls / screen controls
