@@ -236,10 +236,21 @@
 	let aboutScreen = document.querySelector("#aboutScreen"),
 		aboutScreenDetails = document.querySelector("#aboutScreenDetails"),
 		char = new Image(),
-		terrain1 = new Image(),
-		terrain2 = new Image(),
 		ground1 = new Image(),
 		ground2 = new Image(),
+		sky = new Image(),
+		farClouds1 = new Image(),
+		farClouds2 = new Image(),
+		clouds1 = new Image(),
+		clouds2 = new Image(),
+		mntFar1 = new Image(),
+		mntFar2 = new Image(),
+		mountainsBack1 = new Image(),
+		mountainsBack2 = new Image(),
+		mountainsFront1 = new Image(),
+		mountainsFront2 = new Image(),
+		grass1 = new Image(),
+		grass2 = new Image(),
 		startGameSound = new Audio(),
 		aboutGameSound = new Audio(),
 		explodeGameSound = new Audio(),
@@ -257,8 +268,24 @@
 
 		ground1.src = "ground.png";
 		ground2.src = "ground.png";
-		terrain1.src = "terrain.png";
-		terrain2.src = "terrain.png";
+
+		sky.src = "sky.png";
+		farClouds1.src = "farClouds.png";
+		farClouds2.src = "farClouds.png";
+		clouds1.src = "clouds.png";
+		clouds2.src = "clouds.png";
+
+		mntFar1.src = "mntFar.png";
+		mntFar2.src = "mntFar.png";
+
+		mountainsBack1.src = "mountainsBack.png";
+		mountainsBack2.src = "mountainsBack.png";
+
+		mountainsFront1.src = "mountainsFront.png";
+		mountainsFront2.src = "mountainsFront.png";
+
+		grass1.src = "grass.png";
+		grass2.src = "grass.png";
 
 		aboutScreen.style.width = window.innerWidth;
 		aboutScreen.style.height = window.innerHeight;
@@ -422,8 +449,12 @@
 			}
 			this.draw = ()=>{
 				//particle
+				/*c.fillStyle = this.col;
+				c.fillRect(this.x, this.y, this.siz, this.siz)*/
+				c.beginPath();
+				c.arc(this.x, this.y, this.siz, 0, Math.PI * 2);
 				c.fillStyle = this.col;
-				c.fillRect(this.x, this.y, this.siz, this.siz)
+				c.fill();
 
 				this.update();
 			}
@@ -482,21 +513,23 @@
 				// default speed of 1st = -20, 2nd = -10
 				if(!dead){
 					if(scoreCount == 10){
-						obstacles.vx = -30;
-						obstacles2.vx = -20;
+						obstacles.vx = -15;
+						obstacles2.vx = -10;
 					}else if(scoreCount == 20){
-						obstacles.vx = -40;
-						obstacles2.vx = -30;
+						obstacles.vx = -20;
+						obstacles2.vx = -15;
 					}else if(scoreCount == 30){
-						obstacles.vx = -50;
-						obstacles2.vx = -40;
+						obstacles.vx = -25;
+						obstacles2.vx = -20;
 					}else if(scoreCount == 40){
-						obstacles.vx = -60;
-						obstacles2.vx = -50;
+						obstacles.vx = -30;
+						obstacles2.vx = -25;
 					}else if(scoreCount == 50){
-						obstacles.vx = -70;
-						obstacles2.vx = -60;
-					}else if(scoreCount == 60){
+						obstacles.vx = -35;
+						obstacles2.vx = -30;
+					}
+					// jump to higher speed if score reached 60
+					else if(scoreCount == 60){
 						obstacles.vx = -80;
 						obstacles2.vx = -70;
 					}
@@ -510,7 +543,11 @@
 
 				//obstacle
 				c.fillStyle = colors[colndx];
-				c.fillRect(this.x, this.y, this.siz, this.siz)
+				c.fillRect(this.x, this.y, this.siz, this.siz);
+				/*c.beginPath();
+				c.arc(this.x, this.y, this.siz, 0, Math.PI * 2);
+				c.fillStyle = colors[colndx];
+				c.fill();*/
 
 				this.update();
 			}
@@ -527,26 +564,72 @@
 			this.gravity = 0;
 			this.friction = 0;
 
-			this.terrain1X = 0;
-			this.terrain1Y = canvas.height / 2 - 900;
+			this.farClouds1X = 0;
+			this.farClouds1Y = 0;
+			this.farClouds2X = canvas.width;
+			this.farClouds2Y = 0;
 
-			this.terrain2X = canvas.width + 630;
-			this.terrain2Y = canvas.height / 2 - 900;
+			this.clouds1X = 0;
+			this.clouds1Y = 0;
+			this.clouds2X = canvas.width + 100;
+			this.clouds2Y = 0;
+
+			this.mntFar1X = 0;
+			this.mntFar1Y = 0;
+			this.mntFar2X = canvas.width;
+			this.mntFar2Y = 0;
+
+			this.mountainsBack1X = 0;
+			this.mountainsBack1Y = 0;
+			this.mountainsBack2X = canvas.width;
+			this.mountainsBack2Y = 0;
+
+			this.mountainsFront1X = 0;
+			this.mountainsFront1Y = 0;
+			this.mountainsFront2X = canvas.width;
+			this.mountainsFront2Y = 0;
+
+			this.grass1X = 0;
+			this.grass1Y = 0;
+			this.grass2X = canvas.width;
+			this.grass2Y = 0;
 
 			this.ground1X = 0;
 			this.ground1Y = canvas.height / 2;
 
-			this.ground2X = canvas.width;
+			this.ground2X = canvas.width + 5;
 			this.ground2Y = canvas.height / 2;
 
 			this.update = ()=>{
-				//terrain side scroll
-				this.terrain1X += -2;
-				this.terrain2X += -2;
+				//far clouds
+				this.farClouds1X += -.5;
+				this.farClouds2X += -.5;
+
+				//clouds
+				this.clouds1X += -2;
+				this.clouds2X += -2;
+
+				//mountain far
+				this.mntFar1X += -1;
+				this.mntFar2X += -1;
+
+				//mountains at the back
+				this.mountainsBack1X += -3;
+				this.mountainsBack2X += -3;
+
+				//mountains at the front
+				this.mountainsFront1X += -4;
+				this.mountainsFront2X += -4;
+
+				//grass
+				this.grass1X += -5;
+				this.grass2X += -5;
 
 				//ground
-				this.ground1X += -5;
-				this.ground2X += -5;
+				this.ground1X += -6;
+				this.ground2X += -6;
+
+
 
 				//apply friction when going left or right
 				this.vx *= this.friction;
@@ -573,23 +656,52 @@
 				if(this.x >= canvas.width - this.siz){
 					this.x = canvas.width - this.siz;
 				}
-
-				//if terrains is off screen and the device width is less than 800 px
-				if(this.terrain1X <= -2000){
-					if(window.outerWidth < 800){
-						this.terrain1X = canvas.width + 1000;
-					}else{
-						this.terrain1X = canvas.width + 630;
-					}
+				//far clouds out of bound
+				if(this.farClouds1X <= -2000){
+					this.farClouds1X = canvas.width;
+				}
+				if(this.farClouds2X <= -2000){
+					this.farClouds2X = canvas.width;
 				}
 
-				if(this.terrain2X <= -2000){
-					if(window.outerWidth < 800){
-						this.terrain2X = canvas.width + 1000;
-					}else{
-						this.terrain2X = canvas.width + 630;
+				//clouds out of bound
+				if(this.clouds1X <= -2000){
+					this.clouds1X = canvas.width;
+				}
+				if(this.clouds2X <= -2000){
+					this.clouds2X = canvas.width;
+				}
 
-					}
+				//mountain far
+				if(this.mntFar1X <= -2000){
+					this.mntFar1X = canvas.width;
+				}
+				if(this.mntFar2X <= -2000){
+					this.mntFar2X = canvas.width;
+				}
+
+				//mountains at the back out of bound
+				if(this.mountainsBack1X <= -2000){
+					this.mountainsBack1X = canvas.width;
+				}
+				if(this.mountainsBack2X <= -2000){
+					this.mountainsBack2X = canvas.width;
+				}
+
+				//mountains at the front
+				if(this.mountainsFront1X <= -2000){
+					this.mountainsFront1X = canvas.width;
+				}
+				if(this.mountainsFront2X <= -2000){
+					this.mountainsFront2X = canvas.width;
+				}
+
+				//grass
+				if(this.grass1X <= -2000){
+					this.grass1X = canvas.width;
+				}
+				if(this.grass2X <= -2000){
+					this.grass2X = canvas.width;
 				}
 
 				//if ground is off screen
@@ -598,7 +710,7 @@
 				}
 
 				if(this.ground2X <= -2000){
-					this.ground2X = canvas.width;
+					this.ground2X = canvas.width + 5;
 				}
 
 
@@ -611,13 +723,13 @@
 					return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
 				}
 				//user and obstacle collision
-				if(getDist(this.x, this.y, obstacles.x, obstacles.y) <= obstacles.siz /2 ){
+				if(getDist(this.x, this.y, obstacles.x, obstacles.y) <= obstacles.siz / 2){
 					explodeGameSound.play();
 					gameOverSound.play();
 					/*console.log(getDist(this.x, this.y, obstacles.x, obstacles.y));*/
 
 					//particles explosion of user and obstacle simultaneously
-					createParticles(this.x, this.y, "white");
+					createParticles(this.x, this.y, "lightgray");
 					createParticles(obstacles.x, obstacles.y, colors[colndx]);
 					explode = true;
 
@@ -653,20 +765,39 @@
 				
 			}
 			this.draw = ()=>{
-				//bg
-				/*c.fillStyle = "rgba(0,0,0,0.4)";
-				c.fillRect(0, 0, canvas.width, canvas.height)*/
-				c.drawImage(terrain1, this.terrain1X, this.terrain1Y);
-				c.drawImage(terrain2, this.terrain2X, this.terrain2Y);
+				//bg terrains bla bla bla
+				c.fillStyle = "rgba(0,0,0,0.4)";
+				c.fillRect(0, 0, canvas.width, canvas.height)
+				
+				c.drawImage(sky, 0, 0);
+				c.drawImage(farClouds1, this.farClouds1X, this.farClouds1Y);
+				c.drawImage(farClouds2, this.farClouds2X, this.farClouds2Y);
+				c.drawImage(mntFar1, this.mntFar1X, this.mntFar1Y);
+				c.drawImage(mntFar2, this.mntFar2X, this.mntFar2Y);
+				c.drawImage(clouds1, this.clouds1X, this.clouds1Y);
+				c.drawImage(clouds2, this.clouds2X, this.clouds2Y);
+				c.drawImage(mountainsBack1, this.mountainsBack1X, this.mountainsBack1Y);
+				c.drawImage(mountainsBack2, this.mountainsBack2X, this.mountainsBack2Y);
+				c.drawImage(mountainsFront1, this.mountainsFront1X, this.mountainsBack1Y);
+				c.drawImage(mountainsFront2, this.mountainsFront2X, this.mountainsBack2Y);
+				c.drawImage(grass1, this.grass1X, this.grass1Y);
+				c.drawImage(grass2, this.grass2X, this.grass2Y);
+
 
 				//ground
 				/*c.fillStyle = "lightgray";
 				c.fillRect(0, canvas.height / 2, canvas.width, canvas.height)*/
 				c.drawImage(ground1, this.ground1X, this.ground1Y);
 				c.drawImage(ground2, this.ground2X, this.ground2Y);
+
 				//player
 				/*c.fillStyle = "white";
-				c.fillRect(this.x, this.y, this.siz, this.siz);
+				c.fillRect(this.x, this.y, this.siz, this.siz);*/
+				/*c.beginPath();
+				c.arc(this.x, this.y, this.siz, 0, Math.PI*2);
+				c.fillStyle = "white";
+				c.fill();*/
+				/*
 				c.fillStyle = "black";
 				c.fillRect(this.x + 5, this.y + 5, 40, 40);*/
 				c.drawImage(char, this.x, this.y);
@@ -676,8 +807,8 @@
 		}
 		//player, obstacle, particles creation
 		let user = new player(),
-			obstacles = new obstacle(-20),
-			obstacles2 = new obstacle(-10),
+			obstacles = new obstacle(-10),
+			obstacles2 = new obstacle(-5),
 			scoreBlock1 = new scoreBlock();
 		/////////////////////////////////////////
 
