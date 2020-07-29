@@ -1,0 +1,77 @@
+
+<html>
+<head>
+
+	<style type="text/css">
+		body{margin: 0px;}
+		
+	</style>
+</head>
+<body>
+<script type="text/javascript">
+	let canvas = document.createElement("canvas"),
+		c = canvas.getContext("2d");
+		document.body.appendChild(canvas);
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		
+
+		function ass(cc){
+			this.siz = 50;
+			this.x = canvas.width/2;
+			this.y = canvas.height/2;
+			this.vx = Math.random()*10 - 5;
+			this.vy = Math.random()*10 - 5;
+			this.colour = cc;
+			this.gravity = 1;
+			this.friction = 1;
+
+			this.update = ()=>{
+				if(this.y > canvas.height - this.siz || this.y < 0 + this.siz){
+					this.vy = -this.vy;
+				}
+				if(this.x > canvas.width - this.siz || this.x < 0 + this.siz){
+					this.vx = -this.vx;
+				}
+				this.y += this.vy;
+				this.x += this.vx;
+
+			}
+			this.draw = ()=>{
+				c.beginPath();
+				c.fillStyle = this.colour;
+				c.strokeStyle = "black";
+				c.arc(this.x,this.y,this.siz,0,Math.PI*2);
+				c.stroke();
+				c.fill();
+			this.update();
+			}
+		}
+
+		let con = [],
+			count = 100;
+
+		let colour = ['pink', 'skyblue', 'lime'],
+			colourIndx = Math.floor(Math.random()*colour.length);
+		
+		for(let x=0;x<=count-1;x++){
+			con.push(new ass(colour[colourIndx]));
+			colourIndx = Math.floor(Math.random()*colour.length);
+		}
+
+		setInterval(()=>{
+		c.fillStyle = "black";
+		c.fillRect(0,0,canvas.width,canvas.height);
+		for(let i in con){
+			con[i].draw();
+		}
+		},30);
+
+		window.addEventListener("resize",()=>{
+			window.location.reload();
+		});
+
+</script>
+</body>
+</html>
