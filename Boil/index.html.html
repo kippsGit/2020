@@ -1,0 +1,86 @@
+<html>
+<head>
+	<style type="text/css">
+		body{
+	margin: 0px;
+}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		let canvas = document.createElement("canvas"),
+			c = canvas.getContext("2d");
+			document.body.appendChild(canvas);
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			let con = [],
+				count =2,
+				indx = 0;
+			let dot = function(cc){
+				this.x = Math.random()*canvas.width;
+				this.y = canvas.height;
+				this.vx = Math.random()*1-.5;
+				this.vy = Math.random()*-10;
+				this.siz = Math.random()*10;
+				this.maxx = false;
+				this.minn = true;
+				this.maxxNum = Math.random()*10+10;
+				this.minNum = Math.random()*5+5;
+				this.life = 0;
+				this.maxLife = Math.random()*50 + 80;
+				this.idd = indx++;
+				this.coll = cc;
+				this.update = ()=>{
+					if(this.y >= canvas.height - this.siz || this.y <= 0 + this.siz){
+						/*this.vy = -this.vy;*/
+						this.vy = Math.random()*10-5;
+					}
+					if(this.x >= canvas.width - this.siz || this.x <= 0 + this.siz){
+						/*this.vx = -this.vx;*/
+						this.vx = Math.random()*10-5;
+					}
+					if(this.minn === true){
+						this.siz +=2;
+					}
+					if(this.maxx === true){
+						this.siz -=2;
+					}
+					if(this.siz>= this.maxxNum){
+						this.minn = false;
+						this.maxx = true;
+					}if(this.siz <= this.minNum){
+						this.minn = true;
+						this.maxx = false;
+					}
+					this.life++;
+					if(this.life>=this.maxLife){
+						delete con[this.idd]
+					}
+					this.y += this.vy;
+					this.x += this.vx;
+				}
+				this.draw = ()=>{
+					c.beginPath();
+					c.fillStyle = this.coll;
+					c.arc(this.x,this.y,this.siz,0,Math.PI*2);
+					c.fill();
+
+					this.update();
+				}
+			}
+			let cc = ['skyblue', 'white', 'cyan'],
+				ccIndx;
+			setInterval(()=>{
+				c.fillStyle = "rgba(0,0,0,0.9)";
+				c.fillRect(0,0,canvas.width,canvas.height);
+				for(let i=0;i<=count;i++){
+				ccIndx = Math.floor(Math.random()*cc.length);
+				con.push(new dot(cc[ccIndx]))
+			}
+				for(let x in con){
+					con[x].draw();
+				}
+			},30)
+	</script>
+</body>
+</html>
