@@ -1,0 +1,151 @@
+<html>
+<head>
+	<title>Fireworks</title>
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+	
+	let canvas = document.createElement("canvas"),	
+		c = canvas.getContext("2d");
+
+		document.body.appendChild(canvas);
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+	var con = [],
+		count;
+		indx = -1;
+
+		
+
+		function particle(x,y,r,g,b){
+			this.x = x;
+			this.y = y;
+
+			/*this.x = Math.random()*window.innerWidth;
+			this.y = Math.random()*window.innerHeight;*/
+
+			this.vx = Math.random()*5-2.5;
+			this.vy = Math.random()*5-2.5;
+			this.siz = Math.random()*5;
+			this.life = 0;
+			this.maxLife = Math.random()*100;
+			this.idtt = ++indx;
+
+			/*this.r = Math.random()*100 + 100;
+			this.g = Math.random()*100 + 100;
+			this.b = 0;*/
+
+			this.r = r;
+			this.g = g;
+			this.b = b;
+
+			this.gravity = .04;
+			this.resistance = .5;
+
+			this.update = ()=>{
+				this.x += this.vx;
+				this.y += this.vy;
+
+				this.vy += this.gravity;
+
+				this.life++;
+				if(this.life >= this.maxLife){
+					delete con[this.idtt];
+					
+				}
+
+				
+			}
+			this.draw = ()=>{
+				
+				/*c.fillStyle = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+				c.fillRect(this.x,this.y,this.siz,this.siz);
+*/
+				c.beginPath();
+				c.fillStyle = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+				c.arc(this.x,this.y,this.siz,0,2*Math.PI);
+				c.fill();
+				c.closePath();
+
+
+
+				this.update();
+			}
+		}
+		
+
+		let colors = {
+			firstSet: {
+				red: 0,
+				green: Math.random()*255,
+				blue: Math.random()*255
+			},
+			secondSet: {
+				red: Math.random()*255,
+				green: 0,
+				blue: Math.random()*255
+			},
+			thirdSet: {
+				red: Math.random()*255,
+				green: Math.random()*255,
+				blue: 0
+			}
+		}
+
+		let x,y;
+		let randIndx,
+			rCha,gCha,bCha;
+
+		setInterval(()=>{
+			randIndx = Math.floor(Math.random()*3);
+			switch(randIndx){
+				case 0:
+					rCha = colors.firstSet.red;
+					gCha = colors.firstSet.green;
+					bCha = colors.firstSet.blue;
+				break;
+				case 1:
+					rCha = colors.secondSet.red;
+					gCha = colors.secondSet.green;
+					bCha = colors.secondSet.blue;
+				break;
+				case 2:
+					rCha = colors.thirdSet.red;
+					gCha = colors.thirdSet.green;
+					bCha = colors.thirdSet.blue;
+				break;
+			}
+
+			x = Math.random()*canvas.width;
+			y = Math.random()*canvas.height;
+			count = Math.random()*50 + 50;
+
+			for(var i = 0; i <= count; i++){
+				con.push(new particle(x,y,rCha,gCha,bCha));
+			}
+
+		},1000);
+		
+		setInterval(()=>{
+			
+			c.fillStyle = "rgba(0,0,0,0.1)";
+			c.fillRect(0,0,canvas.width,canvas.height);
+			
+			
+			for(var x in con){
+				con[x].draw();
+			}
+			
+		},30);
+
+
+</script>
+</body>
+</html>
