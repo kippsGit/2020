@@ -1,0 +1,109 @@
+
+<html>
+<head>
+
+	<style type="text/css">
+		body{margin: 0px;}
+		h1{
+			color: white;
+			font-family: 'harrington';
+			font-size: 50px;
+			color: skyblue;
+			position: absolute;	
+			left: 10%;
+			top: 90%;
+			opacity: .5;
+			margin: 0px;
+			transition: color .5s;
+		}	
+	</style>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	
+<script type="text/javascript">
+	let canvas = document.createElement("canvas"),
+		c = canvas.getContext("2d");
+		document.body.appendChild(canvas);
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		let title = document.getElementById("title");
+		
+
+
+		let con = [],
+			count = 1,
+			indxx = 0;
+
+		let cols = ['gray', 'skyblue','white'],
+			colsIndx = Math.floor(Math.random()*cols.length);
+
+
+		setInterval(()=>{
+			title.style.color = cols[colsIndx]
+			colsIndx = Math.floor(Math.random()*cols.length);
+		},500)
+
+		let box = function(colss){
+			this.x = Math.random()*canvas.width;
+			this.y = 0;
+			this.vx = Math.random()*1-0.5;
+			this.vy = Math.random()*3+2;
+			this.siz = Math.random()*2+2;
+			this.idd = indxx++;
+			this.maxLife = Math.random()*100;
+			this.life = 0;
+			this.collor = colss;
+
+			this.gravity = Math.random()*.05;
+
+			this.update = ()=>{
+				this.x += this.vx;
+				this.y += this.vy;
+
+
+				if(this.y >= Math.random()*canvas.height){
+					/*this.vy = -this.vy;*/
+				}
+				
+				/*this.life++;
+				if(this.life >= this.maxLife){
+					delete con[this.idd];
+				}*/
+				this.siz -= .02;
+				if(this.siz <= 0){
+					delete con[this.idd];
+				}
+			}
+			this.draw = ()=>{
+				c.beginPath();
+				c.fillStyle = this.collor;
+				c.arc(this.x,this.y,this.siz,0,Math.PI*2);
+				c.fill();
+			this.update();
+			}
+		}
+
+		
+
+		setInterval(()=>{
+		c.fillStyle = "rgba(0,0,0,0.6)";
+		c.fillRect(0,0,canvas.width,canvas.height);
+		
+		for(let i=0;i<=count;i++){
+			con.push(new box(cols[colsIndx]));
+			colsIndx = Math.floor(Math.random()*cols.length);
+		}
+			for(let x in con){
+				con[x].draw();
+			}
+		},30);
+
+		window.addEventListener("resize",()=>{
+			window.location.reload();
+		});
+
+</script>
+</body>
+</html>
