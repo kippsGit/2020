@@ -1,0 +1,77 @@
+
+<html>
+<head>
+	<title>Bounce</title>
+	<style type="text/css">
+		body{
+			margin: 0px;
+		}
+	</style>
+</head>
+<body>
+<script type="text/javascript">
+	let canvas = document.createElement("canvas"),
+		c = canvas.getContext("2d");
+
+		document.body.appendChild(canvas);
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+	let con = [],
+		count = 100;
+
+		function firework(){
+			this.x = Math.random()*canvas.width;
+			this.y = Math.random()*400 + 100;
+			this.vx = 0;
+			this.vy = Math.random()*1 + 1;
+			this.siz = Math.random()*40;
+			this.maxLife = 50;
+			this.life = 0;
+			this.r = Math.random()*100 + 100;
+			this.g = 0;
+			this.b = Math.random()*100 + 100;
+
+			this.update = ()=>{
+
+				if(this.y <= 0 + this.siz || this.y >= canvas.height - this.siz){
+					this.vy = -this.vy;
+				}
+				/*if(this.y >= canvas.height){
+					this.vy = Math.sqrt(this.vy * this.vy);
+				}*/
+				this.x += this.vx;
+				this.y += this.vy;
+			}
+			this.draw = ()=>{
+				
+
+				/*c.fillStyle = "white";
+				c.fillRect(this.x,this.y,this.siz,this.siz);*/
+
+				c.beginPath();
+				c.arc(this.x,this.y,this.siz,0,Math.PI * 2);
+				c.fillStyle = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+				c.fill();
+				c.closePath();
+
+				this.update();
+			}
+		}
+
+		for(let x=0; x<=count; x++){
+			con[x] = new firework();
+		}
+
+		setInterval(()=>{
+			c.fillStyle = "rgba(0,0,0,0.1)";
+			c.fillRect(0,0,canvas.width,canvas.height);
+			for(let x=0; x<=con.length-1; x++){
+				con[x].draw();
+			}
+
+		}, 30);
+</script>
+</body>
+</html>
