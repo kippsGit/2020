@@ -1,0 +1,201 @@
+
+<html>
+<head>
+	<title>Snek</title>
+	<style type="text/css">
+		body{
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+	let canvas = document.querySelector("#canvas"),
+		c = canvas.getContext("2d");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+	//default shit
+	/*let frames = 0;*/
+
+	let currentMovement = 'right';
+	let rightOption = ['right', 'up', 'down'],
+		leftOption = ['left', 'up', 'down'],
+		downOption = ['down', 'left', 'right'],
+		upOption = ['up', 'left', 'right'],
+		index = 0;
+	//image assets
+	let snakeHead = new Image(),
+		snakeBody = new Image(),
+		snakeTail = new Image(),
+		ground = new Image();
+
+		snakeHead.src = "head.png";
+		snakeBody.src = "body.png";
+		snakeTail.src = "tail.png";
+		ground.src = "ground.png";
+
+	function updateDir(x){
+		switch(x){
+			case 'right':
+				index = Math.floor(Math.random()*rightOption.length);
+				currentMovement = rightOption[index];
+			
+			break;
+			case 'left':
+				index = Math.floor(Math.random()*leftOption.length);
+				currentMovement = leftOption[index];
+				
+			break;
+			case 'down':
+				index = Math.floor(Math.random()*downOption.length);
+				currentMovement = downOption[index];
+			
+			break;
+			case 'up':
+				index = Math.floor(Math.random()*upOption.length);
+				currentMovement = upOption[index];
+				
+			break;
+		}
+	}
+
+	
+
+	//the fucking snake object and its body position fucking algorithm
+	let snake = {
+		headDirection: 'right',
+		changeDirectionCounter: 0,
+		siz: 20,
+		part: [{x: canvas.width/2, y: canvas.height/2, parts: 'head', direction: 'right'},
+			   {x: canvas.width/2 - 20, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 40, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 60, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 80, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 100, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 120, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 140, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 160, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 180, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 200, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 220, y: canvas.height/2, parts: 'body', direction: 'right'},
+			   {x: canvas.width/2 - 250, y: canvas.height/2, parts: 'tail', direction: 'right'},
+			   ],
+
+		draw: function(){
+			for(let i = 0; i < this.part.length; i++){
+				//c.fillStyle = this.part[i].col;
+				//c.fillRect(this.part[i].x, this.part[i].y, this.siz, this.siz);
+				if(this.part[i].parts == 'head'){
+					switch(this.headDirection){
+						case 'right':
+							c.drawImage(snakeHead, 20, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'left':
+							c.drawImage(snakeHead, 40, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'up':
+							c.drawImage(snakeHead, 0, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'down':
+							c.drawImage(snakeHead, 60, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+					}
+				}
+				if(this.part[i].parts == 'body'){
+					c.drawImage(snakeBody, this.part[i].x, this.part[i].y);
+				}
+				if(this.part[i].parts == 'tail'){
+					switch(this.part[this.part.length - 1].direction){
+						case 'right':
+							c.drawImage(snakeTail, 20, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'left':
+							c.drawImage(snakeTail, 40, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'up':
+							c.drawImage(snakeTail, 0, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+						case 'down':
+							c.drawImage(snakeTail, 60, 0, 20, 20, this.part[i].x, this.part[i].y, 20, 20);
+						break;
+					}
+				}
+			}
+		},
+
+		update: function(){
+			/*if(frames % 2.5 == 0){*/
+
+				for(let i = this.part.length - 1; i > 0; i--){
+					this.part[i].x = this.part[i-1].x;
+					this.part[i].y = this.part[i-1].y;
+
+					this.part[i].direction = this.part[i-1].direction;
+
+				}
+
+				//collision
+				if(this.part[0].x > canvas.width){this.part[0].x = 0}
+				if(this.part[0].x < 0 - this.siz){this.part[0].x = canvas.width - this.siz}
+				if(this.part[0].y > canvas.height){this.part[0].y = 0}
+				if(this.part[0].y < 0 - this.siz){this.part[0].y = canvas.height - this.siz}
+				//direction
+				if(currentMovement == 'right'){
+					this.part[0].x+=20; 
+					this.part[0].direction = 'right';
+					this.headDirection='right';
+				}
+				if(currentMovement == 'left'){
+					this.part[0].x+=-20; 
+					this.part[0].direction = 'left';
+					this.headDirection='left';
+				}
+				if(currentMovement == 'up'){
+					this.part[0].y+=-20; 
+					this.part[0].direction = 'up';
+					this.headDirection='up';
+				}
+				if(currentMovement == 'down'){
+					this.part[0].y+=20; 
+					this.part[0].direction = 'down';
+					this.headDirection='down';
+				}
+
+				this.changeDirectionCounter++;
+				if(this.changeDirectionCounter >= 10){
+					updateDir(currentMovement);
+					this.changeDirectionCounter = 0;
+				}
+				
+
+			}
+		/*}*/
+	}
+
+/*	let loop = ()=>{
+		requestAnimationFrame(loop)
+
+		c.clearRect(0,0,canvas.width,canvas.height);
+		snake.update();
+		snake.draw();
+		frames++;
+
+	}
+
+	loop();*/
+
+	setInterval(()=>{
+
+		c.clearRect(0,0,canvas.width,canvas.height);
+		c.drawImage(ground, 0, 0, 3000, 3000, 0, 0, 2000, 2000);
+		snake.update();
+		snake.draw();
+
+	}, 80)
+
+	window.addEventListener("resize", ()=>{location.reload()})
+</script>
+</body>
+</html>
