@@ -8,7 +8,7 @@
 		padding: 0;
 	}
 	canvas{
-
+		visibility: hidden;
 	}
 </style>
 </head>
@@ -448,6 +448,10 @@
 		window.addEventListener("resize", ()=>{
 			adjustScreen();
 		})
+
+		window.onload = ()=>{
+			canvas.style.visibility = "visible";
+		}
 </script>
 </body>
 </html>
