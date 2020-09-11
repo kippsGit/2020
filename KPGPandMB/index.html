@@ -6,6 +6,7 @@
 	body{
 		margin: 0;
 		padding: 0;
+		user-select: none;
 	}
 	canvas{
 		visibility: hidden;
@@ -38,7 +39,8 @@
 			sky = new Image(),
 			signStandImage = new Image(),
 			cloudImage = new Image(),
-			humanImage = new Image();
+			humanImage = new Image(),
+			infoBoxImage = new Image();
 
 		groundImg.src = "ground.png";
 		treeImg.src = "tree.png";
@@ -53,6 +55,10 @@
 		let carCollection = ["redCar.png", "blueCar.png", "yellowCar.png", "carrYellow.png"],
 			CCindex = Math.floor(Math.random()*carCollection.length);
 			carImage.src = carCollection[CCindex];
+
+		let infoBoxCollection = ["info1.png", "info2.png", "info3.png", "info4.png", "info5.png"],
+			IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
+			infoBoxImage.src = infoBoxCollection[IBCindex];
 
 		let objectClicked = "none";
 
@@ -322,6 +328,23 @@
 				this.update();
 			}
 		};let human = new humanObject();
+
+		let infoBoxObject = function(){
+			this.siz = {
+				w: 400,
+				h: 700
+			}
+			this.pos = {
+				x: 50,
+				y: 130
+			}
+
+			this.draw = ()=>{
+				/*c.fillStyle = "red";
+				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);*/
+				c.drawImage(infoBoxImage, 0, 0, 400, 700, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+			}
+		};let infoBox = new infoBoxObject()
 		
 		//game loop
 		setInterval(()=>{
@@ -342,10 +365,15 @@
 			if(objectClicked == "signStand"){
 				title.draw();
 			}
-			human.draw();
+			//human.draw();
 
 			signStand1.draw();
 			car.draw();
+
+			if(objectClicked == "tree"){
+				infoBox.draw();
+				
+			}
 			
 
 		}, 60);
@@ -370,8 +398,9 @@
 		//mouse events
 		canvas.addEventListener("click",(e)=>{
 			//if only clicked on the canvas then reset things
-			//objectClicked = "none";
-			//signStand1.index = 304;
+			/*objectClicked = "none";
+			signStand1.index = 304;
+			tree.index = 0;*/
 			//console.log(e)
 			//console.log("canvas w h: " + canvas_width, canvas_height);
 			//console.log("mouse x y: " + cX, cY)
@@ -405,6 +434,8 @@
 				}else{
 					objectClicked = "tree";
 					tree.index = 400;
+					IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
+					infoBoxImage.src = infoBoxCollection[IBCindex];
 				}
 
 			}
