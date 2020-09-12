@@ -11,13 +11,13 @@
 	}
 	canvas{
 		visibility: hidden;
-		-webkit-touch-callout: none;
+		/*-webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        outline: none;
+        outline: none;*/
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 	}
 
@@ -56,12 +56,15 @@
 		groundImg.src = "ground.png";
 		treeImg.src = "tree.png";
 		backgroundImage.src = "background.png";
-		boatImage.src = "boat.png";
 		titleImage.src = "title.png";
 		sky.src = "sky.png";
 		signStandImage.src = "signStand.png";
 		cloudImage.src = "clouds.png";
 		humanImage.src = "walker.png";
+
+		let boatCollection = ["boatBlue.png", "boatPink.png", "boatRed.png", "boatYellow.png"],
+			BCindex = Math.floor(Math.random()*boatCollection.length);
+			boatImage.src = boatCollection[BCindex];
 
 		let carCollection = ["redCar.png", "blueCar.png", "yellowCar.png", "carrYellow.png"],
 			CCindex = Math.floor(Math.random()*carCollection.length);
@@ -73,23 +76,41 @@
 
 		let objectClicked = "none";
 
-		let title = {
-			w: 700,
-			h: 350,
-			posX: 0,
-			posY: 0,
+		let titleObject = function(){
+			this.mover = 1;
 
-			draw: function(){
-					
-				this.posX = canvas.width/2-this.w/2;
-				this.posY = canvas.height/2-this.h;
+			this.siz = {
+				w: 700, 
+				h: 350
+			}
+			this.pos = {
+				x: canvas.width/2-this.siz.w/2,
+				y: canvas.height/2-this.siz.h
+			}
+
+			this.update = ()=>{
+				this.pos.y += this.mover;
+
+				if(this.pos.y > canvas.height/2-this.siz.h + 10){
+					this.mover = -(this.mover);
+				}
+				if(this.pos.y < canvas.height/2-this.siz.h - 10){
+					this.mover = -(this.mover);
+				}
+
+			}
+
+			this.draw = ()=>{
+			
 
 				/*c.fillStyle = "red";
 				c.fillRect(this.posX, this.posY, this.w, this.h);*/
 
-				c.drawImage(titleImage, 0, 0, 700, 350, this.posX, this.posY, this.w, this.h)
+				c.drawImage(titleImage, 0, 0, 700, 350, this.pos.x, this.pos.y, this.siz.w, this.siz.h)
+
+				this.update();
 			}
-		}
+		};let title = new titleObject();
 
 		let signStand = function(){
 			this.index = 304;
@@ -212,6 +233,7 @@
 			this.showSigMax = Math.floor(Math.random()*300);
 
 			this.index = 0;
+			this.nextFrame = 288;
 			this.siz = {
 				w: 800,
 				h: 450
@@ -227,7 +249,7 @@
 			this.update = ()=>{
 				this.pos.x += this.vel.x;
 
-				this.index += 288;
+				this.index += this.nextFrame;
 
 				this.showSig++;
 
@@ -263,6 +285,8 @@
 		}; let car = new carObject();
 
 		let boatObject = function(){
+			this.showSig = 0;
+			this.showSigMax = Math.floor(Math.random()*500);
 			this.index = 0;
 			this.siz = {
 				w: 500,
@@ -280,6 +304,8 @@
 
 				this.pos.x += this.vel.x;
 
+				this.showSig++;
+
 				if(frame % 6 == 0){
 					this.index += 624;
 					if(this.index > 1248){
@@ -288,7 +314,15 @@
 				}
 
 				if(this.pos.x >= canvas.width){
-					this.pos.x = 0 - this.siz.w;
+					if(this.showSig > this.showSigMax){
+						this.pos.x = 0 - this.siz.w;
+						BCindex = Math.floor(Math.random()*boatCollection.length);
+						boatImage.src = boatCollection[BCindex];
+
+						this.showSig = 0;
+						this.showSigMax = this.showSigMax = Math.floor(Math.random()*500);
+					}
+					
 				}
 			}
 			this.draw = ()=>{
@@ -338,9 +372,10 @@
 				
 				this.update();
 			}
-		};let human = new humanObject();
+		};let human = new humanObject(); // remake this, to generate more human object rather than just 1
 
 		let infoBoxObject = function(){
+			this.mover = 1;
 			this.siz = {
 				w: 400,
 				h: 700
@@ -349,11 +384,22 @@
 				x: 50,
 				y: 130
 			}
+			this.update = ()=>{
+				this.pos.y += this.mover;
+
+				if(this.pos.y > 130 + 10){
+					this.mover = -(this.mover);
+				}
+				if(this.pos.y < 130 - 10){
+					this.mover = -(this.mover);
+				}
+			}
 
 			this.draw = ()=>{
 				/*c.fillStyle = "red";
 				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);*/
 				c.drawImage(infoBoxImage, 0, 0, 400, 700, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+				this.update();
 			}
 		};let infoBox = new infoBoxObject()
 		
@@ -427,7 +473,7 @@
 			//signStand1.posY = getMousePos(canvas, e).y;
 
 			//sign stand trigger
-			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h){
+			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h - signStand1.siz.h / 2){
 
 				if(objectClicked == "signStand"){
 					objectClicked = "none";
@@ -451,13 +497,28 @@
 				}
 
 			}
+
+			//car trigger
+			if(getMousePos(canvas, e).x > car.pos.x && getMousePos(canvas, e).x < car.pos.x + car.siz.w && getMousePos(canvas, e).y > car.pos.y && getMousePos(canvas, e).y < car.pos.y + car.siz.h){
+				
+				
+				if(objectClicked == "car"){
+					objectClicked = "none";
+					car.vel.x = -90;
+					car.nextFrame = 288;
+				}else{
+					objectClicked = "car";
+					car.vel.x = 0;
+					car.nextFrame = 0;
+				}
+			}
 			
 		})
 		canvas.addEventListener("mousemove", (e)=>{
 			canvas.style.cursor = "default";
 
 			//sign stand location trigger
-			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h){
+			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h - signStand1.siz.h / 2){
 
 				canvas.style.cursor = "pointer";
 				
@@ -465,6 +526,10 @@
 			//tree trigger
 			if(getMousePos(canvas, e).x > tree.pos.x && getMousePos(canvas, e).x < tree.pos.x + tree.siz.w && getMousePos(canvas, e).y > tree.pos.y && getMousePos(canvas, e).y < tree.pos.y + tree.siz.h - tree.siz.h/2){
 
+				canvas.style.cursor = "pointer";
+			}
+
+			if(getMousePos(canvas, e).x > car.pos.x && getMousePos(canvas, e).x < car.pos.x + car.siz.w && getMousePos(canvas, e).y > car.pos.y && getMousePos(canvas, e).y < car.pos.y + car.siz.h){
 				canvas.style.cursor = "pointer";
 			}
 		})
