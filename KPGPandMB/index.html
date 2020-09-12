@@ -50,7 +50,6 @@
 			sky = new Image(),
 			signStandImage = new Image(),
 			cloudImage = new Image(),
-			humanImage = new Image(),
 			infoBoxImage = new Image();
 
 		groundImg.src = "ground.png";
@@ -60,7 +59,10 @@
 		sky.src = "sky.png";
 		signStandImage.src = "signStand.png";
 		cloudImage.src = "clouds.png";
-		humanImage.src = "walker.png";
+
+		let humanCollection = ["human1.png", "human2.png", "human3.png"],
+			HCindex = Math.floor(Math.random()*humanCollection.length);
+			/*humanImage.src = humanCollection[HCindex];*/
 
 		let boatCollection = ["boatBlue.png", "boatPink.png", "boatRed.png", "boatYellow.png"],
 			BCindex = Math.floor(Math.random()*boatCollection.length);
@@ -336,44 +338,78 @@
 
 		}; let boat = new boatObject();
 
-		let humanObject = function(){
-			this.index = 512;
+		let humanObject = function(vx, hi){
+			this.showSig = 0;
+			this.showSigMax = Math.floor(Math.random()*500+500);
+			this.index = 0;
 			this.siz = {
 				w: 200,
 				h: 400
 			}
 			this.pos = {
-				x: canvas.width,
+				x: canvas.width*2,
 				y: canvas.height/2 + canvas.height/4 - 40/* - this.siz.h/4*/ - this.siz.h
 			}
 			this.vel = {
-				x: -20,
+				x: vx,
 				y: 0
 			}
 			this.update = ()=>{
 				this.pos.x += this.vel.x;
 
+				this.showSig++;
+
+
 				if(frame % 2 == 0){
-					this.index -= 128;
-					if(this.index < 0){
-						this.index = 512;
+
+					this.index += 200;
+					if(this.index > 1400){
+						this.index = 0;
 					}
+
 				}
 				
 
 				if(this.pos.x < 0 - this.siz.w){
-					this.pos.x = canvas.width;
+					if(this.showSig > this.showSigMax){
+						this.pos.x = canvas.width;
+
+						this.showSig = 0;
+						this.showSigMax = Math.floor(Math.random()*500+500);
+					}
 				}
 			}
 			this.draw = ()=>{
 				/*c.fillStyle = "white";
 				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)*/
-				c.drawImage(humanImage, this.index, 0, 128, 222, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+				c.drawImage(hi, this.index, 0, 200, 400, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 				
 				this.update();
 			}
-		};let human = new humanObject(); // remake this, to generate more human object rather than just 1
+		};
+		//generate humans heheh/////////////////////
 
+		let humanArr = [],
+			humanVelX = 0,
+			imageArr = [],
+			population = 3;
+
+		for(let i = 0; i < population; i++){
+			imageArr.push(new Image());
+		}
+
+		for(let i = 0; i < population; i++){
+			humanVelX = Math.random()*-10+-10;
+
+			/*humanCollection = ["human1.png", "human2.png", "human3.png"];*/
+			HCindex = Math.floor(Math.random()*humanCollection.length);
+			imageArr[i].src = humanCollection[HCindex];
+
+			humanArr.push(new humanObject(humanVelX, imageArr[i]));
+		}
+
+
+		//////////////////////////////////////////
 		let infoBoxObject = function(){
 			this.mover = 1;
 			this.siz = {
@@ -422,7 +458,13 @@
 			if(objectClicked == "signStand"){
 				title.draw();
 			}
-			//human.draw();
+			// draw humans
+			for(let i in humanArr){
+				humanArr[i].draw();
+				//console.log(humanArr[i].showSigMax);
+				//console.log(humanArr[i].hi)
+			}
+
 
 			signStand1.draw();
 			car.draw();
