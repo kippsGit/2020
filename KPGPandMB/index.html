@@ -21,7 +21,7 @@
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 	}
 
-
+	
 </style>
 </head>
 <body>
@@ -72,7 +72,7 @@
 			CCindex = Math.floor(Math.random()*carCollection.length);
 			carImage.src = carCollection[CCindex];
 
-		let infoBoxCollection = ["info1.png", "info2.png", "info3.png", "info4.png", "info5.png"],
+		let infoBoxCollection = ["info1.png", "info2.png", "info3.png", "info4.png", "info5.png", "info6.png", "info7.png", "info8.png", "info9.png", "info10.png"],
 			IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
 			infoBoxImage.src = infoBoxCollection[IBCindex];
 
@@ -288,7 +288,7 @@
 
 		let boatObject = function(){
 			this.showSig = 0;
-			this.showSigMax = Math.floor(Math.random()*500);
+			this.showSigMax = Math.floor(Math.random()*500+500);
 			this.index = 0;
 			this.siz = {
 				w: 500,
@@ -387,8 +387,8 @@
 				this.update();
 			}
 		};
-		//generate humans heheh/////////////////////
 
+		//generate humans heheh/////////////////////
 		let humanArr = [],
 			humanVelX = 0,
 			imageArr = [],
@@ -410,23 +410,27 @@
 
 
 		//////////////////////////////////////////
+		let constY = 0;
 		let infoBoxObject = function(){
 			this.mover = 1;
+
 			this.siz = {
 				w: 400,
 				h: 700
 			}
 			this.pos = {
 				x: 50,
-				y: 130
+				y: 130,
 			}
+
 			this.update = ()=>{
+
 				this.pos.y += this.mover;
 
-				if(this.pos.y > 130 + 10){
+				if(this.pos.y > constY + 10){
 					this.mover = -(this.mover);
 				}
-				if(this.pos.y < 130 - 10){
+				if(this.pos.y < constY - 10){
 					this.mover = -(this.mover);
 				}
 			}
@@ -437,8 +441,8 @@
 				c.drawImage(infoBoxImage, 0, 0, 400, 700, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 				this.update();
 			}
-		};let infoBox = new infoBoxObject()
-		
+		};let infoBox = new infoBoxObject();
+
 		//game loop
 		setInterval(()=>{
 			frame++;
@@ -469,9 +473,8 @@
 			signStand1.draw();
 			car.draw();
 
-			if(objectClicked == "tree"){
+			if(objectClicked == "tree" || objectClicked == "car"){
 				infoBox.draw();
-				
 			}
 			
 
@@ -536,6 +539,8 @@
 					tree.index = 400;
 					IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
 					infoBoxImage.src = infoBoxCollection[IBCindex];
+
+					constY = infoBox.pos.y;
 				}
 
 			}
@@ -543,21 +548,33 @@
 			//car trigger
 			if(getMousePos(canvas, e).x > car.pos.x && getMousePos(canvas, e).x < car.pos.x + car.siz.w && getMousePos(canvas, e).y > car.pos.y && getMousePos(canvas, e).y < car.pos.y + car.siz.h){
 				
+
 				
 				if(objectClicked == "car"){
 					objectClicked = "none";
 					car.vel.x = -90;
 					car.nextFrame = 288;
+
+					infoBox.pos.x = 50;
+					infoBox.pos.y = 130;
+
 				}else{
 					objectClicked = "car";
 					car.vel.x = 0;
 					car.nextFrame = 0;
+
+					// change this random selection into another set of pics or info
+					IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
+					infoBoxImage.src = infoBoxCollection[IBCindex];
+
+					infoBox.pos.x = car.pos.x + 170;
+					infoBox.pos.y = car.pos.y - 700;
+					constY = infoBox.pos.y;
 				}
 			}
 			
 		})
 		canvas.addEventListener("mousemove", (e)=>{
-			canvas.style.cursor = "default";
 
 			//sign stand location trigger
 			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h - signStand1.siz.h / 2){
