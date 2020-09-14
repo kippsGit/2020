@@ -41,6 +41,23 @@
 		let canvas_width = window.innerWidth,
 			canvas_height = window.innerHeight;
 
+		let music = new Audio(), clickAudio = new Audio();
+
+		music.src = "happy.mp3"; // add more music to randomize selecton soon
+		music.loop = true;
+
+		let happyTimeStamps = [0, 160, 307, 460, 666, 846],
+			HTSindex = Math.floor(Math.random()*happyTimeStamps.length);
+			music.currentTime = happyTimeStamps[HTSindex];
+
+		// 0 = riverside, 2:40 softer feeling, 5:07 = luft, 7:30 = release, 11:06 = for you, 14:06 sanaa
+		//2:40 = 160, 5:07 = 307, 7:30 = 460, 11:06 = 666, 14:06 = 846
+
+		
+		let clickAudioCollection = ["click1.wav", "click2.wav", "click3.wav", "click4.wav"],
+			CACindex = Math.floor(Math.random()*clickAudioCollection.length);
+			clickAudio.src = clickAudioCollection[CACindex];
+
 		let groundImg = new Image(),
 			treeImg = new Image(),
 			backgroundImage = new Image(),
@@ -50,7 +67,8 @@
 			sky = new Image(),
 			signStandImage = new Image(),
 			cloudImage = new Image(),
-			infoBoxImage = new Image();
+			infoBoxImage = new Image(),
+			radioImage = new Image();
 
 		groundImg.src = "ground.png";
 		treeImg.src = "tree.png";
@@ -59,6 +77,7 @@
 		sky.src = "sky.png";
 		signStandImage.src = "signStand.png";
 		cloudImage.src = "clouds.png";
+		radioImage.src = "radioButton.png";
 
 		let humanCollection = ["human1.png", "human2.png", "human3.png"],
 			HCindex = Math.floor(Math.random()*humanCollection.length);
@@ -218,7 +237,7 @@
 
 		}; let tree = new treeObject();
 
-		let leafObject = function(){
+		let leafObject = function(){ // fix!!!!!
 			this.pos = {
 				x: canvas.width/2,
 				y: canvas.height/2
@@ -388,6 +407,25 @@
 			}
 		};
 
+		let radioObject = function(){
+			this.index = 100;
+			this.siz = {
+				w: 100,
+				h: 100
+			}
+			this.pos = {
+				x: 0,
+				y: 0
+			}
+
+			this.draw = ()=>{
+				/*c.fillStyle = "red";
+				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)*/
+
+				c.drawImage(radioImage, this.index, 0, 100, 100, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+			}
+		}; let radio = new radioObject();
+
 		//generate humans heheh/////////////////////
 		let humanArr = [],
 			humanVelX = 0,
@@ -450,6 +488,7 @@
 
 			c.clearRect(0,0,canvas.width,canvas.height);
 			c.drawImage(sky, 0, 0, canvas.width, canvas.height)
+
 			cloud1.draw();
 			cloud2.draw();
 			backGround.draw();
@@ -477,7 +516,7 @@
 				infoBox.draw();
 			}
 			
-
+			radio.draw();
 		}, 60);
 
 		function getMousePos(canvas, e){
@@ -495,6 +534,12 @@
 				yDist = objectY - mouseY;
 
 				return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+		}
+
+		function clickSound(){
+			clickAudio.play();
+			CACindex = Math.floor(Math.random()*clickAudioCollection.length);
+			clickAudio.src = clickAudioCollection[CACindex];
 		}
 
 		//mouse events
@@ -523,9 +568,11 @@
 				if(objectClicked == "signStand"){
 					objectClicked = "none";
 					signStand1.index = 304;
+					clickAudio.play();
 				}else{
 					objectClicked = "signStand";
 					signStand1.index = 0;
+					clickAudio.play();
 				}
 			}
 			//tree trigger
@@ -534,6 +581,9 @@
 				if(objectClicked == "tree"){
 					objectClicked = "none";
 					tree.index = 0;
+
+					clickAudio.play();
+					
 				}else{
 					objectClicked = "tree";
 					tree.index = 400;
@@ -541,6 +591,9 @@
 					infoBoxImage.src = infoBoxCollection[IBCindex];
 
 					constY = infoBox.pos.y;
+
+					clickAudio.play();
+					
 				}
 
 			}
@@ -558,6 +611,8 @@
 					infoBox.pos.x = 50;
 					infoBox.pos.y = 130;
 
+					clickAudio.play();
+
 				}else{
 					objectClicked = "car";
 					car.vel.x = 0;
@@ -570,11 +625,31 @@
 					infoBox.pos.x = car.pos.x + 170;
 					infoBox.pos.y = car.pos.y - 700;
 					constY = infoBox.pos.y;
+
+					clickAudio.play();
+				}
+			}
+			//radio button trigger
+			if(getMousePos(canvas, e).x > radio.pos.x && getMousePos(canvas, e).x < radio.pos.x + radio.siz.w && getMousePos(canvas, e).y > radio.pos.y && getMousePos(canvas, e).y < radio.pos.y + radio.siz.h){
+				
+				if(objectClicked == "radio"){
+					radio.index = 100;
+					objectClicked = "none"
+					music.pause();
+
+					clickAudio.play();
+				}else{
+					radio.index = 0;
+					objectClicked = "radio";
+					music.play();
+
+					clickAudio.play();
 				}
 			}
 			
 		})
 		canvas.addEventListener("mousemove", (e)=>{
+			canvas.style.cursor = "default";
 
 			//sign stand location trigger
 			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h - signStand1.siz.h / 2){
@@ -587,8 +662,14 @@
 
 				canvas.style.cursor = "pointer";
 			}
-
+			// car trigger
 			if(getMousePos(canvas, e).x > car.pos.x && getMousePos(canvas, e).x < car.pos.x + car.siz.w && getMousePos(canvas, e).y > car.pos.y && getMousePos(canvas, e).y < car.pos.y + car.siz.h){
+
+				canvas.style.cursor = "pointer";
+			}
+			// radio trigger
+			if(getMousePos(canvas, e).x > radio.pos.x && getMousePos(canvas, e).x < radio.pos.x + radio.siz.w && getMousePos(canvas, e).y > radio.pos.y && getMousePos(canvas, e).y < radio.pos.y + radio.siz.h){
+
 				canvas.style.cursor = "pointer";
 			}
 		})
@@ -619,6 +700,7 @@
 		window.onload = ()=>{
 			canvas.style.visibility = "visible";
 		}
+
 </script>
 </body>
 </html>
