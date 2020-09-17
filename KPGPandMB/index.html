@@ -42,13 +42,32 @@
 			canvas_height = window.innerHeight;
 
 		let music = new Audio(), clickAudio = new Audio();
+			music.loop = true;
 
-		music.src = "happy.mp3"; // add more music to randomize selecton soon
-		music.loop = true;
+		let musicCollection = ["happy.mp3", "cute.mp3", "calm.mp3"],
+			MCindex = Math.floor(Math.random()*musicCollection.length);
+			music.src = musicCollection[MCindex];
 
 		let happyTimeStamps = [0, 160, 307, 460, 666, 846],
 			HTSindex = Math.floor(Math.random()*happyTimeStamps.length);
-			music.currentTime = happyTimeStamps[HTSindex];
+			
+		let cuteTimeStamps = [0, 171, 402, 524, 635, 758, 977, 1218, 1331, 1498],
+			CTSindex = Math.floor(Math.random()*cuteTimeStamps.length);
+
+		let calmTimeStamps = [0, 120, 213, 347, 476, 573, 728, 825, 996],
+			CalmTSindex = Math.floor(Math.random()*calmTimeStamps.length);
+
+			switch(musicCollection[MCindex]){
+				case "happy.mp3":
+					music.currentTime = happyTimeStamps[HTSindex];
+				break;
+				case "cute.mp3":
+					music.currentTime = cuteTimeStamps[CTSindex];
+				break;
+				case "calm.mp3":
+					music.currentTime = calmTimeStamps[CalmTSindex];
+				break;
+			}
 
 		// 0 = riverside, 2:40 softer feeling, 5:07 = luft, 7:30 = release, 11:06 = for you, 14:06 sanaa
 		//2:40 = 160, 5:07 = 307, 7:30 = 460, 11:06 = 666, 14:06 = 846
@@ -68,7 +87,10 @@
 			signStandImage = new Image(),
 			cloudImage = new Image(),
 			infoBoxImage = new Image(),
-			radioImage = new Image();
+			radioImage = new Image(),
+			speechBubbleImage = new Image(),
+			filter = new Image(),
+			flowerImage = new Image();
 
 		groundImg.src = "ground.png";
 		treeImg.src = "tree.png";
@@ -78,8 +100,10 @@
 		signStandImage.src = "signStand.png";
 		cloudImage.src = "clouds.png";
 		radioImage.src = "radioButton.png";
+		filter.src = "filter.png";
+		flowerImage.src = "flower.png";
 
-		let humanCollection = ["human1.png", "human2.png", "human3.png"],
+		let humanCollection = ["human1.png", "human2.png", "human3.png", "human4.png", "human5.png", "human6.png", "human7.png"],
 			HCindex = Math.floor(Math.random()*humanCollection.length);
 			/*humanImage.src = humanCollection[HCindex];*/
 
@@ -91,11 +115,36 @@
 			CCindex = Math.floor(Math.random()*carCollection.length);
 			carImage.src = carCollection[CCindex];
 
-		let infoBoxCollection = ["info1.png", "info2.png", "info3.png", "info4.png", "info5.png", "info6.png", "info7.png", "info8.png", "info9.png", "info10.png"],
+		let infoBoxCollection = ["info1.png", "info2.png", "info3.png", "info4.png", "info5.png", "info6.png", "info7.png", "info8.png", "info9.png", "info10.png", "info11.png", "info12.png", "info13.png", "info14.png"],
 			IBCindex = Math.floor(Math.random()*infoBoxCollection.length);
 			infoBoxImage.src = infoBoxCollection[IBCindex];
 
+		let speechBubbleCollection = ["speechBubble1.png", "speechBubble2.png", "speechBubble3.png", "speechBubble4.png", "speechBubble5.png", "speechBubble6.png", "speechBubble7.png", "speechBubble8.png", "speechBubble9.png", "speechBubble10.png", "speechBubble11.png", "speechBubble12.png"],
+		SBCindex = Math.floor(Math.random()*speechBubbleCollection.length);
+		speechBubbleImage.src = speechBubbleCollection[SBCindex];
+
 		let objectClicked = "none";
+
+		let speechBubbleObject = function(){
+			this.siz = {
+				w: 200,
+				h: 300
+			}
+			this.pos = {
+				x: 0,
+				y: 0
+			}
+			this.update = (x,y)=>{
+				this.pos.x = x;
+				this.pos.y = y;
+			}
+			this.draw = ()=>{
+				/*c.fillStyle = "red";
+				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)*/
+
+				c.drawImage(speechBubbleImage, this.pos.x, this.pos.y);
+			}
+		}; let speechBubble = new speechBubbleObject(), bubbleShow = true;
 
 		let titleObject = function(){
 			this.mover = 1;
@@ -248,6 +297,32 @@
 				c.fillRect(this.pos.x, this.pos.y, 20, 20);
 			}
 		}; let leaf = new leafObject();
+
+		let flowerObject = function(){
+			this.siz = {
+				w: 30,
+				h: 30
+			}
+			// ymin 1060, ymax  1300 ... xmin = 0 xmax = canvas.width - object.siz.w
+
+			//670 1200
+			this.pos = {
+				x: Math.random()*canvas.width,
+				y: Math.random()*240 + 1030
+			}
+			do {
+				this.pos.x = Math.random()*canvas.width;
+				this.pos.y =  Math.random()*240 + 1030;
+			}while(this.pos.x > 600 && this.pos.y < 1200);
+
+			this.draw = ()=>{
+
+				/*c.fillStyle = "red";
+				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)*/
+				c.drawImage(flowerImage, 0, 0, 30, 60, this.pos.x, this.pos.y, this.siz.w, this.siz.h)
+
+			}
+		}; /*let flower = new flowerObject();*/
 
 		let carObject = function(){
 			this.showSig = 0;
@@ -430,7 +505,9 @@
 		let humanArr = [],
 			humanVelX = 0,
 			imageArr = [],
-			population = 3;
+			population = 6,
+			HAindex = Math.floor(Math.random()*humanArr.length),
+			showTimer = Math.floor(Math.random()*5000);
 
 		for(let i = 0; i < population; i++){
 			imageArr.push(new Image());
@@ -445,8 +522,6 @@
 
 			humanArr.push(new humanObject(humanVelX, imageArr[i]));
 		}
-
-
 		//////////////////////////////////////////
 		let constY = 0;
 		let infoBoxObject = function(){
@@ -481,8 +556,20 @@
 			}
 		};let infoBox = new infoBoxObject();
 
+		//generate flowers//////////////////////////////////////////////////
+
+
+		let flowersArr = [];
+
+		for(let i = 0; i <= 19; i++){
+			flowersArr.push(new flowerObject())
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
 		//game loop
-		setInterval(()=>{
+		setInterval(()=>{ 
+
 			frame++;
 			frame2++;
 
@@ -494,6 +581,11 @@
 			backGround.draw();
 			boat.draw();
 			ground.draw();
+
+			for(let i in flowersArr){
+				flowersArr[i].draw();
+			}
+
 			tree.draw();
 			
 			//leaf.draw();
@@ -501,7 +593,7 @@
 			if(objectClicked == "signStand"){
 				title.draw();
 			}
-			// draw humans
+			//draw humans
 			for(let i in humanArr){
 				humanArr[i].draw();
 				//console.log(humanArr[i].showSigMax);
@@ -517,6 +609,13 @@
 			}
 			
 			radio.draw();
+
+			if(bubbleShow){
+				speechBubble.draw();
+			}
+			reassignBubble();
+
+			c.drawImage(filter, 0, 0, 400, 800, 0, 0, canvas.width, canvas.height)
 		}, 60);
 
 		function getMousePos(canvas, e){
@@ -529,17 +628,36 @@
 					y: (e.clientY - rect.top) * scaleY
 				}
 		}
-		function getDist(mouseX, mouseY, objectX, objectY){
+		/*function getDist(mouseX, mouseY, objectX, objectY){
 			let xDist = objectX - mouseX,
 				yDist = objectY - mouseY;
 
 				return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-		}
+		}*/
 
 		function clickSound(){
 			clickAudio.play();
 			CACindex = Math.floor(Math.random()*clickAudioCollection.length);
 			clickAudio.src = clickAudioCollection[CACindex];
+		}
+
+		function reassignBubble(){
+			speechBubble.update(humanArr[HAindex].pos.x,humanArr[HAindex].pos.y - speechBubble.siz.h + 30);
+			//console.log(speechBubble.pos.x, bubbleShow)
+
+			if(speechBubble.pos.x < 0 - speechBubble.siz.w){
+				bubbleShow = false;
+				HAindex = Math.floor(Math.random()*humanArr.length);
+				showTimer = Math.floor(Math.random()*5000);
+
+				SBCindex = Math.floor(Math.random()*speechBubbleCollection.length);
+				speechBubbleImage.src = speechBubbleCollection[SBCindex];
+			}
+			if(speechBubble.pos.x > 0 + speechBubble.siz.w && bubbleShow === false){
+				
+				setTimeout(()=>{bubbleShow = true;}, showTimer);
+			}
+			
 		}
 
 		//mouse events
@@ -649,7 +767,9 @@
 			
 		})
 		canvas.addEventListener("mousemove", (e)=>{
-			canvas.style.cursor = "default";
+			canvas.style.cursor = "default"; 
+			//console.clear();
+			//console.log("x: " + getMousePos(canvas, e).x, "y: " + getMousePos(canvas, e).y )
 
 			//sign stand location trigger
 			if(getMousePos(canvas, e).x > signStand1.posX && getMousePos(canvas, e).x < signStand1.posX + signStand1.siz.w && getMousePos(canvas, e).y > signStand1.posY && getMousePos(canvas, e).y < signStand1.posY + signStand1.siz.h - signStand1.siz.h / 2){
