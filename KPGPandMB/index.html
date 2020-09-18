@@ -41,8 +41,13 @@
 		let canvas_width = window.innerWidth,
 			canvas_height = window.innerHeight;
 
-		let music = new Audio(), clickAudio = new Audio();
+		let music = new Audio(), clickAudio = new Audio(), seaside = new Audio(), carEngine = new Audio();
+
 			music.loop = true;
+			seaside.loop = true;
+
+			seaside.src = "seaside.mp3";
+			carEngine.src = "car.mp3";
 
 		let musicCollection = ["happy.mp3", "cute.mp3", "calm.mp3"],
 			MCindex = Math.floor(Math.random()*musicCollection.length);
@@ -90,7 +95,8 @@
 			radioImage = new Image(),
 			speechBubbleImage = new Image(),
 			filter = new Image(),
-			flowerImage = new Image();
+			flowerImage = new Image(),
+			adBoatImage = new Image();
 
 		groundImg.src = "ground.png";
 		treeImg.src = "tree.png";
@@ -103,6 +109,10 @@
 		filter.src = "filter.png";
 		flowerImage.src = "flower.png";
 
+		let adBoatCollection = ["adBoat1.png"],
+			ABCindex = Math.floor(Math.random()*adBoatCollection.length);
+			adBoatImage.src = adBoatCollection[ABCindex];
+
 		let humanCollection = ["human1.png", "human2.png", "human3.png", "human4.png", "human5.png", "human6.png", "human7.png"],
 			HCindex = Math.floor(Math.random()*humanCollection.length);
 			/*humanImage.src = humanCollection[HCindex];*/
@@ -110,7 +120,7 @@
 		let boatCollection = ["boatBlue.png", "boatPink.png", "boatRed.png", "boatYellow.png"],
 			BCindex = Math.floor(Math.random()*boatCollection.length);
 			boatImage.src = boatCollection[BCindex];
-
+			
 		let carCollection = ["redCar.png", "blueCar.png", "yellowCar.png", "carrYellow.png"],
 			CCindex = Math.floor(Math.random()*carCollection.length);
 			carImage.src = carCollection[CCindex];
@@ -239,7 +249,10 @@
 						this.index = 0;
 					}	
 				}
-				
+
+				if(this.posX === 0){
+					seaside.play();
+				}				
 			},
 
 			draw: function(){
@@ -349,6 +362,13 @@
 
 				this.showSig++;
 
+				if(this.pos.x > 0 - this.siz.w && this.pos.x < canvas.width){
+					carEngine.play();
+				}else{
+					carEngine.pause();
+					carEngine.currentTime = 0;
+				}
+
 
 				//console.log("max: " + this.showSigMax, this.showSig)
 				if(this.pos.x <= 0 - this.siz.w){
@@ -390,10 +410,10 @@
 			}
 			this.pos = {
 				x: 0 - this.siz.w,
-				y: canvas.height / 4
+				y: canvas.height / 4 - 50
 			}
 			this.vel = {
-				x: 5,
+				x: 2,
 				y: 0
 			}
 			this.update = ()=>{
@@ -432,6 +452,60 @@
 
 		}; let boat = new boatObject();
 
+		let adBoatObject = function(){
+			this.showSig = 0;
+			this.showSigMax = Math.floor(Math.random()*500+1000);
+			this.index = 0;
+			this.siz = {
+				w: 1331,
+				h: 500
+			}
+			this.pos = {
+				x: 0 - this.siz.w,
+				y: canvas.height/2 - 400
+			}
+			this.vel = {
+				x: 5,
+				y: 0
+			}
+			this.update = ()=>{
+
+				this.pos.x += this.vel.x;
+
+				this.showSig++;
+
+				if(frame % 6 == 0){
+					this.index += 1331;
+					if(this.index > 2662){
+						this.index = 0;
+					}
+				}
+
+				if(this.pos.x >= canvas.width){
+					if(this.showSig > this.showSigMax){
+						this.pos.x = 0 - this.siz.w;
+						BCindex = Math.floor(Math.random()*boatCollection.length);
+						boatImage.src = boatCollection[BCindex];
+
+						this.showSig = 0;
+						this.showSigMax = this.showSigMax = Math.floor(Math.random()*500);
+					}
+					
+				}
+			}
+			this.draw = ()=>{
+				/*c.fillStyle = "black";
+				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);*/
+
+				c.drawImage(adBoatImage, this.index, 0, 1331, 419, this.pos.x, this.pos.y, this.siz.w, this.siz.h)
+
+				this.update();
+			}
+
+		}; let adBoat = new adBoatObject();
+
+
+////////////////////////////////////////////////////////////////////
 		let humanObject = function(vx, hi){
 			this.showSig = 0;
 			this.showSigMax = Math.floor(Math.random()*500+500);
@@ -489,7 +563,7 @@
 				h: 100
 			}
 			this.pos = {
-				x: 0,
+				x: 30,
 				y: 0
 			}
 
@@ -580,6 +654,7 @@
 			cloud2.draw();
 			backGround.draw();
 			boat.draw();
+			adBoat.draw();
 			ground.draw();
 
 			for(let i in flowersArr){
@@ -754,12 +829,14 @@
 					radio.index = 100;
 					objectClicked = "none"
 					music.pause();
+					//seaside.pause();
 
 					clickAudio.play();
 				}else{
 					radio.index = 0;
 					objectClicked = "radio";
 					music.play();
+					//seaside.play();
 
 					clickAudio.play();
 				}
