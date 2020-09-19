@@ -47,7 +47,10 @@
 			seaside.loop = true;
 
 			seaside.src = "seaside.mp3";
-			carEngine.src = "car.mp3";
+
+		let carEngineCollection = ["car.mp3", "car2.mp3", "car3.mp3"],
+			CECindex = Math.floor(Math.random()*carEngineCollection.length);
+			carEngine.src = carEngineCollection[CECindex];
 
 		let musicCollection = ["happy.mp3", "cute.mp3", "calm.mp3"],
 			MCindex = Math.floor(Math.random()*musicCollection.length);
@@ -366,6 +369,8 @@
 					carEngine.play();
 				}else{
 					carEngine.pause();
+					CECindex = Math.floor(Math.random()*carEngineCollection.length);
+					carEngine.src = carEngineCollection[CECindex];
 					carEngine.currentTime = 0;
 				}
 
