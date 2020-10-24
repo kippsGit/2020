@@ -3,9 +3,9 @@ self.addEventListener('install', function(e) {
  e.waitUntil(
    caches.open('particle').then(function(cache) {
      return cache.addAll([
-       '2020/Particle/',
-       '2020/Particle/index.html',
-       '2020/Particle/index.js'
+       '/2020/Particle/',
+       '/2020/Particle/index.html',
+       '/2020/Particle/index.js'
      ]);
    })
  );
