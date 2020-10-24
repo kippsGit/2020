@@ -1,7 +1,7 @@
 window.onload = function(){
 	if('serviceWorker' in navigator) {
 	  navigator.serviceWorker
-	           .register('sw.js')
+	           .register('2020/Particle/sw.js')
 	           .then(function() { console.log("Service Worker Registered"); });
 	}
 }
