@@ -424,6 +424,15 @@
 	window.addEventListener("resize", ()=>{
 		adjustScreen();
 	})
+
+	//SW
+	window.onload = function(){
+		if('serviceWorker' in navigator) {
+		  navigator.serviceWorker
+		           .register('/2020/Flappy/sw.js')
+		           .then(function() { console.log("Service Worker Registered"); });
+		}
+	}
 </script>
 </body>
 </html>
