@@ -1,0 +1,429 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>Flappy</title>
+	<link rel="icon" href="flappy.ico">
+	<meta name="viewport" content="user-scalable=no">
+<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+</style>
+</head>
+<body>
+<center>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+	let canvas = document.querySelector("#canvas"),	
+		c = canvas.getContext("2d");
+
+		canvas.width = 600;
+		canvas.height = 1080;
+
+	let canvas_width = window.innerWidth,
+		canvas_height = window.innerHeight;
+
+	let dustCon = [],
+		topObsArr = [],
+		botObsArr = [],
+		obstacle_spacing = 0,
+		obstacle_spacing_value = 350,
+		obstacle_hole = 250,
+		obstacle_loop = false,
+		obstacle_height = 800,
+		randYpos,
+		gameOver = false,
+		gameStart = false,
+		frame = 0,
+		bgWidth = 1400,
+		score = 0,
+		obstacle_show = false;
+
+	let birdImage = new Image(),
+		pipeTop = new Image(),
+		pipeBottom = new Image(),
+		cityImage = new Image();
+
+		birdImage.src = "flappyBlue.png";
+		pipeTop.src = "pipeTop.png";
+		pipeBottom.src = "pipeBottom.png";
+		cityImage.src = "city.png";
+
+	let dust = function(){
+		this.siz = {
+			w: 30,
+			h: 5
+		}
+		this.pos = {
+			x: canvas.width * 4,
+			y: Math.random()*canvas.height
+		}
+		this.vel = {
+			x: Math.random()*-20+-20,
+			y: 0
+		}
+		this.update = ()=>{
+			this.pos.x += this.vel.x;
+			this.pos.y += this.vel.y;
+
+			if(this.pos.x <= 0 - bgWidth){
+				this.pos.x = bgWidth;
+			}
+		}
+		this.draw = ()=>{
+
+			c.fillStyle = "white";
+			c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)
+
+			this.update();
+		}
+	};
+
+	let bg = function(x, y){
+		this.siz = {
+			w: bgWidth,
+			h: canvas.height
+		}
+		this.pos = {
+			x: x,
+			y: y
+		}
+		this.vel = {
+			x: -5,
+			y: 0
+		}
+		this.update = ()=>{
+			this.pos.x += this.vel.x;
+			this.pos.y += this.vel.y;
+
+			if(this.pos.x <= 0 - bgWidth){
+				this.pos.x = bgWidth;
+			}
+		}
+		this.draw = ()=>{
+
+			c.drawImage(cityImage, 0, 0, 820, 462, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+			this.update();
+		}
+	}; let bg1 = new bg(0 ,0),
+		   bg2 = new bg(0 + bgWidth, 0);
+
+	let bird = function(){
+		this.gravity = 0;
+		this.siz = {
+			w: 100,
+			h: 100
+		}
+		this.pos = {
+			x: canvas.width / 3 - this.siz.w,
+			y: canvas.height / 2 - this.siz.h / 2
+		}
+		this.vel = {
+			x: 0,
+			y: 0
+		}
+		this.index = 0;
+
+		this.update = ()=>{
+			
+
+			this.vel.y += this.gravity;
+
+			this.pos.x += this.vel.x;
+			this.pos.y += this.vel.y;
+
+			//ground collision
+			if(this.pos.y >= canvas.height - this.siz.h / 2){
+				this.pos.y = canvas.height - this.siz.h / 2;
+				obstacle_loop = false;
+				gameOver = true;
+
+				//experiment temporary
+				clearInterval(gameLoop);
+				//alert("Restart") ? "" : location.reload();
+			}
+			//ceiling coliision
+			if(this.pos.y <= 0){
+				this.pos.y = 0;
+				obstacle_loop = false;
+				gameOver = true;
+
+				//experiment temporary
+				//clearInterval(gameLoop);
+				//alert("Restart") ? "" : location.reload();
+			}
+			//check distance between player and all obstacles
+			for(let i = 0; i < topObsArr.length; i++){ // using top obstacles array
+				if(getDist(this.pos.x, this.pos.y, this.siz.w, this.siz.h, topObsArr[i].pos.x, topObsArr[i].pos.y, topObsArr[i].siz.w, topObsArr[i].siz.h) ||
+				   getDist(this.pos.x, this.pos.y, this.siz.w, this.siz.h, botObsArr[i].pos.x, botObsArr[i].pos.y, botObsArr[i].siz.w, botObsArr[i].siz.h)){
+
+					obstacle_loop = false;
+					gameOver = true;
+
+					//...
+
+				}
+				
+			}
+			//fucking checkpoint
+			for(let i = 0; i < topObsArr.length; i++){
+				if(!gameOver){
+					if(getCheckPoint(this.pos.x, topObsArr[i].pos.x, topObsArr[i].siz.w)){
+						score += 1;
+					}
+				}
+			}
+			//animate bird
+			if(frame % 3 == 0){ // control frame bla bla bla with modulus chu chu
+				if(!gameOver){
+					this.index += 199.5;
+					if(this.index >= 798){
+						this.index = 0;
+					}
+				}	
+			}
+		}
+
+		this.draw = ()=>{
+			
+			/*c.fillStyle = "white";
+			c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);*/
+			c.drawImage(birdImage, this.index, 0, 199.5, 134.5, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+
+			this.update();
+		}
+	}; let bird1 = new bird();
+
+	let obstacle = function(posX, posY, objIndx, placement){
+		this.objIndx = objIndx;
+		this.placement = placement;
+		this.gravity = 0;
+		this.siz = {
+			w: 120,
+			h: obstacle_height
+		}
+		this.pos = {
+			x: posX,
+			y: posY
+		}
+		this.vel = {
+			x: -10,
+			y: 0
+		}
+
+		this.update = ()=>{
+			this.vel.y += this.gravity;
+
+			this.pos.x += this.vel.x;
+			this.pos.y += this.vel.y;
+
+			//left side screen collision
+			if(this.pos.x <= 0 - this.siz.w){
+				this.pos.x = canvas.width; 
+				
+				switch(this.objIndx){
+					case 0:
+						randYpos = -obstacle_height / 2 + Math.random()*200-100;
+						topObsArr[this.objIndx].pos.y = randYpos;
+						botObsArr[this.objIndx].pos.y = topObsArr[this.objIndx].pos.y + topObsArr[this.objIndx].siz.h + obstacle_hole;
+					break;
+					case 1:
+						randYpos = -obstacle_height / 2 + Math.random()*200-100;
+						topObsArr[this.objIndx].pos.y = randYpos;
+						botObsArr[this.objIndx].pos.y = topObsArr[this.objIndx].pos.y + topObsArr[this.objIndx].siz.h + obstacle_hole;
+					break;
+				}
+			}
+		}
+
+		this.draw = ()=>{
+
+			/*c.fillStyle = "red";
+			c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);*/
+
+			if(this.placement == "top"){
+				c.drawImage(pipeBottom, this.pos.x, this.pos.y);
+			}
+			if(this.placement == "bottom"){
+				c.drawImage(pipeTop, this.pos.x, this.pos.y);
+			}
+
+			
+			this.update();
+		}
+	}
+
+	let scoreBoard = function(){
+		this.siz = {
+			w: 150,
+			h: 100
+		}
+		this.pos = {
+			x: canvas.width / 2 - this.siz.w / 2,
+			y: 0
+		}
+		this.vel = {
+			x: 0,
+			y: 0
+		}
+		this.update = ()=>{
+			this.pos.x += this.vel.x;
+			this.pos.y += this.vel.y;
+
+		}
+		this.draw = ()=>{
+
+			/*c.fillStyle = "white";
+			c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h)*/
+
+			c.font = "100px Doppio One";	
+			c.fillStyle = "skyblue";
+			c.textAlign = "center";
+			c.fillText(score, 300, 80); //bwesit
+			c.strokeText(score, 300, 80);
+
+			this.update();
+		}
+	}; let board = new scoreBoard();
+
+		// create obstacle and push to array
+		for(let i = 0; i < 2; i++){
+			topObsArr.push(new obstacle(canvas.width + obstacle_spacing, 0 - obstacle_height / 2, i, "top"));
+			obstacle_spacing += obstacle_spacing_value;
+			botObsArr.push(new obstacle(topObsArr[i].pos.x, topObsArr[i].pos.y + topObsArr[i].siz.h + obstacle_hole, i, "bottom"));
+		}
+
+		// create particles and push to array
+		for(let i = 0; i < 20; i++){
+			dustCon.push(new dust());
+		}
+
+	let gameLoop = setInterval(init, 40)
+
+	
+	
+	//util funcs
+	function init(){
+		frame++;
+
+		c.clearRect(0,0,canvas.width,canvas.height);
+		if(gameOver){
+			bg1.vel.x = 0;
+			bg2.vel.x = 0;
+		}
+			bg1.draw();
+			bg2.draw();
+		
+		bird1.draw();
+
+		if(obstacle_show){
+			if(!obstacle_loop){ // dont render obstacles if obstacle_loop is false
+				for(let i in topObsArr){
+					topObsArr[i].vel.x = 0;
+				}
+				for(let i in botObsArr){
+					botObsArr[i].vel.x = 0;
+				}
+			}
+			// keep rendering obstacle
+			for(let i in topObsArr){
+				topObsArr[i].draw();
+			}
+			for(let i in botObsArr){
+				botObsArr[i].draw();
+			}
+		}
+			if(!gameOver){ // dont render dust if gameOver is true
+				for(let i in dustCon){
+					dustCon[i].draw();
+				}
+			}
+
+			if(gameStart){
+				board.draw(); // the fucking score at the top
+			}
+	}
+
+	function getDist(userX, userY, userW, userH, obsX, obsY, obsW, obsH){
+		if(userX < obsX + obsW &&
+		   userX + userW > obsX &&
+		   userY < obsY + obsH &&
+		   userY + userH > obsY){
+			return true;
+		}
+	}
+
+	function getCheckPoint(userX, obsX, obsW){
+		if(userX > obsX && userX < (obsX + obsW) - (obsW - 20)){
+			return true;
+		}
+	}
+
+	window.addEventListener("keydown", (e)=>{
+		if(e.repeat){return}
+		if(e.keyCode === 32){
+			gameStart = true;
+			setTimeout(()=>{// delay showing of obstacles
+				obstacle_show = true;
+			}, 2000)
+			gameOver ? obstacle_loop = false : obstacle_loop = true;
+			if(obstacle_loop){
+				bird1.vel.y = -35;
+				bird1.gravity = 5;
+
+				for(let i in topObsArr){
+					topObsArr[i].vel.x = -10;
+				}
+				for(let i in botObsArr){
+					botObsArr[i].vel.x = -10;
+				}
+			}
+		}
+	})
+	window.addEventListener("touchstart", (e)=>{
+		if(e.repeat){return}
+		
+			gameStart = true;
+			setTimeout(()=>{// delay showing of obstacles
+				obstacle_show = true;
+			}, 2000)
+			gameOver ? obstacle_loop = false : obstacle_loop = true;
+			if(obstacle_loop){
+				bird1.vel.y = -35;
+				bird1.gravity = 5;
+
+				for(let i in topObsArr){
+					topObsArr[i].vel.x = -10;
+				}
+				for(let i in botObsArr){
+					botObsArr[i].vel.x = -10;
+				}
+			}
+		
+	})
+
+	function adjustScreen(){
+
+		canvas_width = window.innerWidth
+		canvas_height = window.innerHeight
+
+		let ratio = 16 / 9;
+
+		if(canvas_width < canvas_height / ratio){
+			canvas_height = canvas_width * ratio;
+		}else{
+			canvas_width = canvas_height / ratio;
+		}
+
+		canvas.style.width = "" + canvas_width + "px";
+		canvas.style.height = "" + canvas_height  + "px";
+	}
+	adjustScreen();
+
+	window.addEventListener("resize", ()=>{
+		adjustScreen();
+	})
+</script>
+</body>
+</html>
