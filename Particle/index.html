@@ -13,12 +13,13 @@
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
+		overflow: auto;
 	}
 	#controllerFrame{
 		background-color: darkgray;
 		padding: 0px;
 		position: absolute;
-		//border: 1px solid red;
+		/*border: 1px solid red;*/
 		margin: 0 auto;
 		left: 50%;
 		transform: translateX(-50%);
@@ -27,16 +28,16 @@
 		white-space: nowrap;
 	}
 	
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController{
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #saveCanvas, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController{
 		position: relative;
 		/*transform: translateX(-50%);*/
-		//top: 50%;
+		/*top: 50%;*/
 		z-index: 1000;
-		//-webkit-appearance: slider-vertical;
-		//height: 250px;
+		/*-webkit-appearance: slider-vertical;*/
+		/*height: 250px;*/
 		width: 250px;
 		margin-right: 30px;
-		//display: inline-block;
+		/*display: inline-block;*/
 		display: block;
 	}
 	#clearCanvasController{
@@ -52,6 +53,11 @@
 		width: 253px;
 		margin-bottom: 10px;
 	}
+	#saveCanvas{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
 	#bgAlphaChannelController{
 		margin-bottom: 50px;
 	}
@@ -62,6 +68,7 @@
 	#clearCanvasController:hover,
 	#randomValueController:hover,
 	#loopRandomValueController:hover,
+	#saveCanvas:hover,
 	#sizeXController:hover,
 	#sizeYController:hover,
 	#gravityController:hover,
@@ -207,6 +214,8 @@
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
 	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()">
 	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()">
+	<input id="saveCanvas" type="button" value="Save Canvas" onclick="saveCNVS()">
+
 	<label for="sizeXController">Rect Size X</label>
 	<input id="sizeXController" type="range" min="0" max="200" value="15">
 	<label for="sizeYController">Rect Size Y</label>
@@ -366,7 +375,7 @@
 					//this.pos.y = canvas.height / 2 - this.siz.h;
 					delete partArr[this.idd];
 				}
-
+				
 			}
 			this.draw = ()=>{
 				c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
@@ -434,6 +443,16 @@
 				loopRandomValueController.value = "Loop Random Value (on)";
 			}
 		}
+
+		// saving the canvas
+		function saveCNVS(){
+			var link = document.createElement('a'),
+				d = new Date();
+  				link.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
+ 			    link.href = canvas.toDataURL();
+ 			    link.click();
+
+		}
 			
 		
 		// loop
@@ -497,7 +516,6 @@
 	})
 
 ////////////////////////////////////////////////////////
-
 
 </script>
 
