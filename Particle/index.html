@@ -445,12 +445,13 @@
 		}
 
 		// saving the canvas
+		let link;
 		function saveCNVS(){
-			var link = document.createElement('a'),
-				d = new Date();
-  				link.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
- 			    link.href = canvas.toDataURL();
- 			    link.click();
+			link = document.createElement('a'),
+			d = new Date();
+  			link.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
+ 			link.href = canvas.toDataURL();
+ 			link.click();	
 
 		}
 		
