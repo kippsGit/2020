@@ -445,14 +445,34 @@
 		}
 
 		// saving the canvas
-		let link;
+		let tempCNVS = document.createElement("canvas"),
+ 			TCNVSc = tempCNVS.getContext("2d");
 		function saveCNVS(){
-			link = document.createElement('a'),
+			/*let link = document.createElement('a'),
 			d = new Date();
   			link.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
- 			link.href = canvas.toDataURL();
+ 			link.href = canvas.toDataURL("image/png");
  			link.click();	
- 			link.remove();
+ 			link.remove(); */
+			tempCNVS.width = canvas.width;
+			tempCNVS.height = canvas.height/2;
+			TCNVSc.drawImage(canvas, 0, 0);
+
+
+ 			tempCNVS.toBlob(
+			  blob => {
+			    const anchor = document.createElement('a');
+			    let d = new Date();
+			    anchor.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
+			    anchor.href = URL.createObjectURL(blob);
+
+			    anchor.click(); // ✨ magic!
+
+			    URL.revokeObjectURL(anchor.href); // remove it from memory and save on memory! 😎
+			  },
+			  'image/png',
+			  0.9,
+			);	
 		}
 		
 		// loop
