@@ -28,7 +28,7 @@
 		white-space: nowrap;
 	}
 	
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #saveCanvas, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController{
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -58,6 +58,11 @@
 		width: 253px;
 		margin-bottom: 10px;
 	}
+	#resetCanvas{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
 	#bgAlphaChannelController{
 		margin-bottom: 50px;
 	}
@@ -68,7 +73,10 @@
 	#clearCanvasController:hover,
 	#randomValueController:hover,
 	#loopRandomValueController:hover,
+	#GCOController:hover,
 	#saveCanvas:hover,
+	#resetCanvas:hover,
+	#shapeController:hover,
 	#sizeXController:hover,
 	#sizeYController:hover,
 	#gravityController:hover,
@@ -212,20 +220,29 @@
 <canvas id="canvas"></canvas>
 <div id="controllerFrame">
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
+	<input id="saveCanvas" type="button" value="Save Canvas" onclick="saveCNVS()">
+	<input id="resetCanvas" type="button" value="Reset Canvas" onclick="resetCNVS()">
 	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()">
 	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()">
-	<input id="saveCanvas" type="button" value="Save Canvas" onclick="saveCNVS()">
 
-	<label for="sizeXController">Rect Size X</label>
+	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
+	<input id="GCOController" type="range" min="1" max="26" value="1">
+	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
+	<input id="shapeController" type="range" min="0" max="1" value="0">
+	<label for="sizeXController">Rect Size X / Radius</label>
 	<input id="sizeXController" type="range" min="0" max="200" value="15">
 	<label for="sizeYController">Rect Size Y</label>
 	<input id="sizeYController" type="range" min="0" max="200" value="15">
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 	<label for="lifeTimeController">Lifetime</label>
-	<input id="lifeTimeController" type="range" min="0" max="100" value="100">
+	<input id="lifeTimeController" type="range" min="0" max="100" value="10">
 	<label for="randomlifeTimeController">Random Lifetime</label>
 	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
+	<label for="particleCountController">Particle Count</label>
+	<input id="particleCountController" type="range" min="0" max="100" value="1">
+	<label for="creationTimeController">Spawn time</label>
+	<input id="creationTimeController" type="range" min="0" max="1000" value="200">
 	<label for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
 	<label for="posYController">Spawn position Y</label>
@@ -242,10 +259,6 @@
 	<input id="velYMaxController" type="range" min="0" max="100" value="10">
 	<label for="velYMinController">Vel Min Y</label>
 	<input id="velYMinController" type="range" min="0" max="50" value="5">
-	<label for="particleCountController">Particle Count</label>
-	<input id="particleCountController" type="range" min="0" max="100" value="1">
-	<label for="creationTimeController">Spawn time</label>
-	<input id="creationTimeController" type="range" min="0" max="1000" value="200">
 	<label for="redChannelController">Red Channel</label>
 	<input id="redChannelController" type="range" min="0" max="255" value="255">
 	<label for="greenChannelController">Green Channel</label>
@@ -275,6 +288,10 @@
 ///////////////////////////////////////////////////
 
 	let loopRandomValueController = document.querySelector("#loopRandomValueController"),
+		GCOControllerLabel = document.querySelector("#GCOControllerLabel"),
+		GCOController = document.querySelector("#GCOController"),
+		shapeControllerLabel = document.querySelector("#shapeControllerLabel"),
+		shapeController = document.querySelector("#shapeController"),
 		sizeXController = document.querySelector("#sizeXController"),
 		sizeYController = document.querySelector("#sizeYController"),
 		gravityController = document.querySelector("#gravityController"),
@@ -312,7 +329,7 @@
 
 	let controllerFrame = document.querySelector("#controllerFrame");
 
-	let indx = 0;	
+	let indx = 0;
 
 	let particle = function(){
 			this.gravity = parseInt(gravityController.value);
@@ -378,8 +395,125 @@
 				
 			}
 			this.draw = ()=>{
+				switch(parseInt(GCOController.value)){
+					case 1:
+						c.globalCompositeOperation = 'source-over';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (source-over)";
+					break;
+					case 2:
+						c.globalCompositeOperation = 'source-in';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (source-in)";
+					break;
+					case 3:
+						c.globalCompositeOperation = 'source-out';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (source-out)";
+					break;
+					case 4:
+						c.globalCompositeOperation = 'source-atop';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (source-atop)";
+					break;
+					case 5:
+						c.globalCompositeOperation = 'destination-over';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-over)";
+					break;
+					case 6:
+						c.globalCompositeOperation = 'destination-in';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-in)";
+					break;
+					case 7:
+						c.globalCompositeOperation = 'destination-out';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-out)";
+					break;
+					case 8:
+						c.globalCompositeOperation = 'destination-atop';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-atop)";
+					break;
+					case 9:
+						c.globalCompositeOperation = 'ligter';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (ligter)";
+					break;
+					case 10:
+						c.globalCompositeOperation = 'copy';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (copy)";
+					break;
+					case 11:
+						c.globalCompositeOperation = 'xor';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (xor)";
+					break;
+					case 12:
+						c.globalCompositeOperation = 'multiply';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (multiply)";
+					break;
+					case 13:
+						c.globalCompositeOperation = 'screen';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (screen)";
+					break;
+					case 14:
+						c.globalCompositeOperation = 'overlay';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (overlay";
+					break;
+					case 15:
+						c.globalCompositeOperation = 'darken';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (darken)";
+					break;
+					case 16:
+						c.globalCompositeOperation = 'lighten';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (lighten)";
+					break;
+					case 17:
+						c.globalCompositeOperation = 'color-dodge';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (color-dodge)";
+					break;
+					case 18:
+						c.globalCompositeOperation = 'color-burn';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (color-burn)";
+					break;
+					case 19:
+						c.globalCompositeOperation = 'hard-light';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (hard-light)";
+					break;
+					case 20:
+						c.globalCompositeOperation = 'soft-light';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (soft-light)";
+					break;
+					case 21:
+						c.globalCompositeOperation = 'difference';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (difference)";
+					break;
+					case 22:
+						c.globalCompositeOperation = 'exclusion';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (exclusion)";
+					break;
+					case 23:
+						c.globalCompositeOperation = 'hue';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (hue)";
+					break;
+					case 24:
+						c.globalCompositeOperation = 'saturation';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (saturation)";
+					break;
+					case 25:
+						c.globalCompositeOperation = 'color';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (color)";
+					break;
+					case 26:
+						c.globalCompositeOperation = 'luminosity';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (luminosity)";
+					break;
+				}
 				c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-				c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+				switch(parseInt(shapeController.value)){
+					case 0:
+						c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+						shapeControllerLabel.innerHTML = "Shape (Rectangle)";
+					break;
+					case 1:
+						c.beginPath();
+						c.arc(this.pos.x, this.pos.y, this.siz.w, 0, Math.PI * 2)
+						c.fill();
+						shapeControllerLabel.innerHTML = "Shape (Circle)";
+					break;
+				}
 	
 				this.update();
 			}
@@ -404,31 +538,33 @@
 			//console.log(partArr)
 		}
 
-		//radomize all settigs values
-		function rndVal(){
-			sizeXController.value = Math.floor(Math.random() * parseInt(sizeXController.max));
-			sizeYController.value = Math.floor(Math.random() * parseInt(sizeYController.max));
-			gravityController.value = Math.floor(Math.random() * parseInt(gravityController.max));
-			lifeTimeController.value = Math.floor(Math.random() * parseInt(lifeTimeController.max));
-			randomlifeTimeController.value = Math.floor(Math.random() * parseInt(randomlifeTimeController.max));
-			posXController.value = Math.floor(Math.random() * parseInt(posXController.max));
-			posYController.value = Math.floor(Math.random() * parseInt(posYController.max));
-			randomXController.value = Math.floor(Math.random() * parseInt(randomXController.max));
-			randomYController.value = Math.floor(Math.random() * parseInt(randomYController.max));
-			velXMaxController.value = Math.floor(Math.random() * parseInt(velXMaxController.max));
-			velXMinController.value = Math.floor(Math.random() * parseInt(velXMinController.max));
-			velYMaxController.value = Math.floor(Math.random() * parseInt(velYMaxController.max));
-			velYMinController.value = Math.floor(Math.random() * parseInt(velYMinController.max));
-			particleCountController.value = Math.floor(Math.random() * parseInt(particleCountController.max));
-			creationTimeController.value = Math.floor(Math.random() * parseInt(creationTimeController.max));
-			redChannelController.value = Math.floor(Math.random() * parseInt(redChannelController.max));
-			greenChannelController.value = Math.floor(Math.random() * parseInt(greenChannelController.max));
-			blueChannelController.value = Math.floor(Math.random() * parseInt(blueChannelController.max));
-			alphaChannelController.value = Math.floor(Math.random() * parseInt(alphaChannelController.max));
-			bgRedChannelController.value = Math.floor(Math.random() * parseInt(bgRedChannelController.max));
-			bgGreenChannelController.value = Math.floor(Math.random() * parseInt(bgGreenChannelController.max));
-			bgBlueChannelController.value = Math.floor(Math.random() * parseInt(bgBlueChannelController.max));
-			bgAlphaChannelController.value = Math.floor(Math.random() * parseInt(bgAlphaChannelController.max));
+		//reset canvas
+		function resetCNVS(){
+			GCOController.value = 1
+			shapeController.value = 0
+			sizeXController.value = 15
+			sizeYController.value = 15
+			gravityController.value = 0
+			lifeTimeController.value = 10
+			randomlifeTimeController.value = 0
+			posXController.value = 293
+			posYController.value = 263
+			randomXController.value = 0
+			randomYController.value = 0
+			velXMaxController.value = 10
+			velXMinController.value = 5
+			velYMaxController.value = 10
+			velYMinController.value = 5
+			particleCountController.value = 1
+			creationTimeController.value = 200
+			redChannelController.value = 255
+			greenChannelController.value = 255
+			blueChannelController.value = 255
+			alphaChannelController.value = 1.0
+			bgRedChannelController.value = 0
+			bgGreenChannelController.value = 0
+			bgBlueChannelController.value = 0
+			bgAlphaChannelController.value = 1.0
 
 		}
 
@@ -474,11 +610,39 @@
 			  0.9,
 			);	
 		}
+
+		//reset canvas
+		function rndVal(){
+			shapeController.value = Math.floor(Math.random() * 2);
+			sizeXController.value = Math.floor(Math.random() * parseInt(sizeXController.max));
+			sizeYController.value = Math.floor(Math.random() * parseInt(sizeYController.max));
+			gravityController.value = Math.random() * parseInt(gravityController.max);
+			lifeTimeController.value = Math.floor(Math.random() * parseInt(lifeTimeController.max));
+			randomlifeTimeController.value = Math.floor(Math.random() * 2);
+			posXController.value = Math.floor(Math.random() * parseInt(posXController.max));
+			posYController.value = Math.floor(Math.random() * parseInt(posYController.max));
+			randomXController.value = Math.floor(Math.random() * 2);
+			randomYController.value = Math.floor(Math.random() * 2);
+			velXMaxController.value = Math.floor(Math.random() * parseInt(velXMaxController.max));
+			velXMinController.value = Math.floor(Math.random() * parseInt(velXMinController.max));
+			velYMaxController.value = Math.floor(Math.random() * parseInt(velYMaxController.max));
+			velYMinController.value = Math.floor(Math.random() * parseInt(velYMinController.max));
+			particleCountController.value = Math.floor(Math.random() * parseInt(particleCountController.max));
+			creationTimeController.value = Math.floor(Math.random() * parseInt(creationTimeController.max));
+			redChannelController.value = Math.floor(Math.random() * parseInt(redChannelController.max));
+			greenChannelController.value = Math.floor(Math.random() * parseInt(greenChannelController.max));
+			blueChannelController.value = Math.floor(Math.random() * parseInt(blueChannelController.max));
+			alphaChannelController.value = Math.random() * parseInt(alphaChannelController.max);
+			bgRedChannelController.value = Math.floor(Math.random() * parseInt(bgRedChannelController.max));
+			bgGreenChannelController.value = Math.floor(Math.random() * parseInt(bgGreenChannelController.max));
+			bgBlueChannelController.value = Math.floor(Math.random() * parseInt(bgBlueChannelController.max));
+			bgAlphaChannelController.value = Math.random() * parseInt(bgAlphaChannelController.max);
+		}
 		
 		// loop
 		setInterval(()=>{
 			//background
-			//c.clearRect(0,0,canvas.width,canvas.height);
+			c.clearRect(0,0,canvas.width,canvas.height);
 			c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
 			c.fillRect(0,0,canvas.width,canvas.height/2);
 			
@@ -494,8 +658,6 @@
 				partArr[i].siz.h = sizeYController.value;
 				partArr[i].draw();		
 			}
-
-
 
 		}, 60)
 			
