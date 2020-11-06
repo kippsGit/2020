@@ -28,7 +28,7 @@
 		white-space: nowrap;
 	}
 	
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController{
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -101,7 +101,8 @@
 	#bgGreenChannelController:hover,
 	#bgBlueChannelController:hover,
 	#bgAlphaChannelController:hover,
-	#randomColorController:hover{
+	#randomColorController:hover,
+	#canvasBoundaryController:hover{
 		cursor: pointer;
 	}
 
@@ -227,6 +228,9 @@
 	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()">
 	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()">
 
+	<label id="canvasBoundaryControllerLabel" for="canvasBoundaryController">Canvas Boundary (nothing)</label>
+	<input id="canvasBoundaryController" type="range" min="0" max="1" value="0">
+
 	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
 	<input id="GCOController" type="range" min="1" max="26" value="1">
 	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
@@ -236,19 +240,17 @@
 	<label for="sizeYController">Rect Size Y</label>
 	<input id="sizeYController" type="range" min="0" max="200" value="15">
 	<label for="gravityController">Gravity</label>
-	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
+	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="3">
 	<label for="lifeTimeController">Lifetime</label>
-	<input id="lifeTimeController" type="range" min="0" max="100" value="10">
+	<input id="lifeTimeController" type="range" min="0" max="100" value="100">
 	<label for="randomlifeTimeController">Random Lifetime</label>
 	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
 	<label for="particleCountController">Particle Count</label>
 	<input id="particleCountController" type="range" min="0" max="100" value="1">
 	<label for="creationTimeController">Spawn time</label>
-	<input id="creationTimeController" type="range" min="0" max="1000" value="200">
-
+	<input id="creationTimeController" type="range" min="0" max="1000" value="400">
 	<label for="randomColorController">Randomize Color</label>
 	<input id="randomColorController" type="range" min="0" max="1" value="0">
-
 	<label for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
 	<label for="posYController">Spawn position Y</label>
@@ -321,7 +323,9 @@
 		bgGreenChannelController = document.querySelector("#bgGreenChannelController"),
 		bgBlueChannelController = document.querySelector("#bgBlueChannelController"),
 		bgAlphaChannelController = document.querySelector("#bgAlphaChannelController"),
-		randomColorController = document.querySelector("#randomColorController");
+		randomColorController = document.querySelector("#randomColorController"),
+		canvasBoundaryController = document.querySelector("#canvasBoundaryController"),
+		canvasBoundaryControllerLabel = document.querySelector("#canvasBoundaryControllerLabel");
 
 	//default values
 	let partAmount = particleCountController.value,
@@ -385,23 +389,48 @@
 				if (this.life >= this.maxLife){
 					delete partArr[this.idd];
 				}
+				//canvas boundary operation
 
-				if(this.pos.x > canvas.width){
-					//this.pos.x = 0 - this.siz.w;
-					delete partArr[this.idd];
+				switch(parseInt(canvasBoundaryController.value)){
+					case 0:
+						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (nothing)";
+						if(this.pos.x > canvas.width){
+							//this.pos.x = 0 - this.siz.w;
+							delete partArr[this.idd];
+						}
+						if(this.pos.x < 0 - this.siz.w){
+							//this.pos.x = canvas.width;
+							delete partArr[this.idd];
+						}
+						if(this.pos.y > canvas.height / 2){
+							//this.pos.y = 0 - this.siz.h;
+							delete partArr[this.idd];
+
+							//this.vel.y = -this.vel.y
+						}
+						if(this.pos.y < 0 - this.siz.h){
+							//this.pos.y = canvas.height / 2 - this.siz.h;
+							delete partArr[this.idd];
+						}
+					break;
+					case 1:
+						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (solid)";
+						if(this.pos.x > canvas.width){
+							this.vel.x = -this.vel.x
+						}
+						if(this.pos.x < 0 - this.siz.w){
+							this.vel.x = -this.vel.x
+						}
+						if(this.pos.y > canvas.height / 2){
+							this.vel.y = -this.vel.y
+						}
+						if(this.pos.y < 0 - this.siz.h){
+							this.vel.y = -this.vel.y
+						}
+					break;
 				}
-				if(this.pos.x < 0 - this.siz.w){
-					//this.pos.x = canvas.width;
-					delete partArr[this.idd];
-				}
-				if(this.pos.y > canvas.height / 2){
-					//this.pos.y = 0 - this.siz.h;
-					delete partArr[this.idd];
-				}
-				if(this.pos.y < 0 - this.siz.h){
-					//this.pos.y = canvas.height / 2 - this.siz.h;
-					delete partArr[this.idd];
-				}
+
+				
 				
 			}
 			this.draw = ()=>{
@@ -542,10 +571,12 @@
 			//create particle/s and put to array
 				for(let i = 0; i < partAmount; i++){
 					partArr.push(new particle());
-				}	
+				}
+			
 			}
 
 		let CP = setInterval(createParticles, parseInt(creationTimeController.value));	
+
 
 		//clear canvas by deleting all particles on the canvas
 		function clrCnv(){
@@ -657,7 +688,6 @@
 			bgBlueChannelController.value = Math.floor(Math.random() * parseInt(bgBlueChannelController.max));
 			bgAlphaChannelController.value = Math.random() * parseInt(bgAlphaChannelController.max);
 		}
-		
 		// loop
 		setInterval(()=>{
 			//background
@@ -672,11 +702,12 @@
 			})
 			
 			//display partcles
-			for(let i in partArr){
-				partArr[i].siz.w = sizeXController.value;
-				partArr[i].siz.h = sizeYController.value;
-				partArr[i].draw();		
-			}
+				for(let i in partArr){
+					partArr[i].siz.w = sizeXController.value;
+					partArr[i].siz.h = sizeYController.value;
+					partArr[i].draw();		
+				}
+			
 
 		}, 60)
 			
