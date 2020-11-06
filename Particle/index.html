@@ -229,7 +229,7 @@
 	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()">
 
 	<label id="canvasBoundaryControllerLabel" for="canvasBoundaryController">Canvas Boundary (nothing)</label>
-	<input id="canvasBoundaryController" type="range" min="0" max="1" value="0">
+	<input id="canvasBoundaryController" type="range" min="0" max="2" value="0">
 
 	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
 	<input id="GCOController" type="range" min="1" max="26" value="1">
@@ -240,15 +240,15 @@
 	<label for="sizeYController">Rect Size Y</label>
 	<input id="sizeYController" type="range" min="0" max="200" value="15">
 	<label for="gravityController">Gravity</label>
-	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="3">
+	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 	<label for="lifeTimeController">Lifetime</label>
-	<input id="lifeTimeController" type="range" min="0" max="100" value="100">
+	<input id="lifeTimeController" type="range" min="0" max="1000" value="100">
 	<label for="randomlifeTimeController">Random Lifetime</label>
 	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
 	<label for="particleCountController">Particle Count</label>
-	<input id="particleCountController" type="range" min="0" max="100" value="1">
+	<input id="particleCountController" type="range" min="0" max="1000" value="1">
 	<label for="creationTimeController">Spawn time</label>
-	<input id="creationTimeController" type="range" min="0" max="1000" value="400">
+	<input id="creationTimeController" type="range" min="0" max="10000" value="400">
 	<label for="randomColorController">Randomize Color</label>
 	<input id="randomColorController" type="range" min="0" max="1" value="0">
 	<label for="posXController">Spawn position X</label>
@@ -260,13 +260,13 @@
 	<label for="randomYController">Random spawn Y</label>
 	<input id="randomYController" type="range" min="0" max="1" value="0">
 	<label for="velXMaxController">Vel Max X</label>
-	<input id="velXMaxController" type="range" min="0" max="100" value="10">
+	<input id="velXMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velXMinController">Vel Min X</label>
-	<input id="velXMinController" type="range" min="0" max="50" value="5">
+	<input id="velXMinController" type="range" min="0" max="50" value="5" step="0.1">
 	<label for="velYMaxController">Vel Max Y</label>
-	<input id="velYMaxController" type="range" min="0" max="100" value="10">
+	<input id="velYMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velYMinController">Vel Min Y</label>
-	<input id="velYMinController" type="range" min="0" max="50" value="5">
+	<input id="velYMinController" type="range" min="0" max="50" value="5" step="0.1">
 	<label for="redChannelController">Red Channel</label>
 	<input id="redChannelController" type="range" min="0" max="255" value="255">
 	<label for="greenChannelController">Green Channel</label>
@@ -365,6 +365,11 @@
 			}
 			this.idd = indx++;
 
+			this.tempVel = {
+				x: this.vel.x,
+				y: this.vel.y
+			}
+
 			//randomize x and y spawn position if...
 			if(parseInt(randomXController.value) == 1){ 
 				this.pos.x = Math.random()*canvas.width;
@@ -415,17 +420,60 @@
 					break;
 					case 1:
 						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (solid)";
+						switch(parseInt(shapeController.value)){
+							case 0: //square collision
+								if(this.pos.x > canvas.width - this.siz.w){
+									this.pos.x = canvas.width - this.siz.w
+									this.vel.x = -this.vel.x
+								}
+								if(this.pos.x < 0){
+									this.pos.x = 0
+									this.vel.x = -this.vel.x
+								}
+								if(this.pos.y > canvas.height / 2 - this.siz.h){
+									this.pos.y = canvas.height / 2 - this.siz.h
+									this.vel.y = -this.vel.y
+								}
+								if(this.pos.y < 0){
+									this.pos.y = 0
+									this.vel.y = -this.vel.y
+								}
+							break;
+							case 1: //circle collision
+								if(this.pos.x > canvas.width - this.siz.w){
+									this.pos.x = canvas.width - this.siz.w
+									this.vel.x = -this.vel.x
+								}
+								if(this.pos.x < 0 + this.siz.w){
+									//this.pos.x = 0 + this.siz.w
+									this.vel.x = -this.vel.x
+								}
+								if(this.pos.y > canvas.height / 2 - this.siz.w){
+									this.pos.y = canvas.height / 2 - this.siz.w
+									this.vel.y = -this.vel.y
+								}
+								if(this.pos.y < 0 + this.siz.w){
+									//this.pos.y = 0 + this.siz.w
+									this.vel.y = -this.vel.y
+								}
+							break;
+						}
+						
+					break;
+					case 2:
+						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (portal)";
 						if(this.pos.x > canvas.width){
-							this.vel.x = -this.vel.x
+							this.pos.x = 0 - this.siz.w
 						}
 						if(this.pos.x < 0 - this.siz.w){
-							this.vel.x = -this.vel.x
+							this.pos.x = canvas.width
 						}
 						if(this.pos.y > canvas.height / 2){
-							this.vel.y = -this.vel.y
+							this.pos.y = 0 - this.siz.h
+							this.vel.y = this.tempVel.y
 						}
 						if(this.pos.y < 0 - this.siz.h){
-							this.vel.y = -this.vel.y
+							this.pos.y = canvas.height / 2
 						}
 					break;
 				}
@@ -468,8 +516,8 @@
 						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-atop)";
 					break;
 					case 9:
-						c.globalCompositeOperation = 'ligter';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (ligter)";
+						c.globalCompositeOperation = 'lighter';
+						GCOControllerLabel.innerHTML = "Global Composite Operation (lighter)";
 					break;
 					case 10:
 						c.globalCompositeOperation = 'copy';
@@ -561,7 +609,6 @@
 						shapeControllerLabel.innerHTML = "Shape (Circle)";
 					break;
 				}
-	
 				this.update();
 			}
 		};
