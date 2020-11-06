@@ -28,7 +28,7 @@
 		white-space: nowrap;
 	}
 	
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController{
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -40,6 +40,7 @@
 		/*display: inline-block;*/
 		display: block;
 	}
+	/*buttons people buttons*/
 	#clearCanvasController{
 		margin-top: 30px;
 		width: 253px;
@@ -99,7 +100,8 @@
 	#bgRedChannelController:hover,
 	#bgGreenChannelController:hover,
 	#bgBlueChannelController:hover,
-	#bgAlphaChannelController:hover{
+	#bgAlphaChannelController:hover,
+	#randomColorController:hover{
 		cursor: pointer;
 	}
 
@@ -243,6 +245,10 @@
 	<input id="particleCountController" type="range" min="0" max="100" value="1">
 	<label for="creationTimeController">Spawn time</label>
 	<input id="creationTimeController" type="range" min="0" max="1000" value="200">
+
+	<label for="randomColorController">Randomize Color</label>
+	<input id="randomColorController" type="range" min="0" max="1" value="0">
+
 	<label for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
 	<label for="posYController">Spawn position Y</label>
@@ -314,7 +320,8 @@
 		bgRedChannelController = document.querySelector("#bgRedChannelController"),
 		bgGreenChannelController = document.querySelector("#bgGreenChannelController"),
 		bgBlueChannelController = document.querySelector("#bgBlueChannelController"),
-		bgAlphaChannelController = document.querySelector("#bgAlphaChannelController");
+		bgAlphaChannelController = document.querySelector("#bgAlphaChannelController"),
+		randomColorController = document.querySelector("#randomColorController");
 
 	//default values
 	let partAmount = particleCountController.value,
@@ -332,6 +339,9 @@
 	let indx = 0;
 
 	let particle = function(){
+			this.r = Math.random()*255;
+			this.g = Math.random()*255;
+			this.b = Math.random()*255;
 			this.gravity = parseInt(gravityController.value);
 			this.maxLife = parseInt(lifeTimeController.value);
 			this.life = 0;
@@ -501,7 +511,15 @@
 						GCOControllerLabel.innerHTML = "Global Composite Operation (luminosity)";
 					break;
 				}
-				c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+				
+				switch(parseInt(randomColorController.value)){
+					case 0:
+						c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+					break;
+					case 1:
+							c.fillStyle = "rgba(" + this.r + ", " + this.g + ", " + this.b + "," + alphaChannelController.value + ")";
+					break;
+				}
 				switch(parseInt(shapeController.value)){
 					case 0:
 						c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
@@ -531,6 +549,7 @@
 
 		//clear canvas by deleting all particles on the canvas
 		function clrCnv(){
+			c.clearRect(0,0,canvas.width,canvas.height);
 			for(let i in partArr){
 				delete partArr[i]	
 			}
@@ -565,7 +584,7 @@
 			bgGreenChannelController.value = 0
 			bgBlueChannelController.value = 0
 			bgAlphaChannelController.value = 1.0
-
+			partArr = [];
 		}
 
 		// loop random value controller
@@ -642,7 +661,7 @@
 		// loop
 		setInterval(()=>{
 			//background
-			c.clearRect(0,0,canvas.width,canvas.height);
+			//c.clearRect(0,0,canvas.width,canvas.height);
 			c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
 			c.fillRect(0,0,canvas.width,canvas.height/2);
 			
