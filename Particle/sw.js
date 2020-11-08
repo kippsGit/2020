@@ -1,5 +1,5 @@
 
-self.addEventListener('install', function(e) {
+/*self.addEventListener('install', function(e) {
  e.waitUntil(
    caches.open('particle').then(function(cache) {
      return cache.addAll([
@@ -9,7 +9,7 @@ self.addEventListener('install', function(e) {
      ]);
    })
  );
-});
+});*/
 
 /*self.addEventListener('fetch', function(e) {
   console.log(e.request.url);
@@ -22,15 +22,16 @@ self.addEventListener('install', function(e) {
 
 
 
-/*self.addEventListener('install', function(event) {
+self.addEventListener('install', function(event) {
   // Perform install step:  loading each required file into cache
   event.waitUntil(
     caches.open('Particle')
       .then(function(cache) {
         // Add all offline dependencies to the cache
         return cache.addAll([
-          'index.html',
-          '/'
+          '/2020/Particle/',
+          '/2020/Particle/index.html',
+          '/2020/Particle/index.js'
           ]);
       })
       .then(function() {
@@ -44,7 +45,7 @@ self.addEventListener('activate', function(event) {
   // Calling claim() to force a "controllerchange" event on navigator.serviceWorker
   event.waitUntil(self.clients.claim());
 });
-*/
+
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
