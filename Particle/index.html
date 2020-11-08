@@ -7,7 +7,7 @@
 	body{
 		margin: 0px;
 		padding: 0px;
-		background-color: darkgray;
+		background-color: #d3c99b;
 	}
 	#canvas{
 		position: absolute;
@@ -747,7 +747,6 @@
 				clearInterval(CP);
 				CP = setInterval(createParticles, parseInt(creationTimeController.value));
 			})
-			
 			//display partcles
 				for(let i in partArr){
 					partArr[i].siz.w = sizeXController.value;
