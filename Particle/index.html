@@ -58,10 +58,16 @@
 		width: 253px;
 		margin-bottom: 10px;
 	}
+	#recordCanvas{
+		width: 253px;
+	}
 	#resetCanvas{
 		margin-top: 10px;
 		width: 253px;
 		margin-bottom: 10px;
+	}
+	#deletePreviousFrames{
+		width: 253px;
 	}
 	#bgAlphaChannelController{
 		margin-bottom: 50px;
@@ -105,7 +111,9 @@
 	#linkController:hover,
 	#frictionXController:hover,
 	#frictionYController:hover,
-	#collisionController:hover{
+	#collisionController:hover,
+	#deletePreviousFrames:hover,
+	#recordCanvas:hover{
 		cursor: pointer;
 	}
 
@@ -226,23 +234,25 @@
 <canvas id="canvas"></canvas>
 <div id="controllerFrame">
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
-	<input id="saveCanvas" type="button" value="Save Canvas" onclick="saveCNVS()">
+	<input id="saveCanvas" type="button" value="Screen Shot Canvas" onclick="saveCNVS()">
+	<input id="recordCanvas" type="button" value="Record Canvas (5s)" onclick="startRecording()">
 	<input id="resetCanvas" type="button" value="Reset Canvas" onclick="resetCNVS()">
-	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()">
-	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()">
+	<input id="deletePreviousFrames" type="button" value="Del Previous Frames (n)" onclick="delPrevFrames()">
+	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()" disabled="true">
+	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()" disabled="true">
 
 	<label id="linkControllerLabel" for="linkController">Link (nothing)</label>
 	<input id="linkController" type="range" min="0" max="4" value="0">
 	<label id="canvasBoundaryControllerLabel" for="canvasBoundaryController">Canvas Boundary (nothing)</label>
-	<input id="canvasBoundaryController" type="range" min="0" max="2" value="0">
+	<input id="canvasBoundaryController" type="range" min="0" max="2" value="1">
 	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
 	<input id="GCOController" type="range" min="1" max="26" value="1">
 	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
-	<input id="shapeController" type="range" min="0" max="1" value="0">
+	<input id="shapeController" type="range" min="0" max="1" value="1">
 	<label for="sizeXController">Rect Size X / Radius</label>
-	<input id="sizeXController" type="range" min="0" max="200" value="15">
+	<input id="sizeXController" type="range" min="0" max="200" value="25">
 	<label for="sizeYController">Rect Size Y</label>
-	<input id="sizeYController" type="range" min="0" max="200" value="15">
+	<input id="sizeYController" type="range" min="0" max="200" value="25">
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 	<label for="lifeTimeController">Lifetime</label>
@@ -257,7 +267,7 @@
 	<input id="randomColorController" type="range" min="0" max="1" value="0">
 
 	<label id="collisionControllerLabel" for="collisionController">Collision (particles)</label>
-	<input id="collisionController" type="range" min="0" max="1" value="1">
+	<input id="collisionController" type="range" min="0" max="1" value="0">
 
 	<label for="frictionXControllerLabel">FrictionX</label>
 	<input id="frictionXController" type="range" min="0.1" max="1.0" step="0.1" value="1">
@@ -343,7 +353,9 @@
 		frictionXController = document.querySelector("#frictionXController"),
 		frictionYController = document.querySelector("#frictionYController"),
 		collisionController = document.querySelector("#collisionController"),
-		collisionControllerLabel = document.querySelector("#collisionControllerLabel");
+		collisionControllerLabel = document.querySelector("#collisionControllerLabel"),
+		deletePreviousFrames = document.querySelector("#deletePreviousFrames"),
+		recordCanvas = document.querySelector("#recordCanvas");
 
 	//default values
 	let partAmount = particleCountController.value,
@@ -361,6 +373,7 @@
 	let indx = 0, event;
 
 	let particle = function(){
+			this.mass = 1;
 			this.r = Math.random()*255;
 			this.g = Math.random()*255;
 			this.b = Math.random()*255;
@@ -511,15 +524,24 @@
 				switch(parseInt(collisionController.value)){
 					case 0:
 						collisionControllerLabel.innerHTML = "Collision (particles)";
-						for(let i in partArr){
-							if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < this.siz.w*2){
-								// what the shit is that ???!! less than this siz times 2 minus this size divided by four
-									if(partArr[i] !== this){
-										this.vel.x = -this.vel.x
-										this.vel.y = -this.vel.y
+						
+						switch(parseInt(shapeController.value)){
+							case 0:
+								//rectangle collision
+								for(let i in partArr){
+									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < this.siz.w){
+											resolveCollision(this, partArr[i]);
 									}
-
-							}
+								}
+							break;
+							case 1:
+								//circles collision
+								for(let i in partArr){
+									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < this.siz.w*2){
+											resolveCollision(this, partArr[i]);
+									}
+								}
+							break;
 						}
 					break;
 					case 1:
@@ -759,13 +781,23 @@
 		let tempConX, tempConY, XYobj;
 		function secureSpawn(){
 			XYobj = {
-				tempConX: Math.random()*canvas.width,
-				tempConY: Math.random()*canvas.height
+				tempConX: Math.random()*(canvas.width-0+parseInt(sizeXController.value))+0+parseInt(sizeXController.value),
+				tempConY: Math.random()*(canvas.height-0+parseInt(sizeYController.value))+0+parseInt(sizeYController.value)
 			}
 			for(let i in partArr){
-				if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w/2){
-					secureSpawn();
+				switch(parseInt(shapeController.value)){
+					case 0:
+						if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w){
+							secureSpawn();
+						}
+					break;
+					case 1:
+						if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w*2){
+							secureSpawn();
+						}
+					break;
 				}
+				
 			}
 		}
 
@@ -834,9 +866,10 @@
 			}
 		}
 
-		// saving the canvas
+		// screen shot the canvas
 		let tempCNVS = document.createElement("canvas"),
- 			TCNVSc = tempCNVS.getContext("2d");
+ 			TCNVSc = tempCNVS.getContext("2d"),
+ 			d = new Date();
 		function saveCNVS(){
 			/*let link = document.createElement('a'),
 			d = new Date();
@@ -852,7 +885,6 @@
  			tempCNVS.toBlob(
 			  blob => {
 			    const anchor = document.createElement('a');
-			    let d = new Date();
 			    anchor.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString() + ' .png';
 			    anchor.href = URL.createObjectURL(blob);
 
@@ -864,6 +896,47 @@
 			  0.9,
 			);	
 		}
+
+		// saving video recording of canvas
+		function del(){
+			tempCNVS.width = canvas.width;
+			tempCNVS.height = canvas.height/2;
+			TCNVSc.drawImage(canvas, 0, 0);
+			del()
+		}
+		let transferCanvasToTempCanvas = false;
+		function startRecording() {
+			transferCanvasToTempCanvas = true;
+			recordCanvas.disabled = true;
+		  const chunks = []; // here we will store our recorded media chunks (Blobs)
+		  //var options = {mimeType: 'video/webm;codecs=h264'}; 
+		  const stream = tempCNVS.captureStream(30); // grab our canvas MediaStream // 30 framerate
+		  const rec = new MediaRecorder(stream); // init the recorder
+		  // every time the recorder has new data, we will store it in our array
+		  rec.ondataavailable = e => {chunks.push(e.data)};
+		  // only when the recorder stops, we construct a complete Blob from all the chunks
+		  rec.onstop = e => exportVid(new Blob(chunks, {'type': 'video/webm;codecs=h264'}));
+		  rec.start();
+		  setTimeout(()=>{
+		  	rec.stop(); 
+		  	transferCanvasToTempCanvas = false;
+		  	recordCanvas.disabled = false
+		  }, 5000); 
+		}
+		function exportVid(blob) {
+
+		  const vid = document.createElement('video');
+		  vid.src = URL.createObjectURL(blob);
+		  //vid.controls = true;
+		  //document.body.appendChild(vid);
+		  const a = document.createElement('a');
+		  a.download = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+		  a.href = vid.src;
+		  a.click();
+		  //a.textContent = 'download the video';
+		  document.body.appendChild(a);
+		}
+		/////////////////////////////////////////////////////////////////////
 
 		//randomize values
 		function rndVal(){
@@ -905,14 +978,104 @@
 				}
 		}
 
+		//delete provious frames
+		let previousFramesDelete = false;
+		function delPrevFrames(){
+			if(previousFramesDelete){
+				previousFramesDelete = false;
+				deletePreviousFrames.value = "Del Previous Frames (n)";
+			}else{
+				previousFramesDelete = true;
+				deletePreviousFrames.value = "Del Previous Frames (y)";
+			}
+
+		}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//review this shit its not yours hahah
+		/**
+ * Rotates coordinate system for velocities
+ *
+ * Takes velocities and alters them as if the coordinate system they're on was rotated
+ *
+ * @param  Object | velocity | The velocity of an individual particle
+ * @param  Float  | angle    | The angle of collision between two objects in radians
+ * @return Object | The altered x and y velocities after the coordinate system has been rotated
+ */
+
+function rotate(velocity, angle) {
+    const rotatedVelocities = {
+        x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
+        y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
+    };
+
+    return rotatedVelocities;
+}
+
+/**
+ * Swaps out two colliding particles' x and y velocities after running through
+ * an elastic collision reaction equation
+ *
+ * @param  Object | particle      | A particle object with x and y coordinates, plus velocity
+ * @param  Object | otherParticle | A particle object with x and y coordinates, plus velocity
+ * @return Null | Does not return a value
+ */
+
+function resolveCollision(part, otherParticle) {
+    const xVelocityDiff = part.vel.x - otherParticle.vel.x;
+    const yVelocityDiff = part.vel.y - otherParticle.vel.y;
+
+    const xDist = otherParticle.pos.x - part.pos.x;
+    const yDist = otherParticle.pos.y - part.pos.y;
+
+    // Prevent accidental overlap of particles
+    if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+
+        // Grab angle between the two colliding particles
+        const angle = -Math.atan2(otherParticle.pos.y - part.pos.y, otherParticle.pos.x - part.pos.x);
+
+        // Store mass in var for better readability in collision equation
+        const m1 = part.mass;
+        const m2 = otherParticle.mass;
+
+        // Velocity before equation
+        const u1 = rotate(part.vel, angle);
+        const u2 = rotate(otherParticle.vel, angle);
+
+        // Velocity after 1d collision equation
+        const v1 = { x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2), y: u1.y };
+        const v2 = { x: u2.x * (m1 - m2) / (m1 + m2) + u1.x * 2 * m2 / (m1 + m2), y: u2.y };
+
+        // Final velocity after rotating axis back to original location
+        const vFinal1 = rotate(v1, -angle);
+        const vFinal2 = rotate(v2, -angle);
+
+        // Swap particle velocities for realistic bounce effect
+        part.vel.x = vFinal1.x;
+        part.vel.y = vFinal1.y;
+
+        otherParticle.vel.x = vFinal2.x;
+        otherParticle.vel.y = vFinal2.y;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		canvas.addEventListener('mousemove', (e)=>{
 			event = e;
 		});
 
 		// loop
 		setInterval(()=>{
+			if(transferCanvasToTempCanvas){
+				tempCNVS.width = canvas.width;
+				tempCNVS.height = canvas.height/2;
+				TCNVSc.drawImage(canvas, 0, 0);
+			}
 			//background
-			c.clearRect(0,0,canvas.width,canvas.height);
+			if(previousFramesDelete){
+				c.clearRect(0,0,canvas.width,canvas.height);
+			}
 			c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
 			c.fillRect(0,0,canvas.width,canvas.height/2);
 			
@@ -932,6 +1095,7 @@
 		}, 60)
 			
 		setInterval(()=>{
+
 			if(loop_rndVal_state){
 				clrCnv();
 				rndVal();
