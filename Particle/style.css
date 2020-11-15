@@ -1,0 +1,234 @@
+	body{
+		margin: 0px;
+		padding: 0px;
+		background-color: darkgray;
+	}
+	#canvas{
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	#controllerFrame{
+		background-color: darkgray;
+		padding: 0px;
+		position: absolute;
+		/*border: 1px solid red;*/
+		margin: 0 auto;
+		left: 50%;
+		transform: translateX(-50%);
+		overflow-x: auto;
+		overflow-x: overlay;
+		white-space: nowrap;
+	}
+
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper{
+		position: relative;
+		/*transform: translateX(-50%);*/
+		/*top: 50%;*/
+		z-index: 1000;
+		/*-webkit-appearance: slider-vertical;*/
+		/*height: 250px;*/
+		width: 250px;
+		margin-right: 30px;
+		/*display: inline-block;*/
+		display: block;
+	}
+	/*buttons people buttons*/
+	#clearCanvasController{
+		margin-top: 30px;
+		width: 253px;
+	}
+	#randomValueController{
+		margin-top: 10px;
+		width: 253px;
+	}
+	#loopRandomValueController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#dropdownWrapper{
+		height: 20px;
+		margin-bottom: 10px;
+	}
+	#dropdownWrapper select{
+		width: 253px;
+		text-align-last: center;
+	}
+	#saveCanvas{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#recordCanvas{
+		width: 253px;
+	}
+	#resetCanvas{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#deletePreviousFrames{
+		width: 253px;
+	}
+	#bgAlphaChannelController{
+		margin-bottom: 50px;
+	}
+	*::selection{
+		color: none;
+		background: none;
+	}
+	#clearCanvasController:hover,
+	#randomValueController:hover,
+	#loopRandomValueController:hover,
+	#GCOController:hover,
+	#saveCanvas:hover,
+	#resetCanvas:hover,
+	#shapeController:hover,
+	#sizeXController:hover,
+	#sizeYController:hover,
+	#gravityController:hover,
+	#lifeTimeController:hover,
+	#randomlifeTimeController:hover,
+	#posXController:hover,
+	#posYController:hover,
+	#randomXController:hover,
+	#randomYController:hover,
+	#velXMaxController:hover,
+	#velXMinController:hover,
+	#velYMaxController:hover,
+	#velYMinController:hover,
+	#particleCountController:hover,
+	#creationTimeController:hover,
+	#redChannelController:hover,
+	#greenChannelController:hover,
+	#blueChannelController:hover,
+	#alphaChannelController:hover,
+	#bgRedChannelController:hover,
+	#bgGreenChannelController:hover,
+	#bgBlueChannelController:hover,
+	#bgAlphaChannelController:hover,
+	#randomColorController:hover,
+	#canvasBoundaryController:hover,
+	#linkController:hover,
+	#frictionXController:hover,
+	#frictionYController:hover,
+	#collisionController:hover,
+	#deletePreviousFrames:hover,
+	#recordCanvas:hover,
+	#dropdownWrapper:hover,
+	#dropdownWrapper select:hover{
+		cursor: pointer;
+	}
+
+	/*#sizeController::-webkit-slider-thumb, 
+	#posXController::-webkit-slider-thumb,
+	#posYController::-webkit-slider-thumb,
+	#randomXYController::-webkit-slider-thumb,
+	#velXMaxController::-webkit-slider-thumb,
+	#velXMinController::-webkit-slider-thumb,
+	#velYMaxController::-webkit-slider-thumb,
+	#velYMinController::-webkit-slider-thumb,
+	#creationTimeController::-webkit-slider-thumb,
+	#redChannelController::-webkit-slider-thumb,
+	#greenChannelController::-webkit-slider-thumb,
+	#blueChannelController::-webkit-slider-thumb
+	{
+		transform: translateX(-5px);
+	}
+//////////////////////////////////////////////////////////
+	#sizeController{
+		left: 5%;
+	}
+	#sizeController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: pink;
+	}
+//////////////////////////////////////////////////////////
+	#posXController{
+		left: 10%;
+	}
+	#posXController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: skyblue;
+	}
+//////////////////////////////////////////////////////////
+	#posYController{
+		left: 15%;
+	}
+	#posYController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: skyblue;
+	}
+//////////////////////////////////////////////////////////
+	#randomXYController{
+		left: 20%;
+	}
+	#randomXYController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: lime;
+	}
+//////////////////////////////////////////////////////////
+	#velXMaxController{
+		left: 25%;
+	}
+	#velXMaxController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: maroon;
+	}
+//////////////////////////////////////////////////////////
+	#velXMinController{
+		left: 30%;
+	}
+	#velXMinController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: maroon;
+	}
+//////////////////////////////////////////////////////////
+	#velYMaxController{
+		left: 35%;
+	}
+	#velYMaxController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: maroon;
+	}
+//////////////////////////////////////////////////////////
+	#velYMinController{
+		left: 40%;
+	}
+	#velYMinController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: maroon;
+	}
+//////////////////////////////////////////////////////////
+	#creationTimeController{
+		left: 45%;
+	}
+	#creationTimeController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: olive;
+	}
+//////////////////////////////////////////////////////////
+	#redChannelController{
+		left: 50%;
+	}
+	#redChannelController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: red;
+	}
+//////////////////////////////////////////////////////////
+	#greenChannelController{
+		left: 50%;
+	}
+	#greenChannelController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: green;
+	}
+//////////////////////////////////////////////////////////
+	#blueChannelController{
+		left: 50%;
+	}
+	#blueChannelController::-webkit-slider-runnable-track{
+		width: 100%;
+		background: blue;
+	}*/
