@@ -22,6 +22,9 @@ let demo = [
 		},
 		{
 		 "a":1, "b":1, "c":1, "d":1, "e":13, "f":25, "g":1.6, "h":100, "i":0, "j":1, "k":200, "l":1, "m":1, "n":1, "o":1, "p":288, "q":258, "r":0, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false
+		},
+		{
+		 "a":3, "b":1, "c":1, "d":1, "e":0, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false
 		}
 	];
 // use this to log the current controller values u made, copy ang paste it above to add selection to the demos :)

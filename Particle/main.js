@@ -46,7 +46,16 @@ let canvas = document.querySelector("#canvas"),
 		collisionControllerLabel = document.querySelector("#collisionControllerLabel"),
 		deletePreviousFrames = document.querySelector("#deletePreviousFrames"),
 		recordCanvas = document.querySelector("#recordCanvas"),
-		demoListController = document.querySelector("#demoListController");
+		demoListController = document.querySelector("#demoListController"),
+		particleImageController = document.querySelector("#particleImageController");
+
+	let eyeImage = new Image(),
+		fReader = new FileReader();
+		
+
+	particleImageController.addEventListener("change", ()=>{
+		fReader.readAsDataURL(particleImageController.files[0]);
+	})
 
 	//default values
 	let partAmount = particleCountController.value,
@@ -381,7 +390,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 1:
 						linkControllerLabel.innerHTML = "Link (canvas center point)";
-						c.strokeStyle = "white";
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
 								c.beginPath();
@@ -399,7 +408,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 2:
 						linkControllerLabel.innerHTML = "Link (particles) global";
-						c.strokeStyle = "white";
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
 								c.beginPath();
@@ -421,7 +430,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 3:
 						linkControllerLabel.innerHTML = "Link (particles) 100 diameter";
-						c.strokeStyle = "white";
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
 								c.beginPath();
@@ -470,7 +479,18 @@ let canvas = document.querySelector("#canvas"),
 				}
 				switch(parseInt(shapeController.value)){ // shape
 					case 0:
-						c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+							if(particleImageController.files[0] == undefined){
+								c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+							}else{
+								   //eyeImage.src = particleImageController.files[0].name;
+								fReader.onloadend = function(event){
+								    eyeImage.src = event.target.result;
+								}
+								//eyeImage.src = particleImageController.files[0].name;
+								c.drawImage(eyeImage, 0, 0, 1200, 800, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+							}
+							
+						
 						shapeControllerLabel.innerHTML = "Shape (rectangle)";
 					break;
 					case 1:
@@ -519,6 +539,9 @@ let canvas = document.querySelector("#canvas"),
 			}
 
 		let CP = setInterval(createParticles, parseInt(creationTimeController.value));	
+
+		//listen for picture files to be used
+
 
 
 		//clear canvas by deleting all particles on the canvas
@@ -733,6 +756,11 @@ let canvas = document.querySelector("#canvas"),
 				deletePreviousFrames.value = "Del Previous Frames (y)";
 			}
 
+		}
+
+		// clear file input
+		function clrFI(){
+			particleImageController.value = "";
 		}
 
 //////////////////////////////////////////////////////////////////////////////////////////////

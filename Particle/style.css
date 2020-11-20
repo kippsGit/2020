@@ -21,7 +21,7 @@
 		white-space: nowrap;
 	}
 
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper{
+	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -47,12 +47,24 @@
 		width: 253px;
 		margin-bottom: 10px;
 	}
-	#dropdownWrapper{
-		height: 20px;
+	#demoListController{
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#particleImageController{
+		margin-top: 10px;
+		width: 253px;
 		margin-bottom: 10px;
 	}
-	#dropdownWrapper select{
+	#clearFileInputController{
+		margin-top: 10px;
 		width: 253px;
+		margin-bottom: 10px;
+	}
+	#linkController{
+		width: 253px;
+		margin-bottom: 10px;
 		text-align-last: center;
 	}
 	#saveCanvas{
@@ -116,8 +128,9 @@
 	#collisionController:hover,
 	#deletePreviousFrames:hover,
 	#recordCanvas:hover,
-	#dropdownWrapper:hover,
-	#dropdownWrapper select:hover{
+	#demoListController:hover,
+	#particleImageController:hover,
+	#clearFileInputController:hover{
 		cursor: pointer;
 	}
 
