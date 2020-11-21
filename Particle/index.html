@@ -17,13 +17,18 @@
 	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()" disabled="true">
 
 	<select id="demoListController"></select>
+	<hr>
 	<label id="particleImageControllerLabel" for="demoListController">Particle Image (rect)</label>
 	<input type="file" id="particleImageController">
 	<input id="clearFileInputController" type="button" value="Clear File" onclick="clrFI()">
-	<!-- <select id="linkController"></select> -->
+	<hr>
+	<select id="modeController"></select>
+	<input id="generateParticlesController" type="button" value="Generate" onclick="createParticles()" disabled="true">
+	<hr>
+	<select id="lifeModeController"></select>
 
 	<label id="linkControllerLabel" for="linkController">Link (nothing)</label>
-	<input id="linkController" type="range" min="0" max="4" value="0">
+	<input id="linkController" type="range" min="0" max="4" value="3">
 	<label id="canvasBoundaryControllerLabel" for="canvasBoundaryController">Canvas Boundary (nothing)</label>
 	<input id="canvasBoundaryController" type="range" min="0" max="2" value="1">
 	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
@@ -31,9 +36,9 @@
 	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
 	<input id="shapeController" type="range" min="0" max="1" value="0">
 	<label for="sizeXController">Rect Size X / Radius</label>
-	<input id="sizeXController" type="range" min="0" max="200" value="80">
+	<input id="sizeXController" type="range" min="0" max="200" value="10">
 	<label for="sizeYController">Rect Size Y</label>
-	<input id="sizeYController" type="range" min="0" max="200" value="80">
+	<input id="sizeYController" type="range" min="0" max="200" value="10">
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 	<label for="lifeTimeController">Lifetime</label>

@@ -47,7 +47,9 @@ let canvas = document.querySelector("#canvas"),
 		deletePreviousFrames = document.querySelector("#deletePreviousFrames"),
 		recordCanvas = document.querySelector("#recordCanvas"),
 		demoListController = document.querySelector("#demoListController"),
-		particleImageController = document.querySelector("#particleImageController");
+		particleImageController = document.querySelector("#particleImageController"),
+		modeController = document.querySelector("#modeController"),
+		lifeModeController = document.querySelector("#lifeModeController");
 
 	let eyeImage = new Image(),
 		fReader = new FileReader();
@@ -56,7 +58,20 @@ let canvas = document.querySelector("#canvas"),
 	particleImageController.addEventListener("change", ()=>{
 		fReader.readAsDataURL(particleImageController.files[0]);
 	})
-
+	modeController.addEventListener("change", ()=>{
+		// mode operation
+		switch(modeController.options.selectedIndex){
+			case 1:
+				CP = setInterval(createParticles, parseInt(creationTimeController.value));
+				generateParticlesController.disabled = true;
+			break;
+			case 2:
+				generateParticlesController.disabled = false;	
+				clearInterval(CP)
+			break;	
+		}		
+	})
+			
 	//default values
 	let partAmount = particleCountController.value,
 		partArr = [],
@@ -70,7 +85,9 @@ let canvas = document.querySelector("#canvas"),
 
 	let controllerFrame = document.querySelector("#controllerFrame");
 
-	let indx = 0, event, demoSelected = 0;
+	let indx = 0, 
+		event, 
+		demoSelected = 0;
 
 	//demo list
 	demoListController.options[0] = new Option("Demo List");
@@ -85,6 +102,16 @@ let canvas = document.querySelector("#canvas"),
 			selectDemo(demoSelected);
 		}
 	})
+
+	// mode controller list
+	modeController.options[0] = new Option("Generating Mode");
+	modeController.options[1] = new Option("Infinite - default");
+	modeController.options[2] = new Option("Finite");
+
+	// lifetime mode list
+	lifeModeController.options[0] = new Option("Life Mode");
+	lifeModeController.options[1] = new Option("Infinite");
+	lifeModeController.options[2] = new Option("Finite - default");
 
 	let particle = function(){
 			this.mass = .0001;
@@ -146,13 +173,25 @@ let canvas = document.querySelector("#canvas"),
 				this.pos.x += this.vel.x;
 				this.pos.y += this.vel.y;
 
-				this.vel.x *= this.friction.x;
-				this.vel.y *= this.friction.y;
+				//generating mode operation
+				switch(lifeModeController.options.selectedIndex){
+					case 0:
+						this.life++;
+						if (this.life >= this.maxLife){
+							delete partArr[this.idd];
+						}
+					break;
+					case 1:
 
-				this.life++;
-				if (this.life >= this.maxLife){
-					delete partArr[this.idd];
+					break;
+					case 2:
+						this.life++;
+						if (this.life >= this.maxLife){
+							delete partArr[this.idd];
+						}
+					break;
 				}
+				
 				//canvas boundary operation
 				switch(parseInt(canvasBoundaryController.value)){
 					case 0:
@@ -267,7 +306,7 @@ let canvas = document.querySelector("#canvas"),
 
 				
 			}
-			this.draw = ()=>{
+			this.draw = ()=>{ 
 				switch(parseInt(GCOController.value)){ // Global Composite Operation
 					case 1:
 						c.globalCompositeOperation = 'source-over';
@@ -487,7 +526,7 @@ let canvas = document.querySelector("#canvas"),
 								    eyeImage.src = event.target.result;
 								}
 								//eyeImage.src = particleImageController.files[0].name;
-								c.drawImage(eyeImage, 0, 0, 1200, 800, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+								c.drawImage(eyeImage, 0, 0, 1000, 1000, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 							}
 							
 						
@@ -839,6 +878,8 @@ function resolveCollision(part, otherParticle) {
 
 		// loop
 		setInterval(()=>{
+
+			// saving to temporary canvas for exporting webm video
 			if(transferCanvasToTempCanvas){
 				tempCNVS.width = canvas.width;
 				tempCNVS.height = canvas.height/2;
