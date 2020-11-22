@@ -21,7 +21,7 @@
 		white-space: nowrap;
 	}
 
-	#clearCanvasController, #randomValueController, #loopRandomValueController, #GCOController, #saveCanvas, #resetCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController{
+	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -37,15 +37,6 @@
 	#clearCanvasController{
 		margin-top: 30px;
 		width: 253px;
-	}
-	#randomValueController{
-		margin-top: 10px;
-		width: 253px;
-	}
-	#loopRandomValueController{
-		margin-top: 10px;
-		width: 253px;
-		margin-bottom: 10px;
 	}
 	#demoListController{
 		width: 253px;
@@ -79,8 +70,44 @@
 		margin-bottom: 10px;
 		text-align-last: center;
 	}
-
-
+	#movementController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#loopDemoController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#aboutController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+		margin-bottom: 50px;
+	}
+	#infoFrame{
+		border: 3px solid gray;
+		width: 253px;
+		height: 200px;
+		margin-bottom: 50px;
+		overflow-y: auto;
+		display: none;
+	}
+	#infoFrame p{
+		padding: 10px;
+		margin:auto;
+		text-align:justify;
+		word-break: break-word;
+		white-space: pre-line;
+		overflow-wrap: break-word;
+	}
+	#infoFrame img{
+		margin: 10px;
+		width: 210px;
+		height: 160px;
+	}
 
 
 	#linkController{
@@ -96,16 +123,10 @@
 	#recordCanvas{
 		width: 253px;
 	}
-	#resetCanvas{
+	#deletePreviousFrames{
 		margin-top: 10px;
 		width: 253px;
 		margin-bottom: 10px;
-	}
-	#deletePreviousFrames{
-		width: 253px;
-	}
-	#bgAlphaChannelController{
-		margin-bottom: 50px;
 	}
 	hr{
 		width: 253px;
@@ -116,11 +137,8 @@
 		background: none;
 	}
 	#clearCanvasController:hover,
-	#randomValueController:hover,
-	#loopRandomValueController:hover,
 	#GCOController:hover,
 	#saveCanvas:hover,
-	#resetCanvas:hover,
 	#shapeController:hover,
 	#sizeXController:hover,
 	#sizeYController:hover,
@@ -158,7 +176,10 @@
 	#clearFileInputController:hover,
 	#modeController:hover,
 	#generateParticlesController:hover,
-	#lifeModeController:hover{
+	#lifeModeController:hover,
+	#loopDemoController:hover,
+	#movementController:hover,
+	#aboutController:hover{
 		cursor: pointer;
 	}
 

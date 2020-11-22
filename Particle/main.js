@@ -49,7 +49,11 @@ let canvas = document.querySelector("#canvas"),
 		demoListController = document.querySelector("#demoListController"),
 		particleImageController = document.querySelector("#particleImageController"),
 		modeController = document.querySelector("#modeController"),
-		lifeModeController = document.querySelector("#lifeModeController");
+		lifeModeController = document.querySelector("#lifeModeController"),
+		loopDemoController = document.querySelector("#loopDemoController"),
+		movementController = document.querySelector("#movementController"),
+		infoFrame = document.querySelector("#infoFrame"),
+		aboutController = document.querySelector("#aboutController");
 
 	let eyeImage = new Image(),
 		fReader = new FileReader();
@@ -113,6 +117,13 @@ let canvas = document.querySelector("#canvas"),
 	lifeModeController.options[1] = new Option("Infinite");
 	lifeModeController.options[2] = new Option("Finite - default");
 
+	// movement list
+	movementController.options[0] = new Option("Movement");
+	movementController.options[1] = new Option("Linear - default");
+	movementController.options[2] = new Option("Circular");
+	movementController.options.selectedIndex = 1; // default selection
+
+
 	let particle = function(){
 			this.mass = .0001;
 			this.r = Math.random()*255;
@@ -165,13 +176,26 @@ let canvas = document.querySelector("#canvas"),
 			if(parseInt(randomlifeTimeController.value) == 1){
 				this.maxLife = Math.floor(Math.random()*parseInt(lifeTimeController.value));
 			}
+			this.angle = 0;
+			this.speed = -1;
+			this.radius = Math.random()*400;
 
 			this.update = ()=>{
 
-				this.vel.y += this.gravity;
+				//movement operation
+				switch(movementController.options.selectedIndex){
+					case 1:
+						this.vel.y += this.gravity;
 
-				this.pos.x += this.vel.x;
-				this.pos.y += this.vel.y;
+						this.pos.x += this.vel.x;
+						this.pos.y += this.vel.y;
+					break;
+					case 2:
+						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
+						this.pos.y = this.radius * Math.sin(this.angle * (Math.PI/180)) + canvas.height/4;
+						this.angle += this.speed;
+					break;
+				}
 
 				//generating mode operation
 				switch(lifeModeController.options.selectedIndex){
@@ -593,45 +617,18 @@ let canvas = document.querySelector("#canvas"),
 			//console.log(partArr)
 		}
 
-		//reset canvas
-		function resetCNVS(){
-			GCOController.value = 1
-			shapeController.value = 0
-			sizeXController.value = 15
-			sizeYController.value = 15
-			gravityController.value = 0
-			lifeTimeController.value = 10
-			randomlifeTimeController.value = 0
-			posXController.value = 293
-			posYController.value = 263
-			randomXController.value = 0
-			randomYController.value = 0
-			velXMaxController.value = 10
-			velXMinController.value = 5
-			velYMaxController.value = 10
-			velYMinController.value = 5
-			particleCountController.value = 1
-			creationTimeController.value = 200
-			redChannelController.value = 255
-			greenChannelController.value = 255
-			blueChannelController.value = 255
-			alphaChannelController.value = 1.0
-			bgRedChannelController.value = 0
-			bgGreenChannelController.value = 0
-			bgBlueChannelController.value = 0
-			bgAlphaChannelController.value = 1.0
-			partArr = [];
-		}
-
-		// loop random value controller
-		let loop_rndVal_state = false;
-		function loop_rndVal(){
-			if(loop_rndVal_state){
-				loop_rndVal_state = false;
-				loopRandomValueController.value = "Loop Random Value (off)";
+		// loop demo
+		let LDon = true, LDinterv, LDrandIndx;
+		function LDL(){
+			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
+			if(LDon){
+				loopDemoController.value = "Loop Demo List (y)";
+				LDinterv = setInterval(()=>{selectDemo(LDrandIndx)}, 10000);
+				LDon = false;
 			}else{
-				loop_rndVal_state = true;
-				loopRandomValueController.value = "Loop Random Value (on)";
+				loopDemoController.value = "Loop Demo List (n)";
+				clearInterval(LDinterv);
+				LDon = true;
 			}
 		}
 
@@ -639,6 +636,7 @@ let canvas = document.querySelector("#canvas"),
 		function selectDemo(ds){
 			clearInterval(CP);
 			clrCnv();
+			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
 			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee);
 			//issue with creating particles, on change add event listener
 			//redeclaring this interval solution
@@ -727,7 +725,7 @@ let canvas = document.querySelector("#canvas"),
 		  	rec.stop(); 
 		  	transferCanvasToTempCanvas = false;
 		  	recordCanvas.disabled = false
-		  }, 5000); 
+		  }, 10000); 
 		}
 		function exportVid(blob) {
 
@@ -800,6 +798,18 @@ let canvas = document.querySelector("#canvas"),
 		// clear file input
 		function clrFI(){
 			particleImageController.value = "";
+		}
+		let AInfTrig = true;
+		function aboutInfo(){
+			if(AInfTrig){
+				infoFrame.style.display = "block"
+				AInfTrig = false;
+				aboutController.style.marginBottom = "10px";
+			}else{
+				infoFrame.style.display = "none"
+				AInfTrig = true;
+				aboutController.style.marginBottom = "50px";
+			}
 		}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -906,16 +916,8 @@ function resolveCollision(part, otherParticle) {
 			
 
 		}, 60)
-			
-		setInterval(()=>{
 
-			if(loop_rndVal_state){
-				clrCnv();
-				rndVal();
-			}
-			
-		}, 5000)
-
+		//selectDemo(10);// experiment default selection
 ///////////////////////////////////////////////////
 		function adjustScreen(){
 

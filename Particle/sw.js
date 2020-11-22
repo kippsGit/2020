@@ -31,7 +31,11 @@ self.addEventListener('install', function(event) {
         return cache.addAll([
           '/2020/Particle/',
           '/2020/Particle/index.html',
-          '/2020/Particle/index.js'
+          '/2020/Particle/index.js',
+          '/2020/Particle/main.js',
+          '/2020/Particle/ext.js',
+          '/2020/Particle/style.css',
+          '/2020/Particle/us.jpg'
           ]);
       })
       .then(function() {

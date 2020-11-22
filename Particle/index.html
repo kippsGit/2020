@@ -10,13 +10,11 @@
 <div id="controllerFrame">
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
 	<input id="saveCanvas" type="button" value="Screen Shot Canvas" onclick="saveCNVS()">
-	<input id="recordCanvas" type="button" value="Record Canvas (5s)" onclick="startRecording()">
-	<input id="resetCanvas" type="button" value="Reset Canvas" onclick="resetCNVS()" disabled="true">
+	<input id="recordCanvas" type="button" value="Record Canvas (10s)" onclick="startRecording()">
 	<input id="deletePreviousFrames" type="button" value="Del Previous Frames (n)" onclick="delPrevFrames()">
-	<input id="randomValueController" type="button" value="Randomize Value" onclick="rndVal()" disabled="true">
-	<input id="loopRandomValueController" type="button" value="Loop Random Value (off)" onclick="loop_rndVal()" disabled="true">
 
 	<select id="demoListController"></select>
+	<input id="loopDemoController" type="button" value="Loop Demo List (n)" onclick="LDL()">
 	<hr>
 	<label id="particleImageControllerLabel" for="demoListController">Particle Image (rect)</label>
 	<input type="file" id="particleImageController">
@@ -26,11 +24,12 @@
 	<input id="generateParticlesController" type="button" value="Generate" onclick="createParticles()" disabled="true">
 	<hr>
 	<select id="lifeModeController"></select>
+	<select id="movementController"></select>
 
 	<label id="linkControllerLabel" for="linkController">Link (nothing)</label>
-	<input id="linkController" type="range" min="0" max="4" value="3">
+	<input id="linkController" type="range" min="0" max="4" value="0">
 	<label id="canvasBoundaryControllerLabel" for="canvasBoundaryController">Canvas Boundary (nothing)</label>
-	<input id="canvasBoundaryController" type="range" min="0" max="2" value="1">
+	<input id="canvasBoundaryController" type="range" min="0" max="2" value="0">
 	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
 	<input id="GCOController" type="range" min="1" max="26" value="1">
 	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
@@ -42,7 +41,7 @@
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 	<label for="lifeTimeController">Lifetime</label>
-	<input id="lifeTimeController" type="range" min="0" max="1000" value="100">
+	<input id="lifeTimeController" type="range" min="0" max="1000" value="700">
 	<label for="randomlifeTimeController">Random Lifetime</label>
 	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
 	<label for="particleCountController">Particle Count</label>
@@ -62,9 +61,9 @@
 	<label for="posYController">Spawn position Y</label>
 	<input id="posYController" type="range" min="0" max="1" value="20">
 	<label for="randomXController">Random spawn X</label>
-	<input id="randomXController" type="range" min="0" max="1" value="1">
+	<input id="randomXController" type="range" min="0" max="1" value="0">
 	<label for="randomYController">Random spawn Y</label>
-	<input id="randomYController" type="range" min="0" max="1" value="1">
+	<input id="randomYController" type="range" min="0" max="1" value="0">
 	<label for="velXMaxController">Vel Max X</label>
 	<input id="velXMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velXMinController">Vel Min X</label>
@@ -89,6 +88,12 @@
 	<input id="bgBlueChannelController" type="range" min="0" max="255" value="0">
 	<label for="bgAlphaChannelController">BG Alpha Channel</label>
 	<input id="bgAlphaChannelController" type="range" min="0.1" max="1.0" step="0.1" value="1.0">
+	<hr id="HRlast">
+	<input id="aboutController" type="button" value="About" onclick="aboutInfo()">
+	<div id="infoFrame">
+		<p>This was created to be kinda like a particle system... that's it hehe, with the help of my girl with her daily 'tampo' I was able to work on this on my free time. :)</p>
+		<img src="us.jpg">
+	</div>
 </div>
 <script type="text/javascript" src="index.js" defer></script>
 <script type="text/javascript" src="ext.js"></script>
