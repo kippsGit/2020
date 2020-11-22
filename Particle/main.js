@@ -37,9 +37,7 @@ let canvas = document.querySelector("#canvas"),
 		bgAlphaChannelController = document.querySelector("#bgAlphaChannelController"),
 		randomColorController = document.querySelector("#randomColorController"),
 		canvasBoundaryController = document.querySelector("#canvasBoundaryController"),
-		canvasBoundaryControllerLabel = document.querySelector("#canvasBoundaryControllerLabel"),
 		linkController = document.querySelector("#linkController"),
-		linkControllerLabel = document.querySelector("#linkControllerLabel"),
 		frictionXController = document.querySelector("#frictionXController"),
 		frictionYController = document.querySelector("#frictionYController"),
 		collisionController = document.querySelector("#collisionController"),
@@ -120,9 +118,26 @@ let canvas = document.querySelector("#canvas"),
 	// movement list
 	movementController.options[0] = new Option("Movement");
 	movementController.options[1] = new Option("Linear - default");
-	movementController.options[2] = new Option("Circular");
+	movementController.options[2] = new Option("Circular (clockwise)");
+	movementController.options[3] = new Option("Circular (counter-clockwise)");
+	movementController.options[4] = new Option("Circular (random)");
 	movementController.options.selectedIndex = 1; // default selection
 
+	// link list
+	linkController.options[0] = new Option("Link Style");
+	linkController.options[1] = new Option("None");
+	linkController.options[2] = new Option("Center");
+	linkController.options[3] = new Option("Global");
+	linkController.options[4] = new Option("100px range");
+	linkController.options[5] = new Option("Mouse Cursor");
+	linkController.options.selectedIndex = 0; // default onload selection
+
+	// boundary list - none, solid, portal
+	canvasBoundaryController.options[0] = new Option("Canvas Boundary");
+	canvasBoundaryController.options[1] = new Option("None - default");
+	canvasBoundaryController.options[2] = new Option("solid");
+	canvasBoundaryController.options[3] = new Option("Portal");
+	canvasBoundaryController.options.selectedIndex = 0;// default
 
 	let particle = function(){
 			this.mass = .0001;
@@ -156,6 +171,11 @@ let canvas = document.querySelector("#canvas"),
 				x: this.vel.x,
 				y: this.vel.y
 			}
+			this.angle = Math.floor(Math.random()*360);
+			this.radius = Math.random()*400;
+			this.rndSpeed = Math.random()*2-1;
+			this.Cspeed = Math.random()*1;
+			this.CCspeed = Math.random()*-1;
 
 			//randomize x and y spawn position if...
 			if(parseInt(randomXController.value) == 1){ 
@@ -176,24 +196,32 @@ let canvas = document.querySelector("#canvas"),
 			if(parseInt(randomlifeTimeController.value) == 1){
 				this.maxLife = Math.floor(Math.random()*parseInt(lifeTimeController.value));
 			}
-			this.angle = 0;
-			this.speed = -1;
-			this.radius = Math.random()*400;
+			
 
 			this.update = ()=>{
 
 				//movement operation
 				switch(movementController.options.selectedIndex){
-					case 1:
+					case 1: // linear
 						this.vel.y += this.gravity;
 
 						this.pos.x += this.vel.x;
 						this.pos.y += this.vel.y;
 					break;
-					case 2:
+					case 2: // circular (clockwise)
 						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
 						this.pos.y = this.radius * Math.sin(this.angle * (Math.PI/180)) + canvas.height/4;
-						this.angle += this.speed;
+						this.angle += this.Cspeed;
+					break;
+					case 3: // circular (counter-clockwise)
+						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
+						this.pos.y = this.radius * Math.sin(this.angle * (Math.PI/180)) + canvas.height/4;
+						this.angle += this.CCspeed;
+					break;
+					case 4: // circular (random)
+						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
+						this.pos.y = this.radius * Math.sin(this.angle * (Math.PI/180)) + canvas.height/4;
+						this.angle += this.rndSpeed;
 					break;
 				}
 
@@ -217,9 +245,12 @@ let canvas = document.querySelector("#canvas"),
 				}
 				
 				//canvas boundary operation
-				switch(parseInt(canvasBoundaryController.value)){
+				switch(canvasBoundaryController.options.selectedIndex){
 					case 0:
-						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (none)";
+
+					break;
+					case 1:
+						// none
 						if(this.pos.x > canvas.width){
 							//this.pos.x = 0 - this.siz.w;
 							delete partArr[this.idd];
@@ -239,8 +270,8 @@ let canvas = document.querySelector("#canvas"),
 							delete partArr[this.idd];
 						}
 					break;
-					case 1:
-						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (solid)";
+					case 2:
+						// solid
 						switch(parseInt(shapeController.value)){
 							case 0: //square collision
 								if(this.pos.x > canvas.width - this.siz.w){
@@ -281,8 +312,8 @@ let canvas = document.querySelector("#canvas"),
 						}
 						
 					break;
-					case 2:
-						canvasBoundaryControllerLabel.innerHTML = "Canvas Boundary (portal)";
+					case 3:
+						// portal
 						if(this.pos.x > canvas.width){
 							this.pos.x = 0 - this.siz.w
 						}
@@ -447,12 +478,12 @@ let canvas = document.querySelector("#canvas"),
 					break;
 				}
 				
-				switch(parseInt(linkController.value)){ // link
+				switch(linkController.options.selectedIndex){ // link
 					case 0:
-						linkControllerLabel.innerHTML = "Link (none)";
-					break;
 					case 1:
-						linkControllerLabel.innerHTML = "Link (canvas center point)";
+					break;
+					
+					case 2: // center
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
@@ -469,8 +500,7 @@ let canvas = document.querySelector("#canvas"),
 							break;
 						}
 					break;
-					case 2:
-						linkControllerLabel.innerHTML = "Link (particles) global";
+					case 3: // global
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
@@ -491,8 +521,7 @@ let canvas = document.querySelector("#canvas"),
 							break;
 						}
 					break;
-					case 3:
-						linkControllerLabel.innerHTML = "Link (particles) 100 diameter";
+					case 4: // 100px radius
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
@@ -517,8 +546,7 @@ let canvas = document.querySelector("#canvas"),
 							break;
 						}
 					break;
-					case 4:
-						linkControllerLabel.innerHTML = "Link (mouse cursor)";
+					case 5: // mouse cursor
 						c.strokeStyle = "white";
 						switch(parseInt(shapeController.value)){
 							case 0: // square
@@ -643,8 +671,8 @@ let canvas = document.querySelector("#canvas"),
 			CP = setInterval(createParticles, parseInt(creationTimeController.value));
 		}
 		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee){
-			linkController.value = a
-			canvasBoundaryController.value = b
+			linkController.options.selectedIndex = a
+			canvasBoundaryController.options.selectedIndex = b
 			GCOController.value = c
 			shapeController.value = d
 			sizeXController.value = e
@@ -719,13 +747,13 @@ let canvas = document.querySelector("#canvas"),
 		  // every time the recorder has new data, we will store it in our array
 		  rec.ondataavailable = e => {chunks.push(e.data)};
 		  // only when the recorder stops, we construct a complete Blob from all the chunks
-		  rec.onstop = e => exportVid(new Blob(chunks, {'type': 'video/webm;codecs=h264'}));
+		  rec.onstop = e => exportVid(new Blob(chunks, {'type': 'video/webm;'}));
 		  rec.start();
 		  setTimeout(()=>{
 		  	rec.stop(); 
 		  	transferCanvasToTempCanvas = false;
 		  	recordCanvas.disabled = false
-		  }, 10000); 
+		  }, 11000); 
 		}
 		function exportVid(blob) {
 
@@ -741,34 +769,6 @@ let canvas = document.querySelector("#canvas"),
 		  document.body.appendChild(a);
 		}
 		/////////////////////////////////////////////////////////////////////
-
-		//randomize values
-		function rndVal(){
-			shapeController.value = Math.floor(Math.random() * 2);
-			sizeXController.value = Math.floor(Math.random() * parseInt(sizeXController.max));
-			sizeYController.value = Math.floor(Math.random() * parseInt(sizeYController.max));
-			gravityController.value = Math.random() * parseInt(gravityController.max);
-			lifeTimeController.value = Math.floor(Math.random() * parseInt(lifeTimeController.max));
-			randomlifeTimeController.value = Math.floor(Math.random() * 2);
-			posXController.value = Math.floor(Math.random() * parseInt(posXController.max));
-			posYController.value = Math.floor(Math.random() * parseInt(posYController.max));
-			randomXController.value = Math.floor(Math.random() * 2);
-			randomYController.value = Math.floor(Math.random() * 2);
-			velXMaxController.value = Math.floor(Math.random() * parseInt(velXMaxController.max));
-			velXMinController.value = Math.floor(Math.random() * parseInt(velXMinController.max));
-			velYMaxController.value = Math.floor(Math.random() * parseInt(velYMaxController.max));
-			velYMinController.value = Math.floor(Math.random() * parseInt(velYMinController.max));
-			particleCountController.value = Math.floor(Math.random() * parseInt(particleCountController.max));
-			creationTimeController.value = Math.floor(Math.random() * parseInt(creationTimeController.max));
-			redChannelController.value = Math.floor(Math.random() * parseInt(redChannelController.max));
-			greenChannelController.value = Math.floor(Math.random() * parseInt(greenChannelController.max));
-			blueChannelController.value = Math.floor(Math.random() * parseInt(blueChannelController.max));
-			alphaChannelController.value = Math.random() * parseInt(alphaChannelController.max);
-			bgRedChannelController.value = Math.floor(Math.random() * parseInt(bgRedChannelController.max));
-			bgGreenChannelController.value = Math.floor(Math.random() * parseInt(bgGreenChannelController.max));
-			bgBlueChannelController.value = Math.floor(Math.random() * parseInt(bgBlueChannelController.max));
-			bgAlphaChannelController.value = Math.random() * parseInt(bgAlphaChannelController.max);
-		}
 
 		//get mouse cursor position
 		function getMousePos(canvas, e){ 
