@@ -8,9 +8,7 @@ let canvas = document.querySelector("#canvas"),
 ///////////////////////////////////////////////////
 
 	let loopRandomValueController = document.querySelector("#loopRandomValueController"),
-		GCOControllerLabel = document.querySelector("#GCOControllerLabel"),
 		GCOController = document.querySelector("#GCOController"),
-		shapeControllerLabel = document.querySelector("#shapeControllerLabel"),
 		shapeController = document.querySelector("#shapeController"),
 		sizeXController = document.querySelector("#sizeXController"),
 		sizeYController = document.querySelector("#sizeYController"),
@@ -97,54 +95,6 @@ let canvas = document.querySelector("#canvas"),
 		indx = 0, 
 		event, 
 		demoSelected = 0;
-
-	//demo list
-	demoListController.options[0] = new Option("Demo List");
-	for(let i = 1; i <= demo.length-1; i++){
-		demoListController.options[i] = new Option(i);
-	}
-	demoListController.options[1] = new Option("1 - default");
-	demoListController.addEventListener("change", ()=>{
-		//console.log(demoListController.options.selectedIndex)
-		demoSelected = demoListController.options.selectedIndex;
-		if(demoSelected != 0){
-			selectDemo(demoSelected);
-		}
-	})
-
-	// mode controller list
-	modeController.options[0] = new Option("Generating Mode");
-	modeController.options[1] = new Option("Infinite - default");
-	modeController.options[2] = new Option("Finite");
-
-	// lifetime mode list
-	lifeModeController.options[0] = new Option("Life Mode");
-	lifeModeController.options[1] = new Option("Infinite");
-	lifeModeController.options[2] = new Option("Finite - default");
-	lifeModeController.options.selectedIndex = 0;//default
-
-	// movement list
-	movementController.options[0] = new Option("Movement");
-	movementController.options[1] = new Option("Linear - default");
-	movementController.options[2] = new Option("Circular (clockwise)");
-	movementController.options[3] = new Option("Circular (counter-clockwise)");
-	movementController.options[4] = new Option("Circular (random)");
-
-	// link list
-	linkController.options[0] = new Option("Link Style");
-	linkController.options[1] = new Option("None");
-	linkController.options[2] = new Option("Center");
-	linkController.options[3] = new Option("Global");
-	linkController.options[4] = new Option("100px range");
-	linkController.options[5] = new Option("Mouse Cursor");
-	linkController.options.selectedIndex = 0; // default onload selection
-
-	// boundary list - none, solid, portal
-	canvasBoundaryController.options[0] = new Option("Canvas Boundary");
-	canvasBoundaryController.options[1] = new Option("None - default");
-	canvasBoundaryController.options[2] = new Option("solid");
-	canvasBoundaryController.options[3] = new Option("Portal");
-	canvasBoundaryController.options.selectedIndex = 0;// default
 
 	let particle = function(){
 			this.mass = .0001;
@@ -284,8 +234,9 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 2:
 						// solid
-						switch(parseInt(shapeController.value)){
-							case 0: //square collision
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: //square collision
 								if(this.pos.x > canvas.width - this.siz.w){
 									this.pos.x = canvas.width - this.siz.w
 									this.vel.x = -this.vel.x
@@ -303,7 +254,7 @@ let canvas = document.querySelector("#canvas"),
 									this.vel.y = -this.vel.y
 								}
 							break;
-							case 1: //circle collision
+							case 2: //circle collision
 								if(this.pos.x > canvas.width - this.siz.w){
 									this.pos.x = canvas.width - this.siz.w
 									this.vel.x = -this.vel.x
@@ -347,8 +298,9 @@ let canvas = document.querySelector("#canvas"),
 					case 0:
 						collisionControllerLabel.innerHTML = "Collision (particles)";
 						
-						switch(parseInt(shapeController.value)){
+						switch(shapeController.options.selectedIndex){
 							case 0:
+							case 1:
 								//rectangle collision
 								for(let i in partArr){
 									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < this.siz.w){
@@ -356,7 +308,7 @@ let canvas = document.querySelector("#canvas"),
 									}
 								}
 							break;
-							case 1:
+							case 2:
 								//circles collision
 								for(let i in partArr){
 									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < this.siz.w*2){
@@ -374,110 +326,84 @@ let canvas = document.querySelector("#canvas"),
 				
 			}
 			this.draw = ()=>{ 
-				switch(parseInt(GCOController.value)){ // Global Composite Operation
+				switch(GCOController.options.selectedIndex){ // Global Composite Operation
 					case 1:
 						c.globalCompositeOperation = 'source-over';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (source-over)";
 					break;
 					case 2:
 						c.globalCompositeOperation = 'source-in';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (source-in)";
 					break;
 					case 3:
 						c.globalCompositeOperation = 'source-out';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (source-out)";
 					break;
 					case 4:
 						c.globalCompositeOperation = 'source-atop';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (source-atop)";
 					break;
 					case 5:
 						c.globalCompositeOperation = 'destination-over';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-over)";
 					break;
 					case 6:
 						c.globalCompositeOperation = 'destination-in';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-in)";
 					break;
 					case 7:
 						c.globalCompositeOperation = 'destination-out';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-out)";
 					break;
 					case 8:
 						c.globalCompositeOperation = 'destination-atop';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (destination-atop)";
 					break;
 					case 9:
 						c.globalCompositeOperation = 'lighter';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (lighter)";
 					break;
 					case 10:
 						c.globalCompositeOperation = 'copy';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (copy)";
 					break;
 					case 11:
 						c.globalCompositeOperation = 'xor';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (xor)";
 					break;
 					case 12:
 						c.globalCompositeOperation = 'multiply';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (multiply)";
 					break;
 					case 13:
 						c.globalCompositeOperation = 'screen';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (screen)";
 					break;
 					case 14:
 						c.globalCompositeOperation = 'overlay';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (overlay";
 					break;
 					case 15:
 						c.globalCompositeOperation = 'darken';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (darken)";
 					break;
 					case 16:
 						c.globalCompositeOperation = 'lighten';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (lighten)";
 					break;
 					case 17:
 						c.globalCompositeOperation = 'color-dodge';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (color-dodge)";
 					break;
 					case 18:
 						c.globalCompositeOperation = 'color-burn';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (color-burn)";
 					break;
 					case 19:
 						c.globalCompositeOperation = 'hard-light';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (hard-light)";
 					break;
 					case 20:
 						c.globalCompositeOperation = 'soft-light';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (soft-light)";
 					break;
 					case 21:
 						c.globalCompositeOperation = 'difference';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (difference)";
 					break;
 					case 22:
 						c.globalCompositeOperation = 'exclusion';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (exclusion)";
 					break;
 					case 23:
 						c.globalCompositeOperation = 'hue';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (hue)";
 					break;
 					case 24:
 						c.globalCompositeOperation = 'saturation';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (saturation)";
 					break;
 					case 25:
 						c.globalCompositeOperation = 'color';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (color)";
 					break;
 					case 26:
 						c.globalCompositeOperation = 'luminosity';
-						GCOControllerLabel.innerHTML = "Global Composite Operation (luminosity)";
 					break;
 				}
 				
@@ -497,14 +423,15 @@ let canvas = document.querySelector("#canvas"),
 					
 					case 2: // center
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(parseInt(shapeController.value)){
-							case 0: // square
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: // square
 								c.beginPath();
 								c.moveTo(canvas.width/2, canvas.height/2/2);
 								c.lineTo(this.pos.x + this.siz.w/2, this.pos.y + this.siz.h/2);
 								c.stroke();
 							break;
-							case 1: //circle
+							case 2: //circle
 								c.beginPath();
 								c.moveTo(canvas.width/2, canvas.height/4);
 								c.lineTo(this.pos.x, this.pos.y);
@@ -514,8 +441,9 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 3: // global
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(parseInt(shapeController.value)){
-							case 0: // square
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: // square
 								c.beginPath();
 								c.moveTo(this.pos.x + this.siz.w/2, this.pos.y + this.siz.h/2);
 								for(let i in partArr){
@@ -523,7 +451,7 @@ let canvas = document.querySelector("#canvas"),
 								}
 								c.stroke();
 							break;
-							case 1: //circle
+							case 2: //circle
 								c.beginPath();
 								c.moveTo(this.pos.x, this.pos.y);
 								for(let i in partArr){
@@ -535,8 +463,9 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 4: // 100px radius
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(parseInt(shapeController.value)){
-							case 0: // square
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: // square
 								c.beginPath();
 								c.moveTo(this.pos.x + this.siz.w/2, this.pos.y + this.siz.h/2);
 								for(let i in partArr){
@@ -546,22 +475,23 @@ let canvas = document.querySelector("#canvas"),
 								}
 								c.stroke();
 							break;
-							case 1: //circle
+							case 2: //circle
 								c.beginPath();
-								c.moveTo(this.pos.x, this.pos.y);
+								c.moveTo(this.pos.x + this.siz.w, this.pos.y + this.siz.h);
 								for(let i in partArr){
 									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < 100){
-										c.lineTo(partArr[i].pos.x, partArr[i].pos.y);
+										c.lineTo(partArr[i].pos.x + partArr[i].siz.w, partArr[i].pos.y + partArr[i].siz.h);
 									}
 								}
 								c.stroke();
 							break;
 						}
 					break;
-					case 5: // mouse cursor
-						c.strokeStyle = "white";
-						switch(parseInt(shapeController.value)){
-							case 0: // square
+					case 5: // mouse cursor (Global)
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: // square
 									c.beginPath();
 									c.moveTo(getMousePos(canvas, event).x, getMousePos(canvas, event).y);
 									for(let i in partArr){
@@ -569,7 +499,7 @@ let canvas = document.querySelector("#canvas"),
 									}
 									c.stroke();
 							break;
-							case 1: //circle
+							case 2: //circle
 								c.beginPath();
 								c.moveTo(getMousePos(canvas, event).x, getMousePos(canvas, event).y);
 									for(let i in partArr){
@@ -579,9 +509,32 @@ let canvas = document.querySelector("#canvas"),
 							break;
 						}
 					break;
+					case 6: // mouse cursor (100px radius)
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+						switch(shapeController.options.selectedIndex){
+							case 0:
+							case 1: // square
+								c.beginPath();
+								c.moveTo(getMousePos(canvas, event).x, getMousePos(canvas, event).y);
+									if(Math.sqrt(Math.pow(this.pos.x - getMousePos(canvas, event).x, 2) + Math.pow(this.pos.y - getMousePos(canvas, event).y, 2)) < 100){
+										c.lineTo(this.pos.x + this.siz.w/2, this.pos.y + this.siz.h/2);
+								}
+								c.stroke();
+							break;
+							case 2: //circle
+								c.beginPath();
+								c.moveTo(getMousePos(canvas, event).x, getMousePos(canvas, event).y);
+									if(Math.sqrt(Math.pow(this.pos.x - getMousePos(canvas, event).x, 2) + Math.pow(this.pos.y - getMousePos(canvas, event).y, 2)) < 100){
+										c.lineTo(this.pos.x + this.siz.w, this.pos.y + this.siz.h);
+								}
+								c.stroke();
+							break;
+						}
 				}
-				switch(parseInt(shapeController.value)){ // shape
+				switch(shapeController.options.selectedIndex){ // shape
 					case 0:
+					case 1:
+							// if no image is upload/selected then just draw the regular shape(rect)
 							if(particleImageController.files[0] == undefined){
 								c.fillRect(this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 							}else{
@@ -593,14 +546,11 @@ let canvas = document.querySelector("#canvas"),
 								c.drawImage(eyeImage, 0, 0, 1000, 1000, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 							}
 							
-						
-						shapeControllerLabel.innerHTML = "Shape (rectangle)";
 					break;
-					case 1:
+					case 2:
 						c.beginPath();
 						c.arc(this.pos.x, this.pos.y, this.siz.w, 0, Math.PI * 2)
 						c.fill();
-						shapeControllerLabel.innerHTML = "Shape (circle)";
 					break;
 				}
 
@@ -615,13 +565,14 @@ let canvas = document.querySelector("#canvas"),
 				tempConY: Math.random()*(canvas.height-0+parseInt(sizeYController.value))+0+parseInt(sizeYController.value)
 			}
 			for(let i in partArr){
-				switch(parseInt(shapeController.value)){
+				switch(shapeController.options.selectedIndex){
 					case 0:
+					case 1:
 						if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w){
 							secureSpawn();
 						}
 					break;
-					case 1:
+					case 2:
 						if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w*2){
 							secureSpawn();
 						}
@@ -658,15 +609,21 @@ let canvas = document.querySelector("#canvas"),
 		}
 
 		// loop demo
-		let LDon = true, LDinterv, LDrandIndx;
+		// make a feature where you  can choose to loop on the list randomly or not
+		// current default is looping from 0 to the list max length
+		let LDon = true, LDinterv, LDrandIndx, LDIndx = 14;
 		function LDL(){
-
-			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
+			//LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
+			
 			if(LDon){
 				loopDemoController.value = "Loop Demo List (y)";
 				LDinterv = setInterval(()=>{
-					selectDemo(LDrandIndx)
-					console.clear(); // clear the console, damo errors hahah
+					LDIndx++;
+					selectDemo(LDIndx);
+					if(LDIndx >= demo.length - 1){ // reset if the end of list is met
+						LDIndx = 0;
+					}
+					console.clear(); // clear ang console, damo errors hahah
 				}, 10000);
 				LDon = false;
 			}else{
@@ -689,8 +646,8 @@ let canvas = document.querySelector("#canvas"),
 		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg){
 			linkController.options.selectedIndex = a
 			canvasBoundaryController.options.selectedIndex = b
-			GCOController.value = c
-			shapeController.value = d
+			GCOController.options.selectedIndex = c
+			shapeController.options.selectedIndex = d
 			sizeXController.value = e
 			sizeYController.value = f
 			gravityController.value = g
@@ -919,6 +876,7 @@ function resolveCollision(part, otherParticle) {
 					tempCNVS.height = canvas.height/2;
 					TCNVSc.drawImage(canvas, 0, 0);
 				}
+
 				//background
 				if(previousFramesDelete){
 					c.clearRect(0,0,canvas.width,canvas.height);
@@ -936,7 +894,7 @@ function resolveCollision(part, otherParticle) {
 						partArr[i].siz.w = sizeXController.value;
 						partArr[i].siz.h = sizeYController.value;
 						partArr[i].draw();		
-					}
+					}	
 			}
 			
 				frameRate++;

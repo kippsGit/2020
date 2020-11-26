@@ -108,6 +108,16 @@
 		width: 210px;
 		height: 160px;
 	}
+	#GCOController{
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#shapeController{
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
 
 
 	#linkController{

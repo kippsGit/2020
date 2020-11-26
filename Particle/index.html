@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<title>Particle</title>
+	<title>Particle ✨</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -27,11 +27,11 @@
 	<select id="movementController"></select>
 	<select id="linkController"></select>
 	<select id="canvasBoundaryController"></select>
+	<select id="GCOController"></select>
+	<select id="shapeController"></select>
 
-	<label id="GCOControllerLabel" for="GCOController">Global Composite Operation (source-over)</label>
-	<input id="GCOController" type="range" min="1" max="26" value="1">
-	<label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
-	<input id="shapeController" type="range" min="0" max="1" value="0">
+	<!-- <label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
+	<input id="shapeController" type="range" min="0" max="1" value="0"> -->
 	<label for="sizeXController">Rect Size X / Radius</label>
 	<input id="sizeXController" type="range" min="0" max="200" value="10">
 	<label for="sizeYController">Rect Size Y</label>
@@ -59,9 +59,9 @@
 	<label for="posYController">Spawn position Y</label>
 	<input id="posYController" type="range" min="0" max="1" value="20">
 	<label for="randomXController">Random spawn X</label>
-	<input id="randomXController" type="range" min="0" max="1" value="0">
+	<input id="randomXController" type="range" min="0" max="1" value="1">
 	<label for="randomYController">Random spawn Y</label>
-	<input id="randomYController" type="range" min="0" max="1" value="0">
+	<input id="randomYController" type="range" min="0" max="1" value="1">
 	<label for="velXMaxController">Vel Max X</label>
 	<input id="velXMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velXMinController">Vel Min X</label>
@@ -94,7 +94,7 @@
 	</div>
 </div>
 <script type="text/javascript" src="index.js" defer></script>
-<script type="text/javascript" src="ext.js"></script>
+<script type="text/javascript" src="storage.js"></script>
 <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
