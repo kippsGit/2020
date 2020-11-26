@@ -51,17 +51,19 @@ let canvas = document.querySelector("#canvas"),
 		loopDemoController = document.querySelector("#loopDemoController"),
 		movementController = document.querySelector("#movementController"),
 		infoFrame = document.querySelector("#infoFrame"),
-		aboutController = document.querySelector("#aboutController");
+		aboutController = document.querySelector("#aboutController"),
+		aboutInfoP = getHtmlElements("#aboutInfoP");
 
 	let eyeImage = new Image(),
 		fReader = new FileReader();
 		
-
+	//image file input
 	particleImageController.addEventListener("change", ()=>{
 		fReader.readAsDataURL(particleImageController.files[0]);
 	})
+
+	// mode operation
 	modeController.addEventListener("change", ()=>{
-		// mode operation
 		switch(modeController.options.selectedIndex){
 			case 1:
 				CP = setInterval(createParticles, parseInt(creationTimeController.value));
@@ -72,6 +74,10 @@ let canvas = document.querySelector("#canvas"),
 				clearInterval(CP)
 			break;	
 		}		
+	})
+	//about info operation
+	aboutInfoP.addEventListener("click",()=>{
+		
 	})
 			
 	//default values
@@ -87,7 +93,8 @@ let canvas = document.querySelector("#canvas"),
 
 	let controllerFrame = document.querySelector("#controllerFrame");
 
-	let indx = 0, 
+	let frameRate = 0,
+		indx = 0, 
 		event, 
 		demoSelected = 0;
 
@@ -114,6 +121,7 @@ let canvas = document.querySelector("#canvas"),
 	lifeModeController.options[0] = new Option("Life Mode");
 	lifeModeController.options[1] = new Option("Infinite");
 	lifeModeController.options[2] = new Option("Finite - default");
+	lifeModeController.options.selectedIndex = 0;//default
 
 	// movement list
 	movementController.options[0] = new Option("Movement");
@@ -121,7 +129,6 @@ let canvas = document.querySelector("#canvas"),
 	movementController.options[2] = new Option("Circular (clockwise)");
 	movementController.options[3] = new Option("Circular (counter-clockwise)");
 	movementController.options[4] = new Option("Circular (random)");
-	movementController.options.selectedIndex = 1; // default selection
 
 	// link list
 	linkController.options[0] = new Option("Link Style");
@@ -148,8 +155,8 @@ let canvas = document.querySelector("#canvas"),
 			this.maxLife = parseInt(lifeTimeController.value);
 			this.life = 0;
 			this.friction = {
-				x: frictionXController.value,
-				y: frictionYController.value
+				x: parseFloat(frictionXController.value),
+				y: parseFloat(frictionYController.value)
 			}
 			this.siz = {
 				w: partSizW,
@@ -173,9 +180,9 @@ let canvas = document.querySelector("#canvas"),
 			}
 			this.angle = Math.floor(Math.random()*360);
 			this.radius = Math.random()*400;
-			this.rndSpeed = Math.random()*2-1;
-			this.Cspeed = Math.random()*1;
-			this.CCspeed = Math.random()*-1;
+			this.rndSpeed = Math.random()*5-2.5;
+			this.Cspeed = Math.random()*1+1;
+			this.CCspeed = Math.random()*-1-1;
 
 			//randomize x and y spawn position if...
 			if(parseInt(randomXController.value) == 1){ 
@@ -202,11 +209,16 @@ let canvas = document.querySelector("#canvas"),
 
 				//movement operation
 				switch(movementController.options.selectedIndex){
+					case 0:
 					case 1: // linear
 						this.vel.y += this.gravity;
 
+						this.vel.x *= this.friction.x;
+						this.vel.y *=  this.friction.y;
+
 						this.pos.x += this.vel.x;
 						this.pos.y += this.vel.y;
+
 					break;
 					case 2: // circular (clockwise)
 						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
@@ -648,10 +660,14 @@ let canvas = document.querySelector("#canvas"),
 		// loop demo
 		let LDon = true, LDinterv, LDrandIndx;
 		function LDL(){
+
 			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
 			if(LDon){
 				loopDemoController.value = "Loop Demo List (y)";
-				LDinterv = setInterval(()=>{selectDemo(LDrandIndx)}, 10000);
+				LDinterv = setInterval(()=>{
+					selectDemo(LDrandIndx)
+					console.clear(); // clear the console, damo errors hahah
+				}, 10000);
 				LDon = false;
 			}else{
 				loopDemoController.value = "Loop Demo List (n)";
@@ -665,12 +681,12 @@ let canvas = document.querySelector("#canvas"),
 			clearInterval(CP);
 			clrCnv();
 			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
-			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee);
+			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee, demo[ds].ff, demo[ds].gg);
 			//issue with creating particles, on change add event listener
 			//redeclaring this interval solution
 			CP = setInterval(createParticles, parseInt(creationTimeController.value));
 		}
-		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee){
+		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg){
 			linkController.options.selectedIndex = a
 			canvasBoundaryController.options.selectedIndex = b
 			GCOController.value = c
@@ -702,6 +718,8 @@ let canvas = document.querySelector("#canvas"),
 			bgGreenChannelController.value = cc
 			bgBlueChannelController.value = dd
 			bgAlphaChannelController.value = ee
+			previousFramesDelete = ff
+			movementController.options.selectedIndex = gg
 		}
 
 		// screen shot the canvas
@@ -812,6 +830,11 @@ let canvas = document.querySelector("#canvas"),
 			}
 		}
 
+		// get html elements
+		function getHtmlElements(a){
+			return document.querySelector(a);
+		}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //review this shit its not yours hahah
 		/**
@@ -885,37 +908,41 @@ function resolveCollision(part, otherParticle) {
 		canvas.addEventListener('mousemove', (e)=>{
 			event = e;
 		});
-
+		
 		// loop
-		setInterval(()=>{
-
-			// saving to temporary canvas for exporting webm video
-			if(transferCanvasToTempCanvas){
-				tempCNVS.width = canvas.width;
-				tempCNVS.height = canvas.height/2;
-				TCNVSc.drawImage(canvas, 0, 0);
-			}
-			//background
-			if(previousFramesDelete){
-				c.clearRect(0,0,canvas.width,canvas.height);
-			}
-			c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
-			c.fillRect(0,0,canvas.width,canvas.height/2);
-			
-			//recreate the CP interval if creationTime value changes
-			creationTimeController.addEventListener('change', ()=>{
-				clearInterval(CP);
-				CP = setInterval(createParticles, parseInt(creationTimeController.value));
-			})
-			//display partcles
-				for(let i in partArr){
-					partArr[i].siz.w = sizeXController.value;
-					partArr[i].siz.h = sizeYController.value;
-					partArr[i].draw();		
+		//setInterval(()=>{
+		function loop(){
+			if(frameRate % 2 == 0){
+				// saving to temporary canvas for exporting webm video
+				if(transferCanvasToTempCanvas){
+					tempCNVS.width = canvas.width;
+					tempCNVS.height = canvas.height/2;
+					TCNVSc.drawImage(canvas, 0, 0);
 				}
+				//background
+				if(previousFramesDelete){
+					c.clearRect(0,0,canvas.width,canvas.height);
+				}
+				c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
+				c.fillRect(0,0,canvas.width,canvas.height/2);
+				
+				//recreate the CP interval if creationTime value changes
+				creationTimeController.addEventListener('change', ()=>{
+					clearInterval(CP);
+					CP = setInterval(createParticles, parseInt(creationTimeController.value));
+				})
+				//display partcles
+					for(let i in partArr){
+						partArr[i].siz.w = sizeXController.value;
+						partArr[i].siz.h = sizeYController.value;
+						partArr[i].draw();		
+					}
+			}
 			
-
-		}, 60)
+				frameRate++;
+				requestAnimationFrame(loop)
+		};loop();
+		//}, 60)
 
 		//selectDemo(10);// experiment default selection
 ///////////////////////////////////////////////////
@@ -944,6 +971,10 @@ function resolveCollision(part, otherParticle) {
 
 	window.addEventListener("resize", ()=>{
 		adjustScreen();
+	})
+	window.addEventListener("load", ()=>{
+		//LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
+		//selectDemo(LDrandIndx);
 	})
 
 ////////////////////////////////////////////////////////
