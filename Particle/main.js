@@ -7,52 +7,56 @@ let canvas = document.querySelector("#canvas"),
 
 ///////////////////////////////////////////////////
 
-	let loopRandomValueController = document.querySelector("#loopRandomValueController"),
-		GCOController = document.querySelector("#GCOController"),
-		shapeController = document.querySelector("#shapeController"),
-		sizeXController = document.querySelector("#sizeXController"),
-		sizeYController = document.querySelector("#sizeYController"),
-		gravityController = document.querySelector("#gravityController"),
-		lifeTimeController = document.querySelector("#lifeTimeController"),
+	let loopRandomValueController = getHtmlElements("#loopRandomValueController"),
+		GCOController = getHtmlElements("#GCOController"),
+		shapeController = getHtmlElements("#shapeController"),
+		sizeXController = getHtmlElements("#sizeXController"),
+		sizeYController = getHtmlElements("#sizeYController"),
+		gravityController = getHtmlElements("#gravityController"),
+		lifeTimeController = getHtmlElements("#lifeTimeController"),
 		randomlifeTimeController = document.querySelector("#randomlifeTimeController"),
-		posXController = document.querySelector("#posXController"),
-		posYController = document.querySelector("#posYController"),
-		randomXController = document.querySelector("#randomXController"),
-		randomYController = document.querySelector("#randomYController"),
-		velXMaxController = document.querySelector("#velXMaxController"),
-		velXMinController = document.querySelector("#velXMinController"),
-		velYMaxController = document.querySelector("#velYMaxController"),
-		velYMinController = document.querySelector("#velYMinController"),
-		particleCountController = document.querySelector("#particleCountController"),
-		creationTimeController = document.querySelector("#creationTimeController"),
-		redChannelController = document.querySelector("#redChannelController"),
-		greenChannelController = document.querySelector("#greenChannelController"),
-		blueChannelController = document.querySelector("#blueChannelController"),
-		alphaChannelController = document.querySelector("#alphaChannelController"),
-		bgRedChannelController = document.querySelector("#bgRedChannelController"),
-		bgGreenChannelController = document.querySelector("#bgGreenChannelController"),
-		bgBlueChannelController = document.querySelector("#bgBlueChannelController"),
-		bgAlphaChannelController = document.querySelector("#bgAlphaChannelController"),
-		randomColorController = document.querySelector("#randomColorController"),
-		canvasBoundaryController = document.querySelector("#canvasBoundaryController"),
-		linkController = document.querySelector("#linkController"),
-		frictionXController = document.querySelector("#frictionXController"),
-		frictionYController = document.querySelector("#frictionYController"),
-		collisionController = document.querySelector("#collisionController"),
-		collisionControllerLabel = document.querySelector("#collisionControllerLabel"),
-		deletePreviousFrames = document.querySelector("#deletePreviousFrames"),
-		recordCanvas = document.querySelector("#recordCanvas"),
-		demoListController = document.querySelector("#demoListController"),
-		particleImageController = document.querySelector("#particleImageController"),
-		modeController = document.querySelector("#modeController"),
-		lifeModeController = document.querySelector("#lifeModeController"),
-		loopDemoController = document.querySelector("#loopDemoController"),
-		movementController = document.querySelector("#movementController"),
-		infoFrame = document.querySelector("#infoFrame"),
-		aboutController = document.querySelector("#aboutController"),
-		aboutInfoP = getHtmlElements("#aboutInfoP");
+		posXController = getHtmlElements("#posXController"),
+		posYController = getHtmlElements("#posYController"),
+		randomXController = getHtmlElements("#randomXController"),
+		randomYController = getHtmlElements("#randomYController"),
+		velXMaxController = getHtmlElements("#velXMaxController"),
+		velXMinController = getHtmlElements("#velXMinController"),
+		velYMaxController = getHtmlElements("#velYMaxController"),
+		velYMinController = getHtmlElements("#velYMinController"),
+		particleCountController = getHtmlElements("#particleCountController"),
+		creationTimeController = getHtmlElements("#creationTimeController"),
+		redChannelController = getHtmlElements("#redChannelController"),
+		greenChannelController = getHtmlElements("#greenChannelController"),
+		blueChannelController = getHtmlElements("#blueChannelController"),
+		alphaChannelController = getHtmlElements("#alphaChannelController"),
+		bgRedChannelController = getHtmlElements("#bgRedChannelController"),
+		bgGreenChannelController = getHtmlElements("#bgGreenChannelController"),
+		bgBlueChannelController = getHtmlElements("#bgBlueChannelController"),
+		bgAlphaChannelController = getHtmlElements("#bgAlphaChannelController"),
+		randomColorController = getHtmlElements("#randomColorController"),
+		canvasBoundaryController = getHtmlElements("#canvasBoundaryController"),
+		linkController = getHtmlElements("#linkController"),
+		frictionXController = getHtmlElements("#frictionXController"),
+		frictionYController = getHtmlElements("#frictionYController"),
+		collisionController = getHtmlElements("#collisionController"),
+		collisionControllerLabel = getHtmlElements("#collisionControllerLabel"),
+		deletePreviousFrames = getHtmlElements("#deletePreviousFrames"),
+		recordCanvas = getHtmlElements("#recordCanvas"),
+		demoListController = getHtmlElements("#demoListController"),
+		particleImageController = getHtmlElements("#particleImageController"),
+		modeController = getHtmlElements("#modeController"),
+		lifeModeController = getHtmlElements("#lifeModeController"),
+		loopDemoController = getHtmlElements("#loopDemoController"),
+		movementController = getHtmlElements("#movementController"),
+		infoFrame = getHtmlElements("#infoFrame"),
+		aboutController = getHtmlElements("#aboutController"),
+		aboutInfoP = getHtmlElements("#aboutInfoP"),
+		deletionModeController = getHtmlElements("#deletionModeController"),
+		randomSizeController = getHtmlElements("#randomSizeController"),
+		lifeTimeControllerLabel = getHtmlElements("#lifeTimeControllerLabel"),
+		randomlifeTimeControllerLabel = getHtmlElements("#randomlifeTimeControllerLabel");
 
-	let eyeImage = new Image(),
+	let partImage = new Image(),
 		fReader = new FileReader();
 		
 	//image file input
@@ -75,8 +79,46 @@ let canvas = document.querySelector("#canvas"),
 	})
 	//about info operation
 	aboutInfoP.addEventListener("click",()=>{
-		
+
 	})
+
+	//deletion mode controller
+	deletionModeController.addEventListener("change", ()=>{
+		switch(deletionModeController.options.selectedIndex){
+			case 0:
+				lifeTimeControllerLabel.style.textDecoration = "none";
+				randomlifeTimeControllerLabel.style.textDecoration = "none";
+				lifeTimeController.disabled = false;
+				randomlifeTimeController.disabled = false;
+			break;
+			case 1:
+				lifeTimeControllerLabel.style.textDecoration = "none";
+				randomlifeTimeControllerLabel.style.textDecoration = "none";
+				lifeTimeController.disabled = false;
+				randomlifeTimeController.disabled = false;
+			break;
+			case 2:
+				lifeTimeControllerLabel.style.textDecoration = "line-through";
+				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
+				lifeTimeController.disabled = true;
+				randomlifeTimeController.disabled = true;
+			break;	
+			case 3:
+				lifeTimeControllerLabel.style.textDecoration = "line-through";
+				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
+				lifeTimeController.disabled = true;
+				randomlifeTimeController.disabled = true;
+			break;	
+			case 4:
+				lifeTimeControllerLabel.style.textDecoration = "line-through";
+				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
+				lifeTimeController.disabled = true;
+				randomlifeTimeController.disabled = true;
+			break;	
+		}		
+	})
+
+
 			
 	//default values
 	let partAmount = particleCountController.value,
@@ -86,7 +128,7 @@ let canvas = document.querySelector("#canvas"),
 
 		posXController.max = canvas.width;
 		posYController.max = canvas.height/2;
-		posXController.value = posXController.max/2 - partSizW/2;
+		posXController.value = posXController.max/2 - partSizW/2; // only applies on rects, hays kapoy
 		posYController.value = posYController.max/2 - partSizH/2;
 
 	let controllerFrame = document.querySelector("#controllerFrame");
@@ -109,8 +151,8 @@ let canvas = document.querySelector("#canvas"),
 				y: parseFloat(frictionYController.value)
 			}
 			this.siz = {
-				w: partSizW,
-				h: partSizH
+				w: parseInt(sizeXController.value),
+				h: parseInt(sizeYController.value)
 			}
 			this.pos = {
 				/*x: canvas.width/2 -  this.siz.w / 2,
@@ -134,6 +176,8 @@ let canvas = document.querySelector("#canvas"),
 			this.Cspeed = Math.random()*1+1;
 			this.CCspeed = Math.random()*-1-1;
 
+			this.opacity = parseFloat(alphaChannelController.value);
+
 			//randomize x and y spawn position if...
 			if(parseInt(randomXController.value) == 1){ 
 				//this.pos.x = Math.random()*canvas.width;
@@ -154,6 +198,11 @@ let canvas = document.querySelector("#canvas"),
 				this.maxLife = Math.floor(Math.random()*parseInt(lifeTimeController.value));
 			}
 			
+			// randomize size size
+			if(parseInt(randomSizeController.value) == 1){
+				this.siz.w = Math.floor(Math.random()*parseInt(sizeXController.value));
+				this.siz.h = Math.floor(Math.random()*parseInt(sizeYController.value));
+			}
 
 			this.update = ()=>{
 
@@ -189,19 +238,70 @@ let canvas = document.querySelector("#canvas"),
 
 				//generating mode operation
 				switch(lifeModeController.options.selectedIndex){
-					case 0:
-						this.life++;
-						if (this.life >= this.maxLife){
-							delete partArr[this.idd];
+					case 0: // finite life mode
+						switch(deletionModeController.options.selectedIndex){
+							case 0:
+							case 1: // life points
+								this.life++;
+								if (this.life >= this.maxLife){
+									delete partArr[this.idd];
+								}
+							break;
+							case 2: // opacity
+								this.opacity -= .01;
+								if(this.opacity <= 0){
+									delete partArr[this.idd];
+								}
+							break;
+							case 3: // shrink
+								this.siz.w -= .1;
+								this.siz.h -= .1;
+								if(this.siz.w <= 0 || this.siz.h <= 0){
+									delete partArr[this.idd];
+								}
+							break;
+							case 4: // grow
+								this.siz.w += .5;
+								this.siz.h += .5;
+								if(this.siz.w >= 150 || this.siz.h >= 150){
+									delete partArr[this.idd];
+								}
+							break;
 						}
+						
 					break;
 					case 1:
 
 					break;
-					case 2:
-						this.life++;
-						if (this.life >= this.maxLife){
-							delete partArr[this.idd];
+					case 2: // finite life mode
+						switch(deletionModeController.options.selectedIndex){
+							case 0:
+							case 1: // life points
+								this.life++;
+								if (this.life >= this.maxLife){
+									delete partArr[this.idd];
+								}
+							break;
+							case 2: // opacity
+								this.opacity -= .01;
+								if(this.opacity <= 0){
+									delete partArr[this.idd];
+								}
+							break;
+							case 3: // shrink
+								this.siz.w -= .1;
+								this.siz.h -= .1;
+								if(this.siz.w <= 0 || this.siz.h <= 0){
+									delete partArr[this.idd];
+								}
+							break;
+							case 4: // grow
+								this.siz.w += .5;
+								this.siz.h += .5;
+								if(this.siz.w >= 150 || this.siz.h >= 150){
+									delete partArr[this.idd];
+								}
+							break;
 						}
 					break;
 				}
@@ -409,10 +509,10 @@ let canvas = document.querySelector("#canvas"),
 				
 				switch(parseInt(randomColorController.value)){ // random color
 					case 0:
-						c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+						c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + this.opacity + ")";
 					break;
 					case 1:
-							c.fillStyle = "rgba(" + this.r + ", " + this.g + ", " + this.b + "," + alphaChannelController.value + ")";
+							c.fillStyle = "rgba(" + this.r + ", " + this.g + ", " + this.b + "," + this.opacity + ")";
 					break;
 				}
 				
@@ -477,10 +577,10 @@ let canvas = document.querySelector("#canvas"),
 							break;
 							case 2: //circle
 								c.beginPath();
-								c.moveTo(this.pos.x + this.siz.w, this.pos.y + this.siz.h);
+								c.moveTo(this.pos.x, this.pos.y);
 								for(let i in partArr){
 									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < 100){
-										c.lineTo(partArr[i].pos.x + partArr[i].siz.w, partArr[i].pos.y + partArr[i].siz.h);
+										c.lineTo(partArr[i].pos.x, partArr[i].pos.y);
 									}
 								}
 								c.stroke();
@@ -525,7 +625,7 @@ let canvas = document.querySelector("#canvas"),
 								c.beginPath();
 								c.moveTo(getMousePos(canvas, event).x, getMousePos(canvas, event).y);
 									if(Math.sqrt(Math.pow(this.pos.x - getMousePos(canvas, event).x, 2) + Math.pow(this.pos.y - getMousePos(canvas, event).y, 2)) < 100){
-										c.lineTo(this.pos.x + this.siz.w, this.pos.y + this.siz.h);
+										c.lineTo(this.pos.x, this.pos.y);
 								}
 								c.stroke();
 							break;
@@ -540,10 +640,10 @@ let canvas = document.querySelector("#canvas"),
 							}else{
 								   //eyeImage.src = particleImageController.files[0].name;
 								fReader.onloadend = function(event){
-								    eyeImage.src = event.target.result;
+								    partImage.src = event.target.result;
 								}
 								//eyeImage.src = particleImageController.files[0].name;
-								c.drawImage(eyeImage, 0, 0, 1000, 1000, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
+								c.drawImage(partImage, 0, 0, 1000, 1000, this.pos.x, this.pos.y, this.siz.w, this.siz.h);
 							}
 							
 					break;
@@ -638,12 +738,12 @@ let canvas = document.querySelector("#canvas"),
 			clearInterval(CP);
 			clrCnv();
 			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
-			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee, demo[ds].ff, demo[ds].gg);
+			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee, demo[ds].ff, demo[ds].gg, demo[ds].hh);
 			//issue with creating particles, on change add event listener
 			//redeclaring this interval solution
 			CP = setInterval(createParticles, parseInt(creationTimeController.value));
 		}
-		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg){
+		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg,hh){
 			linkController.options.selectedIndex = a
 			canvasBoundaryController.options.selectedIndex = b
 			GCOController.options.selectedIndex = c
@@ -677,6 +777,7 @@ let canvas = document.querySelector("#canvas"),
 			bgAlphaChannelController.value = ee
 			previousFramesDelete = ff
 			movementController.options.selectedIndex = gg
+			deletionModeController.options.selectedIndex = hh
 		}
 
 		// screen shot the canvas
@@ -891,8 +992,8 @@ function resolveCollision(part, otherParticle) {
 				})
 				//display partcles
 					for(let i in partArr){
-						partArr[i].siz.w = sizeXController.value;
-						partArr[i].siz.h = sizeYController.value;
+						//partArr[i].siz.w = sizeXController.value;
+						//partArr[i].siz.h = sizeYController.value;
 						partArr[i].draw();		
 					}	
 			}

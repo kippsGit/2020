@@ -38,16 +38,28 @@
 	<input id="sizeYController" type="range" min="0" max="200" value="10">
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
-	<label for="lifeTimeController">Lifetime</label>
+
+	<hr>
+	<select id="deletionModeController"></select>
+	<label id="lifeTimeControllerLabel" for="lifeTimeController">Lifetime Points</label>
 	<input id="lifeTimeController" type="range" min="0" max="1000" value="100">
-	<label for="randomlifeTimeController">Random Lifetime</label>
+	<label id="randomlifeTimeControllerLabel" for="randomlifeTimeController">Random Lifetime</label>
 	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
+	<hr>
+
 	<label for="particleCountController">Particle Count</label>
 	<input id="particleCountController" type="range" min="0" max="1000" value="1">
 	<label for="creationTimeController">Spawn time</label>
 	<input id="creationTimeController" type="range" min="0" max="10000" value="200">
+
+	<hr>
 	<label for="randomColorController">Randomize Color</label>
 	<input id="randomColorController" type="range" min="0" max="1" value="0">
+	<hr>
+	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
+	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="range" min="0" max="1" value="0">
+	<hr>
+	
 	<label id="collisionControllerLabel" for="collisionController">Collision (particles)</label>
 	<input id="collisionController" type="range" min="0" max="1" value="1">
 	<label for="frictionXControllerLabel">FrictionX</label>

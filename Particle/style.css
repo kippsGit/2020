@@ -21,7 +21,7 @@
 		white-space: nowrap;
 	}
 
-	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame{
+	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -84,7 +84,6 @@
 	#aboutController{
 		margin-top: 10px;
 		width: 253px;
-		margin-bottom: 10px;
 		margin-bottom: 50px;
 	}
 	#infoFrame{
@@ -117,6 +116,22 @@
 		width: 253px;
 		margin-bottom: 10px;
 		text-align-last: center;
+	}
+	#deletionModeController{
+		width: 253px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#randomColorController{
+		width: 126px;
+		transform: translateX(-53%);
+		float: right;
+	}
+	#randomSizeController{
+		width: 126px;
+		float: right;
+		transform: translateX(-53%);
 	}
 
 
@@ -195,7 +210,9 @@
 	#lifeModeController:hover,
 	#loopDemoController:hover,
 	#movementController:hover,
-	#aboutController:hover{
+	#aboutController:hover,
+	#deletionModeController:hover,
+	#randomSizeController:hover{
 		cursor: pointer;
 	}
 
