@@ -4,7 +4,7 @@ window.onload = function () {
 			.register('/2020/Particle/sw.js')
 			.then(function (registration) { 
 				console.log("Service Worker Registered"); 
-				button.onclick = function(){
+				getHtmlElements("#updateAppController").onclick = function(){
 					registration.update();
 				}
 			});

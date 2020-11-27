@@ -204,6 +204,3 @@ function logControllerValues(){
 
 
 
-
-
-

@@ -21,7 +21,7 @@
 		white-space: nowrap;
 	}
 
-	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController{
+	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -133,6 +133,11 @@
 		float: right;
 		transform: translateX(-53%);
 	}
+	#updateAppController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
 
 
 	#linkController{
@@ -212,7 +217,8 @@
 	#movementController:hover,
 	#aboutController:hover,
 	#deletionModeController:hover,
-	#randomSizeController:hover{
+	#randomSizeController:hover,
+	#updateAppController:hover{
 		cursor: pointer;
 	}
 
