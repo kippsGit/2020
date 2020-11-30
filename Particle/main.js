@@ -39,7 +39,6 @@ let canvas = document.querySelector("#canvas"),
 		frictionXController = getHtmlElements("#frictionXController"),
 		frictionYController = getHtmlElements("#frictionYController"),
 		collisionController = getHtmlElements("#collisionController"),
-		collisionControllerLabel = getHtmlElements("#collisionControllerLabel"),
 		deletePreviousFrames = getHtmlElements("#deletePreviousFrames"),
 		recordCanvas = getHtmlElements("#recordCanvas"),
 		demoListController = getHtmlElements("#demoListController"),
@@ -54,72 +53,12 @@ let canvas = document.querySelector("#canvas"),
 		deletionModeController = getHtmlElements("#deletionModeController"),
 		randomSizeController = getHtmlElements("#randomSizeController"),
 		lifeTimeControllerLabel = getHtmlElements("#lifeTimeControllerLabel"),
-		randomlifeTimeControllerLabel = getHtmlElements("#randomlifeTimeControllerLabel");
+		randomlifeTimeControllerLabel = getHtmlElements("#randomlifeTimeControllerLabel"),
+		framerateController = getHtmlElements("#framerateController");
 
 	let partImage = new Image(),
 		fReader = new FileReader();
 		
-	//image file input
-	particleImageController.addEventListener("change", ()=>{
-		fReader.readAsDataURL(particleImageController.files[0]);
-	})
-
-	// mode operation
-	modeController.addEventListener("change", ()=>{
-		switch(modeController.options.selectedIndex){
-			case 1:
-				CP = setInterval(createParticles, parseInt(creationTimeController.value));
-				generateParticlesController.disabled = true;
-			break;
-			case 2:
-				generateParticlesController.disabled = false;	
-				clearInterval(CP)
-			break;	
-		}		
-	})
-	//about info operation
-	aboutInfoP.addEventListener("click",()=>{
-
-	})
-
-	//deletion mode controller
-	deletionModeController.addEventListener("change", ()=>{
-		switch(deletionModeController.options.selectedIndex){
-			case 0:
-				lifeTimeControllerLabel.style.textDecoration = "none";
-				randomlifeTimeControllerLabel.style.textDecoration = "none";
-				lifeTimeController.disabled = false;
-				randomlifeTimeController.disabled = false;
-			break;
-			case 1:
-				lifeTimeControllerLabel.style.textDecoration = "none";
-				randomlifeTimeControllerLabel.style.textDecoration = "none";
-				lifeTimeController.disabled = false;
-				randomlifeTimeController.disabled = false;
-			break;
-			case 2:
-				lifeTimeControllerLabel.style.textDecoration = "line-through";
-				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
-				lifeTimeController.disabled = true;
-				randomlifeTimeController.disabled = true;
-			break;	
-			case 3:
-				lifeTimeControllerLabel.style.textDecoration = "line-through";
-				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
-				lifeTimeController.disabled = true;
-				randomlifeTimeController.disabled = true;
-			break;	
-			case 4:
-				lifeTimeControllerLabel.style.textDecoration = "line-through";
-				randomlifeTimeControllerLabel.style.textDecoration = "line-through";
-				lifeTimeController.disabled = true;
-				randomlifeTimeController.disabled = true;
-			break;	
-		}		
-	})
-
-
-			
 	//default values
 	let partAmount = particleCountController.value,
 		partArr = [],
@@ -134,6 +73,7 @@ let canvas = document.querySelector("#canvas"),
 	let controllerFrame = document.querySelector("#controllerFrame");
 
 	let frameRate = 0,
+		FR = parseInt(framerateController.value),
 		indx = 0, 
 		event, 
 		demoSelected = 0;
@@ -199,7 +139,7 @@ let canvas = document.querySelector("#canvas"),
 			}
 			
 			// randomize size size
-			if(parseInt(randomSizeController.value) == 1){
+			if(randomSizeController.checked){
 				this.siz.w = Math.floor(Math.random()*parseInt(sizeXController.value));
 				this.siz.h = Math.floor(Math.random()*parseInt(sizeYController.value));
 			}
@@ -394,9 +334,11 @@ let canvas = document.querySelector("#canvas"),
 				}
 
 				//particle collision operation
-				switch(parseInt(collisionController.value)){
+				switch(collisionController.options.selectedIndex){
 					case 0:
-						collisionControllerLabel.innerHTML = "Collision (particles)";
+					case 1:
+					break;
+					case 2: // particles
 						
 						switch(shapeController.options.selectedIndex){
 							case 0:
@@ -417,9 +359,6 @@ let canvas = document.querySelector("#canvas"),
 								}
 							break;
 						}
-					break;
-					case 1:
-						collisionControllerLabel.innerHTML = "Collision (mouse cursor)";
 					break;
 				}
 
@@ -506,14 +445,11 @@ let canvas = document.querySelector("#canvas"),
 						c.globalCompositeOperation = 'luminosity';
 					break;
 				}
-				
-				switch(parseInt(randomColorController.value)){ // random color
-					case 0:
-						c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + this.opacity + ")";
-					break;
-					case 1:
-							c.fillStyle = "rgba(" + this.r + ", " + this.g + ", " + this.b + "," + this.opacity + ")";
-					break;
+
+				if(randomColorController.checked){
+					c.fillStyle = "rgba(" + this.r + ", " + this.g + ", " + this.b + "," + this.opacity + ")";
+				}else{
+					c.fillStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + this.opacity + ")";
 				}
 				
 				switch(linkController.options.selectedIndex){ // link
@@ -712,11 +648,10 @@ let canvas = document.querySelector("#canvas"),
 		// make a feature where you  can choose to loop on the list randomly or not
 		// current default is looping from 0 to the list max length
 		let LDon = true, LDinterv, LDrandIndx, LDIndx = 14;
-		function LDL(){
+		loopDemoController.addEventListener("change", ()=>{
 			//LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
 			
-			if(LDon){
-				loopDemoController.value = "Loop Demo List (y)";
+			if(loopDemoController.checked){
 				LDinterv = setInterval(()=>{
 					LDIndx++;
 					selectDemo(LDIndx);
@@ -725,13 +660,11 @@ let canvas = document.querySelector("#canvas"),
 					}
 					console.clear(); // clear ang console, damo errors hahah
 				}, 10000);
-				LDon = false;
 			}else{
-				loopDemoController.value = "Loop Demo List (n)";
 				clearInterval(LDinterv);
-				LDon = true;
 			}
-		}
+		});
+
 
 		//select demos
 		function selectDemo(ds){
@@ -755,8 +688,8 @@ let canvas = document.querySelector("#canvas"),
 			randomlifeTimeController.value = i
 			particleCountController.value = j
 			creationTimeController.value = k
-			randomColorController.value = l
-			collisionController.value = m
+			randomColorController.checked = l
+			collisionController.options.selectedIndex = m
 			frictionXController.value = n
 			frictionYController.value = o
 			posXController.value = p
@@ -775,7 +708,7 @@ let canvas = document.querySelector("#canvas"),
 			bgGreenChannelController.value = cc
 			bgBlueChannelController.value = dd
 			bgAlphaChannelController.value = ee
-			previousFramesDelete = ff
+			deletePreviousFrames.checked = ff
 			movementController.options.selectedIndex = gg
 			deletionModeController.options.selectedIndex = hh
 		}
@@ -856,19 +789,6 @@ let canvas = document.querySelector("#canvas"),
 					x: (e.clientX - rect.left) * scaleX,
 					y: (e.clientY - rect.top) * scaleY
 				}
-		}
-
-		//delete provious frames
-		let previousFramesDelete = false;
-		function delPrevFrames(){
-			if(previousFramesDelete){
-				previousFramesDelete = false;
-				deletePreviousFrames.value = "Del Previous Frames (n)";
-			}else{
-				previousFramesDelete = true;
-				deletePreviousFrames.value = "Del Previous Frames (y)";
-			}
-
 		}
 
 		// clear file input
@@ -970,7 +890,7 @@ function resolveCollision(part, otherParticle) {
 		// loop
 		//setInterval(()=>{
 		function loop(){
-			if(frameRate % 2 == 0){
+			if(frameRate % FR == 0){
 				// saving to temporary canvas for exporting webm video
 				if(transferCanvasToTempCanvas){
 					tempCNVS.width = canvas.width;
@@ -979,7 +899,7 @@ function resolveCollision(part, otherParticle) {
 				}
 
 				//background
-				if(previousFramesDelete){
+				if(deletePreviousFrames.checked){
 					c.clearRect(0,0,canvas.width,canvas.height);
 				}
 				c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
@@ -997,9 +917,8 @@ function resolveCollision(part, otherParticle) {
 						partArr[i].draw();		
 					}	
 			}
-			
 				frameRate++;
-				requestAnimationFrame(loop)
+				requestAnimationFrame(loop);
 		};loop();
 		//}, 60)
 

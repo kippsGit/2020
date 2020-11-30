@@ -9,12 +9,21 @@
 <canvas id="canvas"></canvas>
 <div id="controllerFrame">
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
-	<input id="saveCanvas" type="button" value="Screen Shot Canvas" onclick="saveCNVS()">
+	<input id="saveCanvas" type="button" value="Screenshot Canvas" onclick="saveCNVS()">
 	<input id="recordCanvas" type="button" value="Record Canvas (10s)" onclick="startRecording()">
-	<input id="deletePreviousFrames" type="button" value="Del Previous Frames (n)" onclick="delPrevFrames()">
+	<hr>
+	<label for="framerateController">Framerate</label>
+	<input id="framerateController" type="range" min="0" max="10" value="2">
+	<hr>
+	<!-- <input id="deletePreviousFrames" type="button" value="Del Previous Frames (no)" onclick="delPrevFrames()"> -->
+	<label for="deletePreviousFrames">Delete Previous Frames</label>
+	<input id="deletePreviousFrames" type="checkbox">
+	<hr>
 
 	<select id="demoListController"></select>
-	<input id="loopDemoController" type="button" value="Loop Demo List (n)" onclick="LDL()">
+	<label for="loopDemoController">Play Demo List (10s)</label>
+	<input id="loopDemoController" type="checkbox">
+
 	<hr>
 	<label id="particleImageControllerLabel" for="demoListController">Particle Image (rect)</label>
 	<input type="file" id="particleImageController">
@@ -43,8 +52,9 @@
 	<select id="deletionModeController"></select>
 	<label id="lifeTimeControllerLabel" for="lifeTimeController">Lifetime Points</label>
 	<input id="lifeTimeController" type="range" min="0" max="1000" value="100">
-	<label id="randomlifeTimeControllerLabel" for="randomlifeTimeController">Random Lifetime</label>
-	<input id="randomlifeTimeController" type="range" min="0" max="1" value="0">
+
+	<label for="randomlifeTimeController">Random Life points</label>
+	<input id="randomlifeTimeController" type="checkbox">
 	<hr>
 
 	<label for="particleCountController">Particle Count</label>
@@ -54,14 +64,14 @@
 
 	<hr>
 	<label for="randomColorController">Randomize Color</label>
-	<input id="randomColorController" type="range" min="0" max="1" value="0">
+	<input id="randomColorController" type="checkbox">
 	<hr>
 	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
-	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="range" min="0" max="1" value="0">
+	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="checkbox">
 	<hr>
 	
-	<label id="collisionControllerLabel" for="collisionController">Collision (particles)</label>
-	<input id="collisionController" type="range" min="0" max="1" value="1">
+	<select  id="collisionController"></select>
+
 	<label for="frictionXControllerLabel">FrictionX</label>
 	<input id="frictionXController" type="range" min="0.0" max="1.0" step="0.1" value="1">
 	<label for="frictionYControllerLabel">FrictionY</label>
@@ -102,7 +112,7 @@
 	<input id="updateAppController" type="button" value="Update Version">
 	<input id="aboutController" type="button" value="About" onclick="aboutInfo()">
 	<div id="infoFrame">
-		<p id="aboutInfoP">This was created to be kinda like a particle system... that's it hehe, with the help of my girl with her daily 'tampo' I was able to work on this on my free time. :)</p>
+		<p id="aboutInfoP"></p>
 		<img src="us.jpg">
 	</div>
 </div>

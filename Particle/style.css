@@ -1,3 +1,6 @@
+	*{
+		/*font-family: "comic sans"*/
+	}
 	body{
 		margin: 0px;
 		padding: 0px;
@@ -16,12 +19,12 @@
 		margin: 0 auto;
 		left: 50%;
 		transform: translateX(-50%);
-		overflow-x: auto;
-		overflow-x: overlay;
+		overflow-y: auto;
 		white-space: nowrap;
+		overflow-x: hidden;
 	}
 
-	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController{
+	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController, #framerateController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -77,9 +80,8 @@
 		text-align-last: center;
 	}
 	#loopDemoController{
-		margin-top: 10px;
-		width: 253px;
-		margin-bottom: 10px;
+		display: inline-flex;
+		transform: translateX(-19%);
 	}
 	#aboutController{
 		margin-top: 10px;
@@ -124,16 +126,29 @@
 		text-align-last: center;
 	}
 	#randomColorController{
-		width: 126px;
-		transform: translateX(-53%);
-		float: right;
+		display: inline-flex;
+		transform: translateX(-11%);
 	}
 	#randomSizeController{
-		width: 126px;
-		float: right;
-		transform: translateX(-53%);
+		display: inline-flex;
+		transform: translateX(-7%);
 	}
 	#updateAppController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#randomlifeTimeController{
+		display: inline-flex;
+		transform: translateX(-15%);
+	}
+	#collisionController{
+		text-align-last: center;
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
+	#framerateController{
 		margin-top: 10px;
 		width: 253px;
 		margin-bottom: 10px;
@@ -154,9 +169,8 @@
 		width: 253px;
 	}
 	#deletePreviousFrames{
-		margin-top: 10px;
-		width: 253px;
-		margin-bottom: 10px;
+		display: inline-flex;
+		transform: translateX(-25%);
 	}
 	#canvasBoundaryController{
 		margin-top: 10px;
@@ -164,10 +178,10 @@
 		margin-bottom: 10px;
 		text-align-last: center;
 	}
-	hr{
+	/*hr{
 		width: 253px;
 		transform: translateX(-20%);
-	}
+	}*/
 	*::selection{
 		color: none;
 		background: none;
@@ -218,7 +232,8 @@
 	#aboutController:hover,
 	#deletionModeController:hover,
 	#randomSizeController:hover,
-	#updateAppController:hover{
+	#updateAppController:hover,
+	#framerateController:hover{
 		cursor: pointer;
 	}
 
