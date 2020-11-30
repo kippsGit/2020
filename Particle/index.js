@@ -7,6 +7,7 @@ window.onload = function () {
 				getHtmlElements("#updateAppController").onclick = function(){
 					registration.unregister();
 					registration.update();
+					location.reload();
 				}
 			});
 	}
