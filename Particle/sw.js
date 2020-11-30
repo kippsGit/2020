@@ -30,12 +30,12 @@ self.addEventListener('install', function(event) {
         // Add all offline dependencies to the cache
         return cache.addAll([
           '/2020/Particle/',
-          '/2020/Particle/index.html?Math.floor(Math.random()*1000000000000)',
-          '/2020/Particle/index.js?Math.floor(Math.random()*1000000000000)',
-          '/2020/Particle/main.js?Math.floor(Math.random()*1000000000000)',
-          '/2020/Particle/storage.js?Math.floor(Math.random()*1000000000000)',
-          '/2020/Particle/style.css?Math.floor(Math.random()*1000000000000)',
-          '/2020/Particle/us.jpg?Math.floor(Math.random()*1000000000000)'
+          '/2020/Particle/index.html?',
+          '/2020/Particle/index.js',
+          '/2020/Particle/main.js',
+          '/2020/Particle/storage.js',
+          '/2020/Particle/style.css',
+          '/2020/Particle/us.jpg'
           ]);
       })
       .then(function() {
