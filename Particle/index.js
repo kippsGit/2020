@@ -8,7 +8,7 @@ window.onload = function () {
 
 					caches.delete('Particle').then(()=>{
 						registration.unregister();
-						location.reload();
+						location.reload(true);
 					})
 
 				}
