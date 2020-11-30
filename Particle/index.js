@@ -6,10 +6,8 @@ window.onload = function () {
 				//console.log("Service Worker Registered"); 
 				getHtmlElements("#updateAppController").onclick = function(){
 
-					caches.keys().then(function(names) {
-					    for (let name of names){
-					        caches.delete(name);
-					    }
+					self.caches.keys().then(keys => {
+						keys.forEach( key => console.log(key));
 					    registration.unregister();
 						location.reload();
 					});
