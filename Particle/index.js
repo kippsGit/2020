@@ -6,7 +6,6 @@ window.onload = function () {
 				console.log("Service Worker Registered"); 
 				getHtmlElements("#updateAppController").onclick = function(){
 					registration.unregister();
-					registration.update();
 					location.reload();
 				}
 			});
