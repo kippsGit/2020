@@ -8,6 +8,7 @@ window.onload = function () {
 
 					self.caches.keys().then(keys => {
 						keys.forEach( key => console.log(key));
+						self.caches.delete("Particle");
 					    registration.unregister();
 						location.reload();
 					});
