@@ -6,10 +6,14 @@ window.onload = function () {
 				//console.log("Service Worker Registered"); 
 				getHtmlElements("#updateAppController").onclick = function(){
 
-					window.parent.caches.delete("call").then(function(){
-						registration.unregister();
+					caches.keys().then(function(names) {
+					    for (let name of names){
+					        caches.delete(name);
+					    }
+					    registration.unregister();
 						location.reload();
-					})
+					});
+
 				}
 			});
 	}
