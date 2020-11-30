@@ -3,52 +3,52 @@ let demo = [
 		{
 		},
 		{
-		 "a":4, "b":1, "c":1, "d":1, "e":10, "f":10, "g":0, "h":100, "i":0, "j":1, "k":200, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":4, "b":1, "c":1, "d":1, "e":10, "f":10, "g":0, "h":100, "i":0, "j":1, "k":200, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":4, "b":2, "c":1, "d":2, "e":10, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":36.1, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":4, "b":2, "c":1, "d":2, "e":10, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":36.1, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":0, "c":1, "d":2, "e":4, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":0, "s":0, "t":10, "u":5, "v":10, "w":5, "x":0, "y":0, "z":0, "aa":1, "bb":255, "cc":255, "dd":255, "ee":0.1, "ff":false, "gg":1, "hh":0
+		 "a":0, "b":0, "c":1, "d":2, "e":4, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":0, "y":0, "z":0, "aa":1, "bb":255, "cc":255, "dd":255, "ee":0.1, "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":0, "c":13, "d":2, "e":2, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":38, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":0, "b":0, "c":13, "d":2, "e":2, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":38, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":0, "c":13, "d":2, "e":2, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":0, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":38, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":0, "b":0, "c":13, "d":2, "e":2, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":38, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":2, "c":1, "d":2, "e":6, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.3,  "ff":false, "gg":1, "hh":0
+		 "a":0, "b":2, "c":1, "d":2, "e":6, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.3,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":2, "b":2, "c":1, "d":2, "e":13, "f":25, "g":1.6, "h":100, "i":0, "j":1, "k":200, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":0, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":2, "b":2, "c":1, "d":2, "e":13, "f":25, "g":1.6, "h":100, "i":0, "j":1, "k":200, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":2, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":4, "b":2, "c":1, "d":1, "e":1, "f":200, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
+		 "a":4, "b":2, "c":1, "d":1, "e":1, "f":200, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":1, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":10, "g":0, "h":397, "i":0, "j":1, "k":200, "l":0, "m":1, "n":1, "o":1, "p":295, "q":265, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":0, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1,  "ff":false, "gg":1, "hh":0
+		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":10, "g":0, "h":397, "i":0, "j":1, "k":200, "l":0, "m":1, "n":1, "o":1, "p":295, "q":265, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":0, "z":0, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1,  "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":0, "c":1, "d":2, "e":5, "f":10, "g":0, "h":700, "i":0, "j":1, "k":0, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":0, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":2, "hh":0
+		 "a":0, "b":0, "c":1, "d":2, "e":5, "f":10, "g":0, "h":700, "i":0, "j":1, "k":0, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":2, "hh":0
 		},
 		{
-		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":10, "g":0, "h":397, "i":0, "j":1, "k":200, "l":0, "m":1, "n":1, "o":1, "p":295, "q":265, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":110, "y":255, "z":32, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.2, "ff":false, "gg":4, "hh":0
+		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":10, "g":0, "h":397, "i":0, "j":1, "k":200, "l":0, "m":1, "n":1, "o":1, "p":295, "q":265, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":110, "y":255, "z":32, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.2, "ff":false, "gg":4, "hh":0
 		},
 		{
-		 "a":2, "b":0, "c":1, "d":2, "e":0, "f":25, "g":0, "h":100, "i":1, "j":10, "k":0, "l":0, "m":2, "n":1, "o":1, "p":288, "q":258, "r":1, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":0, "aa":0.1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":1, "hh":0
+		 "a":2, "b":0, "c":1, "d":2, "e":0, "f":25, "g":0, "h":100, "i":1, "j":10, "k":0, "l":0, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":0, "aa":0.1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":2, "b":0, "c":1, "d":1, "e":0, "f":0, "g":0, "h":100, "i":1, "j":20, "k":0, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":0, "s":0, "t":23.8, "u":11.9, "v":23.4, "w":11.7, "x":255, "y":255, "z":37, "aa":0.1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":0, "hh":0
+		 "a":2, "b":0, "c":1, "d":1, "e":0, "f":0, "g":0, "h":100, "i":1, "j":20, "k":0, "l":0, "m":2, "n":1, "o":1, "p":295, "q":265, "r":false, "s":0, "t":23.8, "u":11.9, "v":23.4, "w":11.7, "x":255, "y":255, "z":37, "aa":0.1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":0, "hh":0
 		},
 		{
-		 "a":0, "b":2, "c":1, "d":2, "e":10, "f":10, "g":1.1, "h":300, "i":1, "j":1, "k":76, "l":1, "m":2, "n":1, "o":0.9, "p":295, "q":15, "r":1, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":1, "hh":0
+		 "a":0, "b":2, "c":1, "d":2, "e":10, "f":10, "g":1.1, "h":300, "i":1, "j":1, "k":76, "l":1, "m":2, "n":1, "o":0.9, "p":295, "q":15, "r":true, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.1, "ff":false, "gg":1, "hh":0
 		},
 		{
-		 "a":0, "b":1, "c":13, "d":2, "e":5, "f":10, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":295, "q":265, "r":1, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.6, "bb":0, "cc":0, "dd":0, "ee":1, "ff":true, "gg":4, "hh":3
+		 "a":0, "b":1, "c":13, "d":2, "e":5, "f":10, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":295, "q":265, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.6, "bb":0, "cc":0, "dd":0, "ee":1, "ff":true, "gg":4, "hh":3
 		}
 	];
 // use this to log the current controller values u made, copy ang paste it above to add selection to the demos :)
@@ -56,7 +56,7 @@ function logControllerValues(){
 	console.log( '"a":'+ linkController.options.selectedIndex +',',
 				 '"b":'+ canvasBoundaryController.options.selectedIndex +',',
 				 '"c":'+ GCOController.options.selectedIndex +',',
-				 '"d":'+ shapeController.options.selectedIndex +',',
+				 '"d":'+ objectController.options.selectedIndex +',',
 				 '"e":'+ sizeXController.value +',',
 				 '"f":'+ sizeYController.value +',',
 				 '"g":'+ gravityController.value +',',
@@ -70,8 +70,8 @@ function logControllerValues(){
 				 '"o":'+ frictionYController.value +',',
 				 '"p":'+ posXController.value +',',
 				 '"q":'+ posYController.value +',',
-				 '"r":'+ randomXController.value +',',
-				 '"s":'+ randomYController.value +',',
+				 '"r":'+ randomXController.checked +',',
+				 '"s":'+ randomYController.checked +',',
 				 '"t":'+ velXMaxController.value +',',
 				 '"u":'+ velXMinController.value +',',
 				 '"v":'+ velYMaxController.value +',',
@@ -116,6 +116,9 @@ function logControllerValues(){
 			case 1:
 				CP = setInterval(createParticles, parseInt(creationTimeController.value));
 				generateParticlesController.disabled = true;
+				pauseCanvasController.checked = false;
+				isPaused = false;
+				loop();
 			break;
 			case 2:
 				generateParticlesController.disabled = false;	
@@ -127,6 +130,16 @@ function logControllerValues(){
 	// framerate operation
 	framerateController.addEventListener("change", ()=>{
 		FR = parseInt(framerateController.value);
+	})
+
+	// pausing canvas loop operation
+	pauseCanvasController.addEventListener("change", ()=>{
+		if(!isPaused){
+			isPaused = true;
+		}else{
+			isPaused = false;
+			loop();
+		}
 	})
 
 	//deletion mode controller
@@ -242,11 +255,11 @@ function logControllerValues(){
 	GCOController.options[26] = new Option("luminosity");
 
 	//shape
-	shapeController.options[0] = new Option("Shape");
-	shapeController.options[0].style.fontSize = "15px";
-	shapeController.options[0].style.color = "red";
-	shapeController.options[1] = new Option("Rectangle");
-	shapeController.options[2] = new Option("Circle");
+	objectController.options[0] = new Option("Object");
+	objectController.options[0].style.fontSize = "15px";
+	objectController.options[0].style.color = "red";
+	objectController.options[1] = new Option("Rectangle");
+	objectController.options[2] = new Option("Circle");
 
 	// death mode
 	deletionModeController.options[0] = new Option("Deletion Mode");
@@ -258,11 +271,20 @@ function logControllerValues(){
 	deletionModeController.options[4] = new Option("Grow");
 	//deletionModeController.options.selectedIndex = 0;
 
+	// collision controller list
 	collisionController.options[0] = new Option("Particle Collision");
 	collisionController.options[0].style.fontSize = "15px";
 	collisionController.options[0].style.color = "red";
 	collisionController.options[1] = new Option("None");
 	collisionController.options[2] = new Option("Particles");
+
+	//background controller list
+	backgroundController.options[0] = new Option("Background");
+	backgroundController.options[0].style.fontSize = "15px";
+	backgroundController.options[0].style.color = "red";
+	backgroundController.options[1] = new Option("Colours - default");
+	backgroundController.options[2] = new Option("None");
+	backgroundController.options[3] = new Option("File Input");
 
 	aboutInfoP.innerHTML = "This was created to be kinda like a particle system... that's it hehe, with the help of my girl with her daily 'tampo' I was able to work on this on my free time. :)";
 

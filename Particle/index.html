@@ -12,6 +12,9 @@
 	<input id="saveCanvas" type="button" value="Screenshot Canvas" onclick="saveCNVS()">
 	<input id="recordCanvas" type="button" value="Record Canvas (10s)" onclick="startRecording()">
 	<hr>
+	<label for="pauseCanvasController">Pause Loop</label>
+	<input id="pauseCanvasController" type="checkbox">
+	<hr>
 	<label for="framerateController">Framerate</label>
 	<input id="framerateController" type="range" min="0" max="10" value="2">
 	<hr>
@@ -37,14 +40,17 @@
 	<select id="linkController"></select>
 	<select id="canvasBoundaryController"></select>
 	<select id="GCOController"></select>
-	<select id="shapeController"></select>
+	<select id="objectController"></select>
 
-	<!-- <label id="shapeControllerLabel" for="shapeController">Shape (Rectangle)</label>
-	<input id="shapeController" type="range" min="0" max="1" value="0"> -->
+	<!-- <label id="objectControllerLabel" for="objectController">Shape (Rectangle)</label>
+	<input id="objectController" type="range" min="0" max="1" value="0"> -->
 	<label for="sizeXController">Rect Size X / Radius</label>
 	<input id="sizeXController" type="range" min="0" max="200" value="10">
 	<label for="sizeYController">Rect Size Y</label>
 	<input id="sizeYController" type="range" min="0" max="200" value="10">
+	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
+	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="checkbox">
+	<hr>
 	<label for="gravityController">Gravity</label>
 	<input id="gravityController" type="range" min="0" max="10" step="0.1" value="0">
 
@@ -63,12 +69,6 @@
 	<input id="creationTimeController" type="range" min="0" max="10000" value="200">
 
 	<hr>
-	<label for="randomColorController">Randomize Color</label>
-	<input id="randomColorController" type="checkbox">
-	<hr>
-	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
-	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="checkbox">
-	<hr>
 	
 	<select  id="collisionController"></select>
 
@@ -76,14 +76,19 @@
 	<input id="frictionXController" type="range" min="0.0" max="1.0" step="0.1" value="1">
 	<label for="frictionYControllerLabel">FrictionY</label>
 	<input id="frictionYController" type="range" min="0.0" max="1.0" step="0.1" value="1">
+	
+	<hr>
 	<label for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
+	<label for="randomXController">Random spawn X</label>
+	<input id="randomXController" type="checkbox" min="0" max="1" value="1">
+	<hr>
 	<label for="posYController">Spawn position Y</label>
 	<input id="posYController" type="range" min="0" max="1" value="20">
-	<label for="randomXController">Random spawn X</label>
-	<input id="randomXController" type="range" min="0" max="1" value="1">
 	<label for="randomYController">Random spawn Y</label>
-	<input id="randomYController" type="range" min="0" max="1" value="1">
+	<input id="randomYController" type="checkbox" min="0" max="1" value="1">
+	<hr>
+
 	<label for="velXMaxController">Vel Max X</label>
 	<input id="velXMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velXMinController">Vel Min X</label>
@@ -92,6 +97,10 @@
 	<input id="velYMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velYMinController">Vel Min Y</label>
 	<input id="velYMinController" type="range" min="0" max="50" value="5" step="0.1">
+
+	<hr>
+	<label for="randomColorController">Randomize Color</label>
+	<input id="randomColorController" type="checkbox">
 	<label for="redChannelController">Red Channel</label>
 	<input id="redChannelController" type="range" min="0" max="255" value="255">
 	<label for="greenChannelController">Green Channel</label>
@@ -100,6 +109,8 @@
 	<input id="blueChannelController" type="range" min="0" max="255" value="255">
 	<label for="alphaChannelController">Alpha Channel</label>
 	<input id="alphaChannelController" type="range" min="0.1" max="1.0" step="0.1" value="1.0">
+	<hr>
+	<select id="backgroundController"></select>
 	<label for="bgRedChannelController">BG Red Channel</label>
 	<input id="bgRedChannelController" type="range" min="0" max="255" value="0">
 	<label for="bgGreenChannelController">BG Green Channel</label>

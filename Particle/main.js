@@ -9,7 +9,7 @@ let canvas = document.querySelector("#canvas"),
 
 	let loopRandomValueController = getHtmlElements("#loopRandomValueController"),
 		GCOController = getHtmlElements("#GCOController"),
-		shapeController = getHtmlElements("#shapeController"),
+		objectController = getHtmlElements("#objectController"),
 		sizeXController = getHtmlElements("#sizeXController"),
 		sizeYController = getHtmlElements("#sizeYController"),
 		gravityController = getHtmlElements("#gravityController"),
@@ -54,7 +54,9 @@ let canvas = document.querySelector("#canvas"),
 		randomSizeController = getHtmlElements("#randomSizeController"),
 		lifeTimeControllerLabel = getHtmlElements("#lifeTimeControllerLabel"),
 		randomlifeTimeControllerLabel = getHtmlElements("#randomlifeTimeControllerLabel"),
-		framerateController = getHtmlElements("#framerateController");
+		framerateController = getHtmlElements("#framerateController"),
+		backgroundController = getHtmlElements("#backgroundController"),
+		pauseCanvasController = getHtmlElements("#pauseCanvasController");
 
 	let partImage = new Image(),
 		fReader = new FileReader();
@@ -74,6 +76,7 @@ let canvas = document.querySelector("#canvas"),
 
 	let frameRate = 0,
 		FR = parseInt(framerateController.value),
+		isPaused = false,
 		indx = 0, 
 		event, 
 		demoSelected = 0;
@@ -119,14 +122,14 @@ let canvas = document.querySelector("#canvas"),
 			this.opacity = parseFloat(alphaChannelController.value);
 
 			//randomize x and y spawn position if...
-			if(parseInt(randomXController.value) == 1){ 
+			if(randomXController.checked){ 
 				//this.pos.x = Math.random()*canvas.width;
 				/*secureSpawn();
 				this.pos.x = XYobj.tempConX;*/
 				this.pos.x = Math.random()*(canvas.width-0+parseInt(sizeXController.value))+0+parseInt(sizeXController.value)
 
 			}
-			if(parseInt(randomYController.value) == 1){ 
+			if(randomYController.checked){ 
 				//this.pos.y = Math.random()*canvas.height/2;
 				/*secureSpawn();
 				this.pos.y = XYobj.tempConY;*/
@@ -274,7 +277,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 2:
 						// solid
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: //square collision
 								if(this.pos.x > canvas.width - this.siz.w){
@@ -340,7 +343,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 2: // particles
 						
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1:
 								//rectangle collision
@@ -459,7 +462,7 @@ let canvas = document.querySelector("#canvas"),
 					
 					case 2: // center
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: // square
 								c.beginPath();
@@ -477,7 +480,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 3: // global
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: // square
 								c.beginPath();
@@ -499,7 +502,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 4: // 100px radius
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: // square
 								c.beginPath();
@@ -525,7 +528,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 5: // mouse cursor (Global)
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: // square
 									c.beginPath();
@@ -547,7 +550,7 @@ let canvas = document.querySelector("#canvas"),
 					break;
 					case 6: // mouse cursor (100px radius)
 						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
-						switch(shapeController.options.selectedIndex){
+						switch(objectController.options.selectedIndex){
 							case 0:
 							case 1: // square
 								c.beginPath();
@@ -567,7 +570,7 @@ let canvas = document.querySelector("#canvas"),
 							break;
 						}
 				}
-				switch(shapeController.options.selectedIndex){ // shape
+				switch(objectController.options.selectedIndex){ // shape
 					case 0:
 					case 1:
 							// if no image is upload/selected then just draw the regular shape(rect)
@@ -601,7 +604,7 @@ let canvas = document.querySelector("#canvas"),
 				tempConY: Math.random()*(canvas.height-0+parseInt(sizeYController.value))+0+parseInt(sizeYController.value)
 			}
 			for(let i in partArr){
-				switch(shapeController.options.selectedIndex){
+				switch(objectController.options.selectedIndex){
 					case 0:
 					case 1:
 						if(Math.sqrt(Math.pow(partArr[i].pos.x - tempConX, 2) + Math.pow(partArr[i].pos.x - tempConY, 2)) < partArr[i].siz.w){
@@ -625,18 +628,20 @@ let canvas = document.querySelector("#canvas"),
 				for(let i = 0; i < partAmount; i++){
 					partArr.push(new particle());
 				}
-			
+				if(isPaused){
+					for(let i in partArr){
+						partArr[i].draw();
+					}
+				}
 			}
 
 		let CP = setInterval(createParticles, parseInt(creationTimeController.value));	
 
-		//listen for picture files to be used
-
-
-
 		//clear canvas by deleting all particles on the canvas
 		function clrCnv(){
 			c.clearRect(0,0,canvas.width,canvas.height);
+			c.fillStyle = "black";
+			c.fillRect(0,0,canvas.width,canvas.height);
 			for(let i in partArr){
 				delete partArr[i]	
 			}
@@ -680,7 +685,7 @@ let canvas = document.querySelector("#canvas"),
 			linkController.options.selectedIndex = a
 			canvasBoundaryController.options.selectedIndex = b
 			GCOController.options.selectedIndex = c
-			shapeController.options.selectedIndex = d
+			objectController.options.selectedIndex = d
 			sizeXController.value = e
 			sizeYController.value = f
 			gravityController.value = g
@@ -694,8 +699,8 @@ let canvas = document.querySelector("#canvas"),
 			frictionYController.value = o
 			posXController.value = p
 			posYController.value = q
-			randomXController.value = r
-			randomYController.value = s
+			randomXController.checked = r
+			randomYController.checked = s
 			velXMaxController.value = t
 			velXMinController.value = u
 			velYMaxController.value = v
@@ -902,8 +907,17 @@ function resolveCollision(part, otherParticle) {
 				if(deletePreviousFrames.checked){
 					c.clearRect(0,0,canvas.width,canvas.height);
 				}
-				c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
-				c.fillRect(0,0,canvas.width,canvas.height/2);
+				switch(backgroundController.options.selectedIndex){
+					case 0:
+					case 1:
+						c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
+						c.fillRect(0,0,canvas.width,canvas.height/2);
+					break;
+					case 2:
+
+					break;
+				}
+				
 				
 				//recreate the CP interval if creationTime value changes
 				creationTimeController.addEventListener('change', ()=>{
@@ -918,7 +932,11 @@ function resolveCollision(part, otherParticle) {
 					}	
 			}
 				frameRate++;
-				requestAnimationFrame(loop);
+				if(!isPaused){
+					requestAnimationFrame(loop);
+				}else{
+					clearInterval(CP);
+				}
 		};loop();
 		//}, 60)
 

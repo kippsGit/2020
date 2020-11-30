@@ -24,7 +24,7 @@
 		overflow-x: hidden;
 	}
 
-	#clearCanvasController, #GCOController, #saveCanvas, #shapeController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController, #framerateController{
+	#clearCanvasController, #GCOController, #saveCanvas, #objectController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController, #framerateController, #backgroundController, #pauseCanvasController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -114,7 +114,7 @@
 		margin-bottom: 10px;
 		text-align-last: center;
 	}
-	#shapeController{
+	#objectController{
 		width: 253px;
 		margin-bottom: 10px;
 		text-align-last: center;
@@ -153,6 +153,24 @@
 		width: 253px;
 		margin-bottom: 10px;
 	}
+	#backgroundController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#randomXController{
+		display: inline-flex;
+		transform: translateX(-11%);
+	}
+	#randomYController{
+		display: inline-flex;
+		transform: translateX(-11%);
+	}
+	#pauseCanvasController{
+		display: inline-flex;
+		transform: translateX(4%);
+	}
 
 
 	#linkController{
@@ -189,7 +207,7 @@
 	#clearCanvasController:hover,
 	#GCOController:hover,
 	#saveCanvas:hover,
-	#shapeController:hover,
+	#objectController:hover,
 	#sizeXController:hover,
 	#sizeYController:hover,
 	#gravityController:hover,
@@ -233,7 +251,9 @@
 	#deletionModeController:hover,
 	#randomSizeController:hover,
 	#updateAppController:hover,
-	#framerateController:hover{
+	#framerateController:hover,
+	#backgroundController:hover,
+	#pauseCanvasController:hover{
 		cursor: pointer;
 	}
 
