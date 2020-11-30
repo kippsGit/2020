@@ -5,6 +5,7 @@ window.onload = function () {
 			.then(function (registration) { 
 				console.log("Service Worker Registered"); 
 				getHtmlElements("#updateAppController").onclick = function(){
+					registration.unregister();
 					registration.update();
 				}
 			});
