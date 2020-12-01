@@ -7,6 +7,7 @@
 </head>
 <body>
 <canvas id="canvas"></canvas>
+<canvas id="mirrorCanvas"></canvas>
 <div id="controllerFrame">
 	<input id="clearCanvasController" type="button" value="Clear Canvas" onclick="clrCnv()">
 	<input id="saveCanvas" type="button" value="Screenshot Canvas" onclick="saveCNVS()">
@@ -45,9 +46,9 @@
 	<!-- <label id="objectControllerLabel" for="objectController">Shape (Rectangle)</label>
 	<input id="objectController" type="range" min="0" max="1" value="0"> -->
 	<label for="sizeXController">Rect Size X / Radius</label>
-	<input id="sizeXController" type="range" min="0" max="200" value="10">
+	<input id="sizeXController" type="range" min="0" max="200" value="20">
 	<label for="sizeYController">Rect Size Y</label>
-	<input id="sizeYController" type="range" min="0" max="200" value="10">
+	<input id="sizeYController" type="range" min="0" max="200" value="50">
 	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
 	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="checkbox">
 	<hr>
@@ -66,7 +67,7 @@
 	<label for="particleCountController">Particle Count</label>
 	<input id="particleCountController" type="range" min="0" max="1000" value="1">
 	<label for="creationTimeController">Spawn time</label>
-	<input id="creationTimeController" type="range" min="0" max="10000" value="200">
+	<input id="creationTimeController" type="range" min="0" max="10000" value="100">
 
 	<hr>
 	
@@ -76,17 +77,19 @@
 	<input id="frictionXController" type="range" min="0.0" max="1.0" step="0.1" value="1">
 	<label for="frictionYControllerLabel">FrictionY</label>
 	<input id="frictionYController" type="range" min="0.0" max="1.0" step="0.1" value="1">
-	
 	<hr>
+
+	<select id="spawnRulesController"></select>
+
 	<label for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
 	<label for="randomXController">Random spawn X</label>
-	<input id="randomXController" type="checkbox" min="0" max="1" value="1">
+	<input id="randomXController" type="checkbox" checked="true">
 	<hr>
 	<label for="posYController">Spawn position Y</label>
 	<input id="posYController" type="range" min="0" max="1" value="20">
 	<label for="randomYController">Random spawn Y</label>
-	<input id="randomYController" type="checkbox" min="0" max="1" value="1">
+	<input id="randomYController" type="checkbox" checked="true">
 	<hr>
 
 	<label for="velXMaxController">Vel Max X</label>
@@ -101,6 +104,7 @@
 	<hr>
 	<label for="randomColorController">Randomize Color</label>
 	<input id="randomColorController" type="checkbox">
+	<hr>
 	<label for="redChannelController">Red Channel</label>
 	<input id="redChannelController" type="range" min="0" max="255" value="255">
 	<label for="greenChannelController">Green Channel</label>

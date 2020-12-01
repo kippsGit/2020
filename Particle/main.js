@@ -1,5 +1,7 @@
-let canvas = document.querySelector("#canvas"),
-		c = canvas.getContext("2d");
+let canvas = getHtmlElements("#canvas"),
+	mirrorCanvas = getHtmlElements("#mirrorCanvas"),
+		c = canvas.getContext("2d"),
+		Mc = mirrorCanvas.getContext("2d");
 		canvas.width = 600;
 		canvas.height = 1080;
 	let canvas_width = window.innerWidth,
@@ -56,7 +58,8 @@ let canvas = document.querySelector("#canvas"),
 		randomlifeTimeControllerLabel = getHtmlElements("#randomlifeTimeControllerLabel"),
 		framerateController = getHtmlElements("#framerateController"),
 		backgroundController = getHtmlElements("#backgroundController"),
-		pauseCanvasController = getHtmlElements("#pauseCanvasController");
+		pauseCanvasController = getHtmlElements("#pauseCanvasController"),
+		spawnRulesController = getHtmlElements("#spawnRulesController");
 
 	let partImage = new Image(),
 		fReader = new FileReader();
@@ -119,21 +122,41 @@ let canvas = document.querySelector("#canvas"),
 			this.Cspeed = Math.random()*1+1;
 			this.CCspeed = Math.random()*-1-1;
 
+			this.velAssignerLimitor = {
+				x: 0,
+				y: 0
+			}
+
 			this.opacity = parseFloat(alphaChannelController.value);
 
 			//randomize x and y spawn position if...
 			if(randomXController.checked){ 
-				//this.pos.x = Math.random()*canvas.width;
-				/*secureSpawn();
-				this.pos.x = XYobj.tempConX;*/
-				this.pos.x = Math.random()*(canvas.width-0+parseInt(sizeXController.value))+0+parseInt(sizeXController.value)
-
+				switch(objectController.options.selectedIndex){
+					case 0:
+					case 1: // rectangle
+						this.pos.x = (Math.random()*canvas.width-parseInt(sizeXController.value))+parseInt(sizeXController.value);
+					break;
+					case 2: // circle
+						this.pos.x = Math.random()*canvas.width;
+						if(this.pos.x < this.siz.w){
+							this.pos.x = this.siz.w;
+						}
+					break;
+				}
 			}
 			if(randomYController.checked){ 
-				//this.pos.y = Math.random()*canvas.height/2;
-				/*secureSpawn();
-				this.pos.y = XYobj.tempConY;*/
-				this.pos.y = Math.random()*(canvas.height/2-0+parseInt(sizeYController.value))+0+parseInt(sizeYController.value)
+				switch(objectController.options.selectedIndex){
+					case 0:
+					case 1: // rectangle
+						this.pos.y = (Math.random()*canvas.height-parseInt(sizeYController.value))+parseInt(sizeYController.value);
+					break;
+					case 2: // circle
+						this.pos.y = Math.random()*canvas.height/2;
+						if(this.pos.y < this.siz.h){
+							this.pos.y = this.siz.h;
+						}
+					break;
+				}
 			}
 			
 			//randomize lifetime value
@@ -176,6 +199,31 @@ let canvas = document.querySelector("#canvas"),
 						this.pos.x = this.radius * Math.cos(this.angle * (Math.PI/180)) + canvas.width/2;
 						this.pos.y = this.radius * Math.sin(this.angle * (Math.PI/180)) + canvas.height/4;
 						this.angle += this.rndSpeed;
+					break;
+					case 5: // linear (random)
+						this.vel.y += this.gravity;
+
+						this.vel.x *= this.friction.x;
+						this.vel.y *= this.friction.y;
+
+						this.pos.x += this.vel.x;
+						this.pos.y += this.vel.y;
+
+						this.velAssignerLimitor.x++;
+						this.velAssignerLimitor.y++;
+
+						if(this.velAssignerLimitor.x >= 5){
+							this.velAssignerLimitor.x = 0;
+							this.vel.x = Math.random()*parseInt(velXMaxController.value) - parseInt(velXMinController.value);
+							//this.vel.x = Math.random() * 2 * Math.PI;
+
+						}
+						if(this.velAssignerLimitor.y >= 5){
+							this.velAssignerLimitor.y = 0;
+							this.vel.y = Math.random()*parseInt(velYMaxController.value) - parseInt(velYMinController.value);
+							//this.vel.y = Math.random() * 2 * Math.PI;
+						}
+
 					break;
 				}
 
@@ -569,6 +617,33 @@ let canvas = document.querySelector("#canvas"),
 								c.stroke();
 							break;
 						}
+					break;
+					case 7: // 20px radius
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+						switch(objectController.options.selectedIndex){
+							case 0:
+							case 1: // square
+								c.beginPath();
+								c.moveTo(this.pos.x + this.siz.w/2, this.pos.y + this.siz.h/2);
+								for(let i in partArr){
+									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < 50){
+										c.lineTo(partArr[i].pos.x + partArr[i].siz.w/2, partArr[i].pos.y + partArr[i].siz.h/2);
+									}
+								}
+								c.stroke();
+							break;
+							case 2: //circle
+								c.beginPath();
+								c.moveTo(this.pos.x, this.pos.y);
+								for(let i in partArr){
+									if(Math.sqrt(Math.pow(partArr[i].pos.x - this.pos.x, 2) + Math.pow(partArr[i].pos.y - this.pos.y, 2)) < 50){
+										c.lineTo(partArr[i].pos.x, partArr[i].pos.y);
+									}
+								}
+								c.stroke();
+							break;
+						}
+					break;
 				}
 				switch(objectController.options.selectedIndex){ // shape
 					case 0:
@@ -718,7 +793,7 @@ let canvas = document.querySelector("#canvas"),
 			deletionModeController.options.selectedIndex = hh
 		}
 
-		// screen shot the canvas
+		// saving a still image (screenshot) from the canvas
 		let tempCNVS = document.createElement("canvas"),
  			TCNVSc = tempCNVS.getContext("2d"),
  			d = new Date();
@@ -894,8 +969,11 @@ function resolveCollision(part, otherParticle) {
 		
 		// loop
 		//setInterval(()=>{
+
 		function loop(){
+
 			if(frameRate % FR == 0){
+
 				// saving to temporary canvas for exporting webm video
 				if(transferCanvasToTempCanvas){
 					tempCNVS.width = canvas.width;
@@ -909,12 +987,23 @@ function resolveCollision(part, otherParticle) {
 				}
 				switch(backgroundController.options.selectedIndex){
 					case 0:
-					case 1:
+					case 1: // default
 						c.fillStyle = "rgba(" + bgRedChannelController.value + ", " + bgGreenChannelController.value + ", " + bgBlueChannelController.value + ", " + bgAlphaChannelController.value + ")";
 						c.fillRect(0,0,canvas.width,canvas.height/2);
 					break;
-					case 2:
+					case 2: // none
 
+					break;
+					case 3: // file input
+
+					break;
+					case 4: // gradient
+						var gradient = c.createLinearGradient(0, 0, canvas.width, 0);
+							gradient.addColorStop("0"," magenta");
+							gradient.addColorStop("0.5", "blue");
+							gradient.addColorStop("1.0", "red");
+							c.fillStyle = gradient;
+						c.fillRect(0,0,canvas.width,canvas.height/2);
 					break;
 				}
 				
@@ -937,6 +1026,10 @@ function resolveCollision(part, otherParticle) {
 				}else{
 					clearInterval(CP);
 				}
+				// mirror main to canvas to mirrorCanvas
+				mirrorCanvas.width = canvas.width;
+				mirrorCanvas.height = canvas.height/2;
+				Mc.drawImage(canvas, 0, 0);
 		};loop();
 		//}, 60)
 
@@ -961,7 +1054,8 @@ function resolveCollision(part, otherParticle) {
 		controllerFrame.style.width = canvas_width;
 		controllerFrame.style.height = canvas_height/2;
 
-		controllerFrame.style.top ="50%";
+		mirrorCanvas.style.width = "" + canvas_width + "px";
+		mirrorCanvas.style.height = "" + canvas_height/2 + "px";
 	}
 	adjustScreen();
 

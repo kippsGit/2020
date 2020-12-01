@@ -201,6 +201,7 @@ function logControllerValues(){
 	movementController.options[2] = new Option("Circular (clockwise)");
 	movementController.options[3] = new Option("Circular (counter-clockwise)");
 	movementController.options[4] = new Option("Circular (random)");
+	movementController.options[5] = new Option("Linear (random)");
 
 	// link list
 	linkController.options[0] = new Option("Link Effect");
@@ -212,6 +213,7 @@ function logControllerValues(){
 	linkController.options[4] = new Option("100px range");
 	linkController.options[5] = new Option("Mouse Cursor (Global)");
 	linkController.options[6] = new Option("Mouse Cursor (100px radius)");
+	linkController.options[7] = new Option("50px range");
 	linkController.options.selectedIndex = 0; // default onload selection
 
 	// boundary list - none, solid, portal
@@ -260,6 +262,7 @@ function logControllerValues(){
 	objectController.options[0].style.color = "red";
 	objectController.options[1] = new Option("Rectangle");
 	objectController.options[2] = new Option("Circle");
+	objectController.options.selectedIndex = 2;
 
 	// death mode
 	deletionModeController.options[0] = new Option("Deletion Mode");
@@ -285,11 +288,14 @@ function logControllerValues(){
 	backgroundController.options[1] = new Option("Colours - default");
 	backgroundController.options[2] = new Option("None");
 	backgroundController.options[3] = new Option("File Input");
+	backgroundController.options[4] = new Option("Gradient");
+
+	//spawn rules list
+	spawnRulesController.options[0] = new Option("Spawn Rules");
+	spawnRulesController.options[0].style.fontSize = "15px";
+	spawnRulesController.options[0].style.color = "red";
 
 	aboutInfoP.innerHTML = "This was created to be kinda like a particle system... that's it hehe, with the help of my girl with her daily 'tampo' I was able to work on this on my free time. :)";
-
-
-
 
 
 
