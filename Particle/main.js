@@ -16,11 +16,15 @@ let canvas = getHtmlElements("#canvas"),
 		sizeYController = getHtmlElements("#sizeYController"),
 		gravityController = getHtmlElements("#gravityController"),
 		lifeTimeController = getHtmlElements("#lifeTimeController"),
-		randomlifeTimeController = document.querySelector("#randomlifeTimeController"),
+		randomlifeTimeController = getHtmlElements("#randomlifeTimeController"),
 		posXController = getHtmlElements("#posXController"),
+		posXControllerLabel = getHtmlElements("#posXControllerLabel"),
 		posYController = getHtmlElements("#posYController"),
+		posYControllerLabel = getHtmlElements("#posYControllerLabel"),
 		randomXController = getHtmlElements("#randomXController"),
+		randomXControllerLabel = getHtmlElements("#randomXControllerLabel"),
 		randomYController = getHtmlElements("#randomYController"),
+		randomYControllerLabel = getHtmlElements("#randomYControllerLabel"),
 		velXMaxController = getHtmlElements("#velXMaxController"),
 		velXMinController = getHtmlElements("#velXMinController"),
 		velYMaxController = getHtmlElements("#velYMaxController"),
@@ -129,35 +133,52 @@ let canvas = getHtmlElements("#canvas"),
 
 			this.opacity = parseFloat(alphaChannelController.value);
 
-			//randomize x and y spawn position if...
-			if(randomXController.checked){ 
-				switch(objectController.options.selectedIndex){
-					case 0:
-					case 1: // rectangle
-						this.pos.x = (Math.random()*canvas.width-parseInt(sizeXController.value))+parseInt(sizeXController.value);
-					break;
-					case 2: // circle
-						this.pos.x = Math.random()*canvas.width;
-						if(this.pos.x < this.siz.w){
-							this.pos.x = this.siz.w;
+			switch(spawnRulesController.options.selectedIndex){
+				case 0:
+				break;
+				case 1: // controller x and y
+					this.pos.x = parseInt(posXController.value)
+					this.pos.y = parseInt(posYController.value)
+				break;
+				case 2: // random controller x and y
+					//randomize x and y spawn position if...
+					if(randomXController.checked){ 
+						switch(objectController.options.selectedIndex){
+							case 0:
+							case 1: // rectangle
+								this.pos.x = (Math.random()*canvas.width-parseInt(sizeXController.value))+parseInt(sizeXController.value);
+							break;
+							case 2: // circle
+								this.pos.x = Math.random()*canvas.width;
+								if(this.pos.x < this.siz.w){ // if spawn outside the canvas, set to 0
+									this.pos.x = this.siz.w;
+								}
+							break;
 						}
-					break;
-				}
-			}
-			if(randomYController.checked){ 
-				switch(objectController.options.selectedIndex){
-					case 0:
-					case 1: // rectangle
-						this.pos.y = (Math.random()*canvas.height-parseInt(sizeYController.value))+parseInt(sizeYController.value);
-					break;
-					case 2: // circle
-						this.pos.y = Math.random()*canvas.height/2;
-						if(this.pos.y < this.siz.h){
-							this.pos.y = this.siz.h;
+					}
+					if(randomYController.checked){ 
+						switch(objectController.options.selectedIndex){
+							case 0:
+							case 1: // rectangle
+								this.pos.y = (Math.random()*canvas.height-parseInt(sizeYController.value))+parseInt(sizeYController.value);
+							break;
+							case 2: // circle
+								this.pos.y = Math.random()*canvas.height/2;
+								if(this.pos.y < this.siz.h){ // if spawn outside the canvas, set to 0
+									this.pos.y = this.siz.h;
+								}
+							break;
 						}
-					break;
-				}
+					}
+				break;
+				case 3: // mouse cursor
+					this.pos.x = getMousePos(canvas, event).x;
+					this.pos.y = getMousePos(canvas, event).y;
+				break;
+
 			}
+
+			
 			
 			//randomize lifetime value
 			if(parseInt(randomlifeTimeController.value) == 1){
@@ -254,7 +275,7 @@ let canvas = getHtmlElements("#canvas"),
 							case 4: // grow
 								this.siz.w += .5;
 								this.siz.h += .5;
-								if(this.siz.w >= 150 || this.siz.h >= 150){
+								if(this.siz.w >= 50 || this.siz.h >= 50){
 									delete partArr[this.idd];
 								}
 							break;
@@ -716,7 +737,7 @@ let canvas = getHtmlElements("#canvas"),
 		function clrCnv(){
 			c.clearRect(0,0,canvas.width,canvas.height);
 			c.fillStyle = "black";
-			c.fillRect(0,0,canvas.width,canvas.height);
+			c.fillRect(0,0,canvas.width,canvas.height/2);
 			for(let i in partArr){
 				delete partArr[i]	
 			}
@@ -730,6 +751,15 @@ let canvas = getHtmlElements("#canvas"),
 		let LDon = true, LDinterv, LDrandIndx, LDIndx = 14;
 		loopDemoController.addEventListener("change", ()=>{
 			//LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
+
+			//stupid unpause shit
+			pauseCanvasController.checked = false;
+			isPaused = false;
+			loop();
+
+			//select demo on change to start immediately
+			LDIndx++;
+			selectDemo(LDIndx);
 			
 			if(loopDemoController.checked){
 				LDinterv = setInterval(()=>{
@@ -743,6 +773,7 @@ let canvas = getHtmlElements("#canvas"),
 			}else{
 				clearInterval(LDinterv);
 			}
+
 		});
 
 
@@ -751,12 +782,12 @@ let canvas = getHtmlElements("#canvas"),
 			clearInterval(CP);
 			clrCnv();
 			LDrandIndx = Math.floor(Math.random()*(demo.length - 1) + 1);
-			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee, demo[ds].ff, demo[ds].gg, demo[ds].hh);
+			controller(demo[ds].a, demo[ds].b, demo[ds].c, demo[ds].d, demo[ds].e, demo[ds].f, demo[ds].g, demo[ds].h, demo[ds].i, demo[ds].j, demo[ds].k, demo[ds].l, demo[ds].m, demo[ds].n, demo[ds].o, demo[ds].p, demo[ds].q, demo[ds].r, demo[ds].s, demo[ds].t, demo[ds].u, demo[ds].v, demo[ds].w, demo[ds].x, demo[ds].y, demo[ds].z, demo[ds].aa, demo[ds].bb, demo[ds].cc, demo[ds].dd, demo[ds].ee, demo[ds].ff, demo[ds].gg, demo[ds].hh, demo[ds].ii);
 			//issue with creating particles, on change add event listener
 			//redeclaring this interval solution
 			CP = setInterval(createParticles, parseInt(creationTimeController.value));
 		}
-		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg,hh){
+		function controller(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg,hh,ii){
 			linkController.options.selectedIndex = a
 			canvasBoundaryController.options.selectedIndex = b
 			GCOController.options.selectedIndex = c
@@ -791,6 +822,7 @@ let canvas = getHtmlElements("#canvas"),
 			deletePreviousFrames.checked = ff
 			movementController.options.selectedIndex = gg
 			deletionModeController.options.selectedIndex = hh
+			spawnRulesController.options.selectedIndex = ii
 		}
 
 		// saving a still image (screenshot) from the canvas
@@ -863,12 +895,22 @@ let canvas = getHtmlElements("#canvas"),
 		function getMousePos(canvas, e){ 
 			let rect = canvas.getBoundingClientRect(),
 				scaleX = canvas.width / rect.width,
-				scaleY = canvas.height / rect.height;
+				scaleY = canvas.height / rect.height,
+				eCX,
+				eCY;
+
+				try{
+					eCX = e.clientX
+					eCY = e.clientY
+				}catch(err){
+
+				}
 
 				return {
-					x: (e.clientX - rect.left) * scaleX,
-					y: (e.clientY - rect.top) * scaleY
-				}
+					x: (eCX - rect.left) * scaleX,
+					y: (eCY - rect.top) * scaleY
+				}		
+				
 		}
 
 		// clear file input

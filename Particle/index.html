@@ -46,9 +46,9 @@
 	<!-- <label id="objectControllerLabel" for="objectController">Shape (Rectangle)</label>
 	<input id="objectController" type="range" min="0" max="1" value="0"> -->
 	<label for="sizeXController">Rect Size X / Radius</label>
-	<input id="sizeXController" type="range" min="0" max="200" value="20">
+	<input id="sizeXController" type="range" min="0" max="200" value="5">
 	<label for="sizeYController">Rect Size Y</label>
-	<input id="sizeYController" type="range" min="0" max="200" value="50">
+	<input id="sizeYController" type="range" min="0" max="200" value="5">
 	<label for="randomSizeController" title="randomize size based on the size X & Y controller value">Randomize Size</label>
 	<input id="randomSizeController" title="randomize size based on the size X & Y controller value" type="checkbox">
 	<hr>
@@ -60,7 +60,7 @@
 	<label id="lifeTimeControllerLabel" for="lifeTimeController">Lifetime Points</label>
 	<input id="lifeTimeController" type="range" min="0" max="1000" value="100">
 
-	<label for="randomlifeTimeController">Random Life points</label>
+	<label id="randomlifeTimeControllerLabel" for="randomlifeTimeController">Random Life points</label>
 	<input id="randomlifeTimeController" type="checkbox">
 	<hr>
 
@@ -81,15 +81,15 @@
 
 	<select id="spawnRulesController"></select>
 
-	<label for="posXController">Spawn position X</label>
+	<label id="posXControllerLabel" for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
-	<label for="randomXController">Random spawn X</label>
-	<input id="randomXController" type="checkbox" checked="true">
+	<label id="randomXControllerLabel" for="randomXController">Random spawn X</label>
+	<input id="randomXController" type="checkbox" checked="true" disabled="true">
 	<hr>
-	<label for="posYController">Spawn position Y</label>
+	<label id="posYControllerLabel" for="posYController">Spawn position Y</label>
 	<input id="posYController" type="range" min="0" max="1" value="20">
-	<label for="randomYController">Random spawn Y</label>
-	<input id="randomYController" type="checkbox" checked="true">
+	<label id="randomYControllerLabel" for="randomYController">Random spawn Y</label>
+	<input id="randomYController" type="checkbox" checked="true" disabled="true">
 	<hr>
 
 	<label for="velXMaxController">Vel Max X</label>
