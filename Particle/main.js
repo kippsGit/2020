@@ -30,6 +30,7 @@ let canvas = getHtmlElements("#canvas"),
 		velYMaxController = getHtmlElements("#velYMaxController"),
 		velYMinController = getHtmlElements("#velYMinController"),
 		particleCountController = getHtmlElements("#particleCountController"),
+		particleCountControllerLabel = getHtmlElements("#particleCountControllerLabel"),
 		creationTimeController = getHtmlElements("#creationTimeController"),
 		redChannelController = getHtmlElements("#redChannelController"),
 		greenChannelController = getHtmlElements("#greenChannelController"),
@@ -63,7 +64,10 @@ let canvas = getHtmlElements("#canvas"),
 		framerateController = getHtmlElements("#framerateController"),
 		backgroundController = getHtmlElements("#backgroundController"),
 		pauseCanvasController = getHtmlElements("#pauseCanvasController"),
-		spawnRulesController = getHtmlElements("#spawnRulesController");
+		spawnRulesController = getHtmlElements("#spawnRulesController"),
+		colorModeController = getHtmlElements("#colorModeController"),
+		tileSizeController = getHtmlElements("#tileSizeController"),
+		tileSizeControllerLabel = getHtmlElements("#tileSizeControllerLabel");
 
 	let partImage = new Image(),
 		fReader = new FileReader();
@@ -86,9 +90,17 @@ let canvas = getHtmlElements("#canvas"),
 		isPaused = false,
 		indx = 0, 
 		event, 
-		demoSelected = 0;
+		drawingEvent,
+		demoSelected = 0,
+		particlesAlive = 0,
+		drawing = false,
+		loopingEvent = true,
+		RAF,
+		tileSize = canvas.width/parseInt(tileSizeController.value),
+		tileArea = canvas.width;
 
 	let particle = function(){
+			particlesAlive++;
 			this.mass = .0001;
 			this.r = Math.random()*255;
 			this.g = Math.random()*255;
@@ -137,10 +149,12 @@ let canvas = getHtmlElements("#canvas"),
 				case 0:
 				break;
 				case 1: // controller x and y
+					drawing = false;
 					this.pos.x = parseInt(posXController.value)
 					this.pos.y = parseInt(posYController.value)
 				break;
 				case 2: // random controller x and y
+					drawing = false;
 					//randomize x and y spawn position if...
 					if(randomXController.checked){ 
 						switch(objectController.options.selectedIndex){
@@ -171,15 +185,29 @@ let canvas = getHtmlElements("#canvas"),
 						}
 					}
 				break;
-				case 3: // mouse cursor
+				case 3: // mouse cursor (hover)
 					this.pos.x = getMousePos(canvas, event).x;
 					this.pos.y = getMousePos(canvas, event).y;
+					drawing = false;
+
+				break;
+				case 4: // mouse cursor (click & drag)
+
+					if(drawing){
+						this.pos.x = getMousePos(canvas, drawingEvent).x;
+						this.pos.y = getMousePos(canvas, drawingEvent).y;
+					}else{
+						loopingEvent = false;
+						clearInterval(CP);
+					}
+				break;
+				case 5: // tiles?
+						//clearInterval(CP);
+
 				break;
 
 			}
 
-			
-			
 			//randomize lifetime value
 			if(parseInt(randomlifeTimeController.value) == 1){
 				this.maxLife = Math.floor(Math.random()*parseInt(lifeTimeController.value));
@@ -256,6 +284,7 @@ let canvas = getHtmlElements("#canvas"),
 							case 1: // life points
 								this.life++;
 								if (this.life >= this.maxLife){
+									particlesAlive--;
 									delete partArr[this.idd];
 								}
 							break;
@@ -776,6 +805,22 @@ let canvas = getHtmlElements("#canvas"),
 
 		});
 
+		//draw tile
+		function drawTile(x,y,width,height){
+		let backSlash = Math.random() > .5;
+
+			if(backSlash){
+				c.beginPath();
+				c.moveTo(x, y);
+				c.lineTo(x + width, y + height);
+			}else{
+				c.beginPath();
+					c.moveTo(x + width, y);
+					c.lineTo(x, y + height);
+				}
+				c.stroke();
+		}			
+
 
 		//select demos
 		function selectDemo(ds){
@@ -1005,17 +1050,12 @@ function resolveCollision(part, otherParticle) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		canvas.addEventListener('mousemove', (e)=>{
-			event = e;
-		});
 		
 		// loop
 		//setInterval(()=>{
 
 		function loop(){
-
 			if(frameRate % FR == 0){
-
 				// saving to temporary canvas for exporting webm video
 				if(transferCanvasToTempCanvas){
 					tempCNVS.width = canvas.width;
@@ -1064,7 +1104,7 @@ function resolveCollision(part, otherParticle) {
 			}
 				frameRate++;
 				if(!isPaused){
-					requestAnimationFrame(loop);
+						RAF = requestAnimationFrame(loop);
 				}else{
 					clearInterval(CP);
 				}

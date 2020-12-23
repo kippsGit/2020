@@ -7,10 +7,11 @@
 		background-color: darkgray;
 	}
 	#canvas{
+		box-shadow: 0px 0px 10px 0px;
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
-		border-radius: 20px 20px 0px 0px;
+		border-radius: 20px 20px 20px 20px;
 	}
 	#mirrorCanvas{
 		border-radius: 20px 20px 0px 0px;
@@ -28,8 +29,8 @@
 		/*border: 1px solid red;*/
 		margin: 0 auto;
 		top: 50%;
-		left: 50%;
-		transform: translateX(-50%);
+		left: 50.1%;
+		transform: translateX(-50.1%);
 		overflow-y: auto;
 		white-space: nowrap;
 		overflow-x: hidden;
@@ -60,11 +61,11 @@
 		color: black;
 		background-color:white;
 	}
-	input[type="button"], input[type="range"], select, #infoFrame, label{
+	input[type="button"], input[type="range"], input[type="file"], select, #infoFrame, label, hr{
 		margin-left: 10px;
 	}
 
-	#clearCanvasController, #GCOController, #saveCanvas, #objectController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController, #framerateController, #backgroundController, #pauseCanvasController, #spawnRulesController{
+	#clearCanvasController, #GCOController, #saveCanvas, #objectController, #sizeXController, #sizeYController, #gravityController, #lifeTimeController, #randomlifeTimeController, #posXController, #posYController, #randomXController, #randomYController, #velXMaxController, #velXMinController, #velYMaxController, #velYMinController, #particleCountController, #creationTimeController, #redChannelController, #greenChannelController, #blueChannelController, #alphaChannelController, #bgRedChannelController, #bgGreenChannelController, #bgBlueChannelController, #bgAlphaChannelController, #randomColorController, #canvasBoundaryController, #linkController, #frictionXController, #frictionYController, #collisionController, #dropdownWrapper, #demoListController, #particleImageController, #clearFileInputController, #modeController, #generateParticlesController, #lifeModeController, #deletePreviousFrames, #loopDemoController, #movementController, #aboutController, #infoFrame, #deletionModeController, #randomSizeController, #updateAppController, #framerateController, #backgroundController, #pauseCanvasController, #spawnRulesController, #colorModeController, #tileSizeController{
 		position: relative;
 		/*transform: translateX(-50%);*/
 		/*top: 50%;*/
@@ -219,6 +220,16 @@
 		margin-bottom: 10px;
 		text-align-last: center;
 	}
+	#colorModeController{
+		width: 253px;
+		margin-bottom: 10px;
+		text-align-last: center;
+	}
+	#tileSizeController{
+		margin-top: 10px;
+		width: 253px;
+		margin-bottom: 10px;
+	}
 
 
 	#linkController{
@@ -252,7 +263,7 @@
 		color: none;
 		background: none;
 	}
-	#randomXControllerLabel, #randomYControllerLabel{
+	#randomXControllerLabel, #randomYControllerLabel, #tileSizeControllerLabel{
 		text-decoration: line-through;
 
 	}
@@ -307,7 +318,9 @@
 	#framerateController:hover,
 	#backgroundController:hover,
 	#pauseCanvasController:hover,
-	#spawnRulesController:hover{
+	#spawnRulesController:hover,
+	#colorModeController:hover,
+	#tileSizeController:hover{
 		cursor: pointer;
 	}
 

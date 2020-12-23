@@ -21,7 +21,7 @@ let demo = [
 		 "a":0, "b":2, "c":1, "d":2, "e":6, "f":25, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":0.3,  "ff":false, "gg":1, "hh":0, "ii":2
 		},
 		{
-		 "a":2, "b":2, "c":1, "d":2, "e":13, "f":25, "g":1.6, "h":100, "i":0, "j":1, "k":200, "l":1, "m":2, "n":1, "o":1, "p":288, "q":258, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0, "ii":1
+		 "a":2, "b":2, "c":1, "d":2, "e":13, "f":25, "g":1.6, "h":100, "i":0, "j":1, "k":200, "l":1, "m":1, "n":1, "o":1, "p":288, "q":258, "r":false, "s":0, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0, "ii":1
 		},
 		{
 		 "a":4, "b":2, "c":1, "d":2, "e":0, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":0, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":1, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1,  "ff":false, "gg":1, "hh":0, "ii":2
@@ -51,7 +51,10 @@ let demo = [
 		 "a":0, "b":1, "c":13, "d":2, "e":5, "f":10, "g":0, "h":100, "i":0, "j":1, "k":0, "l":1, "m":2, "n":1, "o":1, "p":295, "q":265, "r":true, "s":1, "t":10, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.6, "bb":0, "cc":0, "dd":0, "ee":1, "ff":true, "gg":4, "hh":3, "ii":2
 		},
 		{
-		 "a":0, "b":1, "c":0, "d":2, "e":2, "f":5, "g":0, "h":100, "i":true, "j":1, "k":0, "l":false, "m":0, "n":1, "o":1, "p":490, "q":261, "r":false, "s":false, "t":7.2, "u":8.4, "v":2.2, "w":1.1, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1, "ff":false, "gg":0, "hh":1, "ii":2
+		 "a":0, "b":1, "c":0, "d":2, "e":2, "f":5, "g":0, "h":100, "i":true, "j":1, "k":0, "l":false, "m":0, "n":1, "o":1, "p":490, "q":261, "r":false, "s":false, "t":7.2, "u":8.4, "v":2.2, "w":1.1, "x":255, "y":255, "z":255, "aa":1, "bb":0, "cc":0, "dd":0, "ee":1, "ff":true, "gg":0, "hh":1, "ii":2
+		},
+		{
+		"a":4, "b":2, "c":1, "d":2, "e":10, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":true, "m":1, "n":1, "o":1, "p":288, "q":258, "r":true, "s":true, "t":9.4, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.1, "bb":255, "cc":53, "dd":122, "ee":1, "ff":false, "gg":1, "hh":0, "ii":2
 		}
 	];
 // use this to log the current controller values u made, copy ang paste it above to add selection to the demos :)
@@ -107,7 +110,7 @@ function logControllerValues(){
 		//unpause the controller if the user selects and demo form the list
 		pauseCanvasController.checked = false;
 		isPaused = false;
-		loop();
+		//loop();
 
 		demoSelected = demoListController.options.selectedIndex;
 		if(demoSelected != 0){
@@ -128,7 +131,7 @@ function logControllerValues(){
 				generateParticlesController.disabled = true;
 				pauseCanvasController.checked = false;
 				isPaused = false;
-				loop();
+				//loop();
 			break;
 			case 2:
 				generateParticlesController.disabled = false;	
@@ -148,6 +151,7 @@ function logControllerValues(){
 			isPaused = true;
 		}else{
 			isPaused = false;
+			CP = setInterval(createParticles, parseInt(creationTimeController.value));
 			loop();
 		}
 	})
@@ -203,6 +207,15 @@ function logControllerValues(){
 				posXControllerLabel.style.textDecoration = "none";
 				posYController.disabled = false;
 				posYControllerLabel.style.textDecoration = "none";
+
+				tileSizeControllerLabel.style.textDecoration = "line-through"
+				tileSizeController.disabled = true
+
+				if(!loopingEvent){
+					loopingEvent = true; 
+					CP = setInterval(createParticles, parseInt(creationTimeController.value));
+					requestAnimationFrame(loop)
+				}
 			break;
 			case 2: // random controller x and y
 				randomXController.disabled = false;
@@ -214,8 +227,17 @@ function logControllerValues(){
 				posXControllerLabel.style.textDecoration = "line-through";
 				posYController.disabled = true;
 				posYControllerLabel.style.textDecoration = "line-through";
+
+				tileSizeControllerLabel.style.textDecoration = "line-through"
+				tileSizeController.disabled = true
+
+				if(!loopingEvent){
+					loopingEvent = true; 
+					CP = setInterval(createParticles, parseInt(creationTimeController.value));
+					requestAnimationFrame(loop)
+				}
 			break;
-			case 3: // mouse cursor
+			case 3: // mouse cursor (hover)
 				randomXController.disabled = true;
 				randomXControllerLabel.style.textDecoration = "line-through";
 				randomYController.disabled = true;
@@ -225,9 +247,97 @@ function logControllerValues(){
 				posXControllerLabel.style.textDecoration = "line-through";
 				posYController.disabled = true;
 				posYControllerLabel.style.textDecoration = "line-through";
+
+				tileSizeControllerLabel.style.textDecoration = "line-through"
+				tileSizeController.disabled = true
+
+				if(!loopingEvent){
+					loopingEvent = true; 
+					CP = setInterval(createParticles, parseInt(creationTimeController.value));
+					requestAnimationFrame(loop)
+				}
+			break;
+			case 4: // mouse cursor (click & drag)
+				randomXController.disabled = true;
+				randomXControllerLabel.style.textDecoration = "line-through";
+				randomYController.disabled = true;
+				randomYControllerLabel.style.textDecoration = "line-through";
+
+				posXController.disabled = true;
+				posXControllerLabel.style.textDecoration = "line-through";
+				posYController.disabled = true;
+				posYControllerLabel.style.textDecoration = "line-through";
+
+				tileSizeControllerLabel.style.textDecoration = "line-through"
+				tileSizeController.disabled = true
+
+			break;
+			case 5: // Tiles
+				tileSizeControllerLabel.style.textDecoration = "none"
+				tileSizeController.disabled = false
+
+				clearInterval(CP)
+				cancelAnimationFrame(RAF)	
+				loopingEvent = false		
+				
+				c.clearRect(0,0,canvas.width,canvas.height)
+				c.fillStyle = "black"
+				c.fillRect(0,0,canvas.width,canvas.height)
+
+				c.strokeStyle = "white";
+
+				for(let x = 0; x < tileArea; x += tileSize){
+					for(let y = 0; y < tileArea; y += tileSize){
+						drawTile(x,y,tileSize,tileSize);
+					}
+				}
 			break;
 		}
 	})
+
+	//tile size controller
+	tileSizeController.addEventListener('mousemove', ()=>{
+		c.clearRect(0,0,canvas.width,canvas.height)
+		c.fillStyle = "black"
+		c.fillRect(0,0,canvas.width,canvas.height)
+
+		tileSize = canvas.width/parseInt(tileSizeController.value)
+		for(let x = 0; x < tileArea; x += tileSize){
+			for(let y = 0; y < tileArea; y += tileSize){
+				drawTile(x,y,tileSize,tileSize);
+			}
+		}	
+	})
+
+		canvas.addEventListener('mousemove', (e)=>{
+			event = e;
+			if(drawing){
+				drawingEvent = e;
+			}
+		});
+
+		canvas.addEventListener('mousedown', (e)=>{
+			if(spawnRulesController.options.selectedIndex == 4){
+				drawing = true;
+				drawingEvent = e;
+				CP = setInterval(createParticles, parseInt(creationTimeController.value));
+			}
+			
+		})
+		canvas.addEventListener('mouseup', ()=>{
+			if(spawnRulesController.options.selectedIndex == 4){
+				drawing = false;
+				clearInterval(CP);
+			}
+			
+		})
+
+	// particle count controller
+	particleCountController.addEventListener('mousemove', ()=>{
+		particleCountControllerLabel.innerText = "Particle Spawn Count: " + parseInt(particleCountController.value)
+	})
+
+	///////////////////////////////////////////////////////////////////////////////////
 
 	// mode controller list
 	modeController.options[0] = new Option("Generating Mode");
@@ -346,10 +456,20 @@ function logControllerValues(){
 	spawnRulesController.options[0].style.fontSize = "15px";
 	spawnRulesController.options[0].style.color = "red";
 	spawnRulesController.options[1] = new Option("Controller X & Y - default");
-	spawnRulesController.options[2] = new Option("Random X & Y");
-	spawnRulesController.options[3] = new Option("Mouse Cursor");
+	spawnRulesController.options[2] = new Option("Random Controller X & Y");
+	spawnRulesController.options[3] = new Option("Mouse Cursor (hover)");
+	spawnRulesController.options[4] = new Option("Mouse Cursor (click & drag)");
+	spawnRulesController.options[5] = new Option("Tiles (random diagonal lines)");
+	spawnRulesController.options.selectedIndex = 1;
 
-	aboutInfoP.innerHTML = "This was created to be kinda like a particle system... that's it hehe, with the help of my girl with her daily 'tampo' I was able to work on this on my free time. :)";
+	// color mode list
+	colorModeController.options[0] = new Option("Color Mode");
+	colorModeController.options[0].style.fontSize = "15px";
+	colorModeController.options[0].style.color = "red";
+	colorModeController.options[1] = new Option("RGBA");
+	colorModeController.options[2] = new Option("HSLA");
+
+	aboutInfoP.innerHTML = "Particle System chu chu...";
 
 
 

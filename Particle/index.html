@@ -64,7 +64,7 @@
 	<input id="randomlifeTimeController" type="checkbox">
 	<hr>
 
-	<label for="particleCountController">Particle Count</label>
+	<label id="particleCountControllerLabel" for="particleCountController">Particle Spawn Count: 1</label>
 	<input id="particleCountController" type="range" min="0" max="1000" value="1">
 	<label for="creationTimeController">Spawn time</label>
 	<input id="creationTimeController" type="range" min="0" max="10000" value="100">
@@ -80,6 +80,9 @@
 	<hr>
 
 	<select id="spawnRulesController"></select>
+
+	<label id="tileSizeControllerLabel" for="tileSizeController">Tile Size</label>
+	<input id="tileSizeController" type="range" min="1" max="100" value="4" disabled="true">
 
 	<label id="posXControllerLabel" for="posXController">Spawn position X</label>
 	<input id="posXController" type="range" min="0" max="1" value="20">
@@ -100,6 +103,9 @@
 	<input id="velYMaxController" type="range" min="0" max="100" value="10" step="0.1">
 	<label for="velYMinController">Vel Min Y</label>
 	<input id="velYMinController" type="range" min="0" max="50" value="5" step="0.1">
+	<hr>
+
+	<select id="colorModeController"></select>
 
 	<hr>
 	<label for="randomColorController">Randomize Color</label>
@@ -128,12 +134,13 @@
 	<input id="aboutController" type="button" value="About" onclick="aboutInfo()">
 	<div id="infoFrame">
 		<p id="aboutInfoP"></p>
-		<img src="us.jpg">
+		
 	</div>
 </div>
 <script type="text/javascript" src="index.js" defer></script>
 <script type="text/javascript" src="storage.js"></script>
 <script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="test.js"></script>
 </body>
 </html>
 
