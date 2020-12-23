@@ -308,6 +308,18 @@ function logControllerValues(){
 			}
 		}	
 	})
+	tileSizeController.addEventListener('touchstart', ()=>{
+		c.clearRect(0,0,canvas.width,canvas.height)
+		c.fillStyle = "black"
+		c.fillRect(0,0,canvas.width,canvas.height)
+
+		tileSize = canvas.width/parseInt(tileSizeController.value)
+		for(let x = 0; x < tileArea; x += tileSize){
+			for(let y = 0; y < tileArea; y += tileSize){
+				drawTile(x,y,tileSize,tileSize);
+			}
+		}	
+	})
 
 		canvas.addEventListener('mousemove', (e)=>{
 			event = e;
