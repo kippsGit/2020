@@ -152,6 +152,7 @@ let canvas = getHtmlElements("#canvas"),
 					drawing = false;
 					this.pos.x = parseInt(posXController.value)
 					this.pos.y = parseInt(posYController.value)
+
 				break;
 				case 2: // random controller x and y
 					drawing = false;
@@ -201,11 +202,46 @@ let canvas = getHtmlElements("#canvas"),
 						clearInterval(CP);
 					}
 				break;
-				case 5: // tiles?
-						//clearInterval(CP);
+				case 5: // tiles diagonal lines
+						tileSizeControllerLabel.style.textDecoration = "none"
+						tileSizeController.disabled = false
 
+						clearInterval(CP)
+						cancelAnimationFrame(RAF)	
+						loopingEvent = false		
+						
+						c.clearRect(0,0,canvas.width,canvas.height)
+						c.fillStyle = "black"
+						c.fillRect(0,0,canvas.width,canvas.height)
+
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+
+						for(let x = 0; x < tileArea; x += tileSize){
+							for(let y = 0; y < tileArea; y += tileSize){
+								drawLine(x,y,tileSize,tileSize);
+							}
+						}
 				break;
+				case 6: // tiles square
+						tileSizeControllerLabel.style.textDecoration = "none"
+						tileSizeController.disabled = false
+						
+						clearInterval(CP)
+						cancelAnimationFrame(RAF)	
+						loopingEvent = false
 
+						c.clearRect(0,0,canvas.width,canvas.height)
+						c.fillStyle = "black"
+						c.fillRect(0,0,canvas.width,canvas.height)
+
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+
+						for(let x = 0; x < tileArea; x += tileSize){
+							for(let y = 0; y < tileArea; y += tileSize){
+								drawSquare(x,y,tileSize,tileSize)
+							}
+						}
+				break;
 			}
 
 			//randomize lifetime value
@@ -806,21 +842,66 @@ let canvas = getHtmlElements("#canvas"),
 		});
 
 		//draw tile
-		function drawTile(x,y,width,height){
+
+		// line
+		function drawLine(x,y,width,height){
 		let backSlash = Math.random() > .5;
 
+			c.beginPath();
 			if(backSlash){
-				c.beginPath();
 				c.moveTo(x, y);
 				c.lineTo(x + width, y + height);
 			}else{
-				c.beginPath();
-					c.moveTo(x + width, y);
-					c.lineTo(x, y + height);
-				}
+				c.moveTo(x + width, y);
+				c.lineTo(x, y + height);
+			}
 				c.stroke();
-		}			
+		}		
 
+		//square
+		function drawSquare(x,y,width,height){
+			c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+			c.strokeRect(x,y,width,height)
+		}
+
+		// adding event listeners
+		function addListener(x){
+			x.addEventListener("change", ()=>{
+
+				switch(spawnRulesController.selectedIndex){
+					case 5:
+						c.clearRect(0,0,canvas.width,canvas.height)
+						c.fillStyle = "black"
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+						c.fillRect(0,0,canvas.width,canvas.height)
+							for(let x = 0; x < tileArea; x += tileSize){
+								for(let y = 0; y < tileArea; y += tileSize){
+									drawLine(x,y,tileSize,tileSize);
+								}
+							}
+					break;
+					case 6:
+						c.clearRect(0,0,canvas.width,canvas.height)
+						c.fillStyle = "black"
+						c.fillRect(0,0,canvas.width,canvas.height)
+
+						c.strokeStyle = "rgba(" + redChannelController.value + ", " + greenChannelController.value + ", " + blueChannelController.value + "," + alphaChannelController.value + ")";
+
+						for(let x = 0; x < tileArea; x += tileSize){
+							for(let y = 0; y < tileArea; y += tileSize){
+								drawSquare(x,y,tileSize,tileSize)
+							}
+						}
+					break;
+
+				}
+				
+			})
+		}
+	addListener(redChannelController)
+	addListener(greenChannelController)
+	addListener(blueChannelController)
+	addListener(alphaChannelController)
 
 		//select demos
 		function selectDemo(ds){
