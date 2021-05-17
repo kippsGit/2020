@@ -1196,7 +1196,7 @@ function resolveCollision(part, otherParticle) {
 		};loop();
 		//}, 60)
 
-		//selectDemo(10);// experiment default selection
+		selectDemo(12);// experiment default selection
 ///////////////////////////////////////////////////
 		function adjustScreen(){
 
