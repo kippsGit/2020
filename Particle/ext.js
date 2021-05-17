@@ -55,6 +55,9 @@ let demo = [
 		},
 		{
 		"a":4, "b":2, "c":1, "d":2, "e":10, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":true, "m":1, "n":1, "o":1, "p":288, "q":258, "r":true, "s":true, "t":9.4, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.1, "bb":255, "cc":53, "dd":122, "ee":1, "ff":false, "gg":1, "hh":0, "ii":2
+		},
+		{
+		 "a":4, "b":2, "c":1, "d":2, "e":10, "f":25, "g":0, "h":100, "i":1, "j":1, "k":0, "l":false, "m":2, "n":1, "o":1, "p":288, "q":258, "r":true, "s":true, "t":9.3, "u":5, "v":10, "w":5, "x":255, "y":255, "z":255, "aa":0.1, "bb":0, "cc":0, "dd":0, "ee":1, "ff":false, "gg":1, "hh":0, "ii":2
 		}
 	];
 // use this to log the current controller values u made, copy ang paste it above to add selection to the demos :)
@@ -512,7 +515,7 @@ function logControllerValues(){
 	spawnRulesController.options[4] = new Option("Mouse Cursor (click & drag)");
 	spawnRulesController.options[5] = new Option("Tiles (random diagonal lines)");
 	spawnRulesController.options[6] = new Option("Tiles (squares (hollowed))");
-	spawnRulesController.options.selectedIndex = 6;
+	spawnRulesController.options.selectedIndex = 1;
 
 	// color mode list
 	colorModeController.options[0] = new Option("Color Mode");
